@@ -41,53 +41,56 @@ export default function DemandTrendLineChart() {
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+    <div className="relative rounded-2xl bg-gradient-to-br from-white via-white to-red-50/20 border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-4.5 overflow-hidden">
+      {/* Top Subtle Red Brand Accent Line */}
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-300" />
+
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <span className="text-[10px] font-black uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.2 rounded-full border border-blue-100">
               Demand Telemetry
             </span>
-            <span className="text-xs text-slate-400 font-medium">12-Week Rolling Trend</span>
+            <span className="text-[11px] text-slate-400 font-medium">12-Week Rolling Trend</span>
           </div>
-          <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
+          <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
             Top 5 Models Demand Trajectory
           </h3>
-          <p className="text-xs text-slate-500 font-medium">
-            Weekly request count trend over the past quarter (hover to view precise weekly values).
+          <p className="text-[11px] text-slate-500 font-medium leading-normal">
+            Weekly request count trend over the past quarter (hover to view precise values).
           </p>
         </div>
 
-        {/* Legend Pills */}
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Legend Pills (Compact) */}
+        <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-center">
           {TREND_TOP_5.map((model) => {
             const isFaded = activeModelId && activeModelId !== model.id;
             return (
               <button
                 key={model.id}
                 onClick={() => setActiveModelId(activeModelId === model.id ? null : model.id)}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold transition-all border ${
+                className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all border cursor-pointer ${
                   activeModelId === model.id
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                    ? 'bg-[#B30D12] text-white border-[#B30D12] shadow-2xs'
                     : isFaded
                     ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-50'
-                    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                 }`}
               >
                 <span 
-                  className="w-2.5 h-2.5 rounded-full shrink-0" 
+                  className="w-2 h-2 rounded-full shrink-0" 
                   style={{ backgroundColor: model.color }}
                 />
-                <span className="text-[11px]">{model.name}</span>
+                <span className="text-[10px]">{model.name}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* SVG Multi-Line Chart Canvas */}
-      <div className="relative pt-6">
+      {/* SVG Multi-Line Chart Canvas (Compact) */}
+      <div className="relative pt-3">
         <div className="w-full overflow-x-auto">
           <div className="min-w-[620px]">
             <svg 

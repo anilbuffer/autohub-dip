@@ -217,9 +217,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               <h1 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mt-0.5">
                 {pathname === '/admin' ? 'Demand Intelligence' : getBreadcrumbs()[getBreadcrumbs().length - 1].label}
-                <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-[#B30D12] bg-red-50 px-2 py-0.2 rounded-full border border-red-200/80">
-                  <Sparkles size={11} /> AutoHub Command Center
-                </span>
+
               </h1>
             </div>
           </div>

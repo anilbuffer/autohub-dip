@@ -53,77 +53,79 @@ export default function DemandSignalsEngine({ onSelectSignal, onFilterChange }: 
   return (
     <div className="space-y-6">
       
-      {/* 1. Demand Signal Conversion Explainer Header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-[#0B152E] to-slate-900 border border-slate-800 text-white p-6 sm:p-7 shadow-xl">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      {/* 1. Demand Signal Conversion Explainer Header (Light Red Brand Gradient, Compact) */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-50/90 via-rose-50/60 to-white border border-red-200/80 text-slate-900 p-4 sm:p-5 shadow-[0_2px_10px_-2px_rgba(179,13,18,0.05),0_1px_3px_rgba(0,0,0,0.02)] transition-all">
+        {/* Top Brand Crimson Accent Line */}
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-400" />
+
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="max-w-2xl">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#B30D12] text-white flex items-center gap-1 shadow-sm">
-                <Radio size={11} className="animate-pulse" /> Live Signal Ingestion
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200 flex items-center gap-1 shadow-2xs">
+                <Radio size={10} className="animate-pulse" /> Live Ingestion
               </span>
-              <span className="text-xs text-slate-400 font-medium">AutoHub DIP Neural Engine</span>
+              <span className="text-[11px] text-slate-400 font-medium">AutoHub DIP Neural Engine</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight">
               Dealer Wish Lists &amp; Searches &rarr; Demand Signals
             </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-normal mt-1 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-600 font-medium mt-0.5 leading-relaxed">
               Every keyword query, filter application, zero-result search, and structured wish list submitted by NZ dealerships is continuously ingested and weighted into verified demand signals.
             </p>
           </div>
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 shrink-0">
-            <div className="px-4 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Raw Telemetry</span>
-              <span className="text-lg font-black text-white">4,860</span>
-              <span className="text-[10px] text-emerald-400 font-medium block mt-0.5 flex items-center gap-0.5">
-                <ArrowUpRight size={10} /> +31% this month
+          {/* Quick Metrics Bar (Compact, Light Brand Gradient) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 shrink-0">
+            <div className="px-3 py-2 rounded-xl bg-white border border-red-200/80 shadow-2xs">
+              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Raw Telemetry</span>
+              <span className="text-base font-black text-slate-900">4,860</span>
+              <span className="text-[9px] text-emerald-800 font-bold block mt-0.5 flex items-center gap-0.5">
+                <ArrowUpRight size={9} /> +31% MoM
               </span>
             </div>
-            <div className="px-4 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Wish List Backlog</span>
-              <span className="text-lg font-black text-white">318 Orders</span>
-              <span className="text-[10px] text-emerald-400 font-medium block mt-0.5 flex items-center gap-0.5">
-                <ArrowUpRight size={10} /> 142 dealers active
+            <div className="px-3 py-2 rounded-xl bg-white border border-red-200/80 shadow-2xs">
+              <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">Wish List Backlog</span>
+              <span className="text-base font-black text-slate-900">318 Orders</span>
+              <span className="text-[9px] text-emerald-800 font-bold block mt-0.5 flex items-center gap-0.5">
+                <ArrowUpRight size={9} /> 142 dealers
               </span>
             </div>
-            <div className="col-span-2 sm:col-span-1 px-4 py-3 rounded-2xl bg-[#B30D12]/20 border border-[#B30D12]/40 backdrop-blur-xs">
-              <span className="text-[10px] text-red-200 font-bold uppercase tracking-wider block">Signal Weighting</span>
-              <span className="text-lg font-black text-white">3.0x Wishlist</span>
-              <span className="text-[10px] text-red-200 font-medium block mt-0.5">1.2x Repeat Search</span>
+            <div className="col-span-2 sm:col-span-1 px-3 py-2 rounded-xl bg-gradient-to-br from-red-50 to-rose-100/60 border border-red-200 shadow-2xs">
+              <span className="text-[9px] text-[#B30D12] font-bold uppercase tracking-wider block">Signal Weighting</span>
+              <span className="text-base font-black text-slate-900">3.0x Wishlist</span>
+              <span className="text-[9px] text-[#B30D12] font-semibold block mt-0.5">1.2x Repeat Search</span>
             </div>
           </div>
         </div>
 
-        {/* Neural Transformation Flow Bar */}
-        <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <div className="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center font-black shrink-0">1</div>
-            <div>
-              <span className="font-bold text-slate-200 block">Wishlist Parsing</span>
-              <span className="text-[11px] text-slate-400">Structured vehicle grade, max km, target budget</span>
+        {/* Neural Transformation Flow Bar (Compact) */}
+        <div className="mt-3.5 pt-3 border-t border-red-100/90 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+          <div className="flex items-start gap-2 p-2 rounded-lg bg-white/90 border border-red-100 shadow-2xs">
+            <div className="w-5 h-5 rounded-md bg-blue-100 text-blue-800 flex items-center justify-center font-black text-[10px] shrink-0">1</div>
+            <div className="min-w-0">
+              <span className="font-extrabold text-slate-900 text-[11px] block">Wishlist Parsing</span>
+              <span className="text-[10px] text-slate-500 truncate block">Grade, max km, budget</span>
             </div>
           </div>
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <div className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-black shrink-0">2</div>
-            <div>
-              <span className="font-bold text-slate-200 block">Search Query Extraction</span>
-              <span className="text-[11px] text-slate-400">Natural language keyword queries and filter drops</span>
+          <div className="flex items-start gap-2 p-2 rounded-lg bg-white/90 border border-red-100 shadow-2xs">
+            <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-[10px] shrink-0">2</div>
+            <div className="min-w-0">
+              <span className="font-extrabold text-slate-900 text-[11px] block">Search Extraction</span>
+              <span className="text-[10px] text-slate-500 truncate block">Keywords &amp; zero results</span>
             </div>
           </div>
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <div className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-black shrink-0">3</div>
-            <div>
-              <span className="font-bold text-slate-200 block">Intent Weighting</span>
-              <span className="text-[11px] text-slate-400">Multiplied by buyer commitment and repeat frequency</span>
+          <div className="flex items-start gap-2 p-2 rounded-lg bg-white/90 border border-red-100 shadow-2xs">
+            <div className="w-5 h-5 rounded-md bg-amber-100 text-amber-800 flex items-center justify-center font-black text-[10px] shrink-0">3</div>
+            <div className="min-w-0">
+              <span className="font-extrabold text-slate-900 text-[11px] block">Intent Weighting</span>
+              <span className="text-[10px] text-slate-500 truncate block">Commitment multiplier</span>
             </div>
           </div>
-          <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[#B30D12]/20 border border-[#B30D12]/30">
-            <div className="w-6 h-6 rounded-lg bg-[#B30D12] text-white flex items-center justify-center font-black shrink-0">4</div>
-            <div>
-              <span className="font-bold text-white block">Synthesized Signal</span>
-              <span className="text-[11px] text-red-200">Quantified auction buying priority (0-100 Score)</span>
+          <div className="flex items-start gap-2 p-2 rounded-lg bg-red-100/80 border border-red-200 shadow-2xs">
+            <div className="w-5 h-5 rounded-md bg-[#B30D12] text-white flex items-center justify-center font-black text-[10px] shrink-0">4</div>
+            <div className="min-w-0">
+              <span className="font-extrabold text-[#B30D12] text-[11px] block">Synthesized Signal</span>
+              <span className="text-[10px] text-red-900 truncate block">0–100 buying priority</span>
             </div>
           </div>
         </div>

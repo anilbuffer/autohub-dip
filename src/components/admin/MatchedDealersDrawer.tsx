@@ -54,48 +54,51 @@ export default function MatchedDealersDrawer({
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
         <div className="w-screen max-w-lg bg-white shadow-2xl flex flex-col border-l border-slate-200">
           
-          {/* Header */}
-          <div className="p-6 bg-slate-900 text-white flex items-start justify-between gap-4 border-b border-slate-800">
+          {/* Header (Light Red Brand Gradient, Compact) */}
+          <div className="relative p-4 sm:p-5 bg-gradient-to-r from-red-50/90 via-rose-50/60 to-white text-slate-900 flex items-start justify-between gap-4 border-b border-red-200/80">
+            {/* Top Brand Crimson Accent Line */}
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-400" />
+
             <div>
-              <div className="flex items-center gap-2 mb-1.5">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#B30D12] text-white">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
                   Buyer Matching Engine
                 </span>
-                <span className="text-xs text-slate-300 font-medium">
-                  {vehicle.auctionHouse} · Lot #{vehicle.lotNumber}
+                <span className="text-xs text-slate-500 font-medium">
+                  {vehicle.auctionHouse} &bull; Lot #{vehicle.lotNumber}
                 </span>
               </div>
-              <h3 className="text-lg font-black text-white tracking-tight">
+              <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
                 {vehicle.year} {vehicle.model}
               </h3>
-              <p className="text-xs text-slate-300 mt-0.5">
+              <p className="text-xs text-slate-600 mt-0.5">
                 {vehicle.matchedDealersCount} NZ dealers actively seeking this vehicle profile
               </p>
             </div>
 
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-800 rounded-xl hover:bg-red-100/50 transition-colors cursor-pointer"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
-          {/* Vehicle Snapshot Strip */}
-          <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center gap-3.5">
-            <div className="w-16 h-14 rounded-xl overflow-hidden bg-slate-200 shrink-0 border border-slate-300 relative">
+          {/* Vehicle Snapshot Strip (Compact) */}
+          <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
+            <div className="w-14 h-12 rounded-lg overflow-hidden bg-slate-200 shrink-0 border border-slate-300 relative">
               <img src={vehicle.image} alt={vehicle.model} className="w-full h-full object-cover" />
             </div>
             <div className="min-w-0 flex-1 text-xs">
               <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-900">
-                  {vehicle.km.toLocaleString('en-US')} km · Grade {vehicle.grade}/{vehicle.interiorGrade}
+                <span className="font-bold text-slate-900 text-xs">
+                  {vehicle.km.toLocaleString('en-US')} km &bull; Grade {vehicle.grade}/{vehicle.interiorGrade}
                 </span>
-                <span className="font-black text-[#B30D12]">
+                <span className="font-black text-[#B30D12] text-xs">
                   NZ${vehicle.fobPriceNzd.toLocaleString('en-US')} FOB
                 </span>
               </div>
-              <div className="flex items-center justify-between text-slate-500 mt-1 text-[11px]">
+              <div className="flex items-center justify-between text-slate-500 mt-0.5 text-[11px]">
                 <span>Auction: {vehicle.auctionDate}</span>
                 <span>¥{vehicle.fobPriceJpy.toLocaleString('en-US')} JPY</span>
               </div>
@@ -168,10 +171,10 @@ export default function MatchedDealersDrawer({
                     <button
                       onClick={() => handleNotifySingle(dealer)}
                       disabled={isNotified}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                         isNotified
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
-                          : 'bg-slate-100 hover:bg-[#1B2A4A] hover:text-white text-slate-700 border border-slate-200'
+                          : 'bg-white hover:bg-gradient-to-r hover:from-[#B30D12] hover:to-[#940B0F] hover:text-white text-slate-700 border border-red-200/80 shadow-2xs'
                       }`}
                     >
                       {isNotified ? (

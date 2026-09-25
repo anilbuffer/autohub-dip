@@ -164,73 +164,73 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
+    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
       
-      {/* Callout Banner: "5 models would sell immediately if listed at auction" */}
-      <div className="p-5 sm:p-6 bg-gradient-to-r from-amber-50 via-red-50/50 to-orange-50 border-b border-amber-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-start sm:items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#B30D12] to-amber-500 text-white flex items-center justify-center shadow-md shadow-red-950/20 shrink-0">
-            <Zap size={22} className="animate-pulse" />
+      {/* Callout Banner with Red Brand Light Gradient (Compact) */}
+      <div className="p-3.5 sm:p-4 bg-gradient-to-r from-red-50/90 via-rose-50/60 to-orange-50/30 border-b border-red-200/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#B30D12] to-[#E23B40] text-white flex items-center justify-center shadow-md shadow-red-950/20 shrink-0">
+            <Zap size={18} className="animate-pulse" />
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider bg-[#B30D12] text-white">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">
                 Opportunity Alert
               </span>
-              <span className="text-xs text-slate-500 font-semibold">Immediate Sourcing Opportunity</span>
+              <span className="text-[11px] text-slate-500 font-semibold">Immediate Sourcing Opportunity</span>
             </div>
-            <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+            <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
               5 models would sell immediately if listed at auction
             </h3>
-            <p className="text-xs text-slate-600 font-medium">
+            <p className="text-[11px] text-slate-600 font-medium leading-normal">
               Over 429 verified dealer purchase orders are waiting without matching stock. High turnover (&lt; 19 days median turn).
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 self-start md:self-center">
-          <div className="px-3.5 py-2 rounded-xl bg-white/90 border border-amber-200 shadow-2xs text-xs">
-            <span className="text-slate-400 font-medium block text-[10px]">UNCAPTURED DEALER GMV</span>
-            <span className="font-black text-slate-900 text-sm">
-              NZ$1,720,000 <span className="text-[11px] text-slate-400 font-medium">/ ¥156.9M</span>
+        <div className="flex items-center gap-2 shrink-0 self-start md:self-center">
+          <div className="px-3 py-1.5 rounded-xl bg-white/95 border border-red-200/80 shadow-2xs text-xs">
+            <span className="text-slate-400 font-bold block text-[9px] uppercase tracking-wider">UNCAPTURED DEALER GMV</span>
+            <span className="font-black text-slate-900 text-xs sm:text-sm">
+              NZ$1,720,000 <span className="text-[10px] text-slate-400 font-medium">/ ¥156.9M</span>
             </span>
           </div>
         </div>
       </div>
 
-      {/* Table Subheader & Filter Tools */}
-      <div className="p-6 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100">
+      {/* Table Subheader & Filter Tools (Compact) */}
+      <div className="p-3.5 sm:p-4 pb-2.5 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100">
         <div>
-          <h4 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
+          <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
             Supply vs Demand Gap Analysis
           </h4>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Real-time supply & margin opportunity matrix identifying where AutoHub is missing auction sales opportunities.
+          <p className="text-[11px] text-slate-500 font-medium mt-0.5">
+            Real-time supply &amp; margin opportunity matrix identifying where AutoHub is missing auction sales opportunities.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Quick Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400" />
             <input 
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search model or trim..."
-              className="pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:bg-white focus:border-[#1B2A4A] outline-none w-[170px] sm:w-[200px]"
+              className="pl-7 pr-2.5 py-1 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:bg-white focus:border-[#B30D12] outline-none w-[160px] sm:w-[190px]"
             />
           </div>
 
-          {/* Filter Pills */}
-          <div className="flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
+          {/* Filter Pills with Red Brand Touch */}
+          <div className="flex items-center p-0.5 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
             {(['All', 'Source more', 'Balanced', 'Oversupplied'] as const).map(tag => (
               <button
                 key={tag}
                 onClick={() => setFilterTag(tag)}
-                className={`px-2.5 py-1 rounded-lg transition-all ${
+                className={`px-2 py-0.5 rounded-lg transition-all text-[11px] cursor-pointer ${
                   filterTag === tag
-                    ? 'bg-white text-slate-900 shadow-2xs font-black'
+                    ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
@@ -245,80 +245,80 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider select-none">
-              <th className="py-3 px-5">Model</th>
+            <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[10px] font-bold text-slate-500 uppercase tracking-wider select-none">
+              <th className="py-2.5 px-3.5">Model</th>
               
               <th 
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors"
+                className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('demandUnits')}
               >
-                <div className="flex items-center gap-1.5">
-                  <span>Dealer Demand</span>
+                <div className="flex items-center gap-1">
+                  <span>Demand</span>
                   {sortField === 'demandUnits' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
-                    <ArrowUpDown size={12} className="text-slate-400" />
+                    <ArrowUpDown size={11} className="text-slate-400" />
                   )}
                 </div>
               </th>
 
               <th 
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors"
+                className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('currentStockUnits')}
               >
-                <div className="flex items-center gap-1.5">
-                  <span>Current AutoHub Stock</span>
+                <div className="flex items-center gap-1">
+                  <span>AutoHub Stock</span>
                   {sortField === 'currentStockUnits' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
-                    <ArrowUpDown size={12} className="text-slate-400" />
+                    <ArrowUpDown size={11} className="text-slate-400" />
                   )}
                 </div>
               </th>
 
               <th 
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors min-w-[170px]"
+                className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors min-w-[140px]"
                 onClick={() => handleSort('coveragePct')}
               >
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                   <span>Coverage %</span>
                   {sortField === 'coveragePct' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
-                    <ArrowUpDown size={12} className="text-slate-400" />
+                    <ArrowUpDown size={11} className="text-slate-400" />
                   )}
                 </div>
               </th>
 
               <th 
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors"
+                className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('avgDaysToSell')}
               >
-                <div className="flex items-center gap-1.5">
-                  <span>Est. days to land in NZ (indicative)</span>
+                <div className="flex items-center gap-1">
+                  <span>Est. Land Days</span>
                   {sortField === 'avgDaysToSell' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
-                    <ArrowUpDown size={12} className="text-slate-400" />
+                    <ArrowUpDown size={11} className="text-slate-400" />
                   )}
                 </div>
               </th>
 
               <th 
-                className="py-3 px-4 cursor-pointer hover:text-slate-900 transition-colors"
+                className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('avgDealerMarginNzd')}
               >
-                <div className="flex items-center gap-1.5">
-                  <span>Dealer Margin Potential</span>
+                <div className="flex items-center gap-1">
+                  <span>Margin Potential</span>
                   {sortField === 'avgDealerMarginNzd' ? (
-                    sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
+                    sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
-                    <ArrowUpDown size={12} className="text-slate-400" />
+                    <ArrowUpDown size={11} className="text-slate-400" />
                   )}
                 </div>
               </th>
 
-              <th className="py-3 px-5 text-right">Sourcing Action</th>
+              <th className="py-2.5 px-3.5 text-right">Sourcing Action</th>
             </tr>
           </thead>
 
@@ -339,9 +339,9 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                     } ${isExpanded ? 'bg-slate-50/90 font-medium' : ''}`}
                   >
                     {/* Model Column */}
-                    <td className="py-3.5 px-5">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
+                    <td className="py-2.5 px-3.5">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
                           <img 
                             src={item.image} 
                             alt={item.model}
@@ -349,20 +349,20 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                           />
                         </div>
                         <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <span className="font-black text-slate-900 text-sm">
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-extrabold text-slate-900 text-xs sm:text-[13px]">
                               {item.model}
                             </span>
                             {item.immediateSeller && (
-                              <span className="px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
-                                Immediate Seller
+                              <span className="px-1.5 py-0.2 rounded font-black text-[8.5px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
+                                Immediate
                               </span>
                             )}
                           </div>
-                          <div className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                          <div className="text-[10px] text-slate-500 font-medium truncate">
                             {item.badge}
                           </div>
-                          <span className="text-[10px] text-slate-400 font-medium">
+                          <span className="text-[9px] text-slate-400 font-medium">
                             {item.segment}
                           </span>
                         </div>
@@ -370,75 +370,75 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                     </td>
 
                     {/* Dealer Demand */}
-                    <td className="py-3.5 px-4 font-black text-slate-900 text-sm">
+                    <td className="py-2.5 px-3 font-extrabold text-slate-900 text-xs">
                       {item.demandUnits}
-                      <span className="text-[11px] text-slate-400 font-medium ml-1">units</span>
-                      <span className="text-[10px] text-emerald-700 font-bold block mt-0.5">
-                        {item.unmetGap > 0 ? `${item.demandUnits - item.currentStockUnits} unfulfilled` : 'Fully covered'}
+                      <span className="text-[10px] text-slate-400 font-normal ml-0.5">units</span>
+                      <span className="text-[9px] text-emerald-800 font-bold block mt-0.5">
+                        {item.unmetGap > 0 ? `${item.demandUnits - item.currentStockUnits} unfulfilled` : 'Covered'}
                       </span>
                     </td>
 
                     {/* Current AutoHub Stock */}
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                    <td className="py-2.5 px-3 font-bold text-slate-700 text-xs">
                       {item.currentStockUnits}
-                      <span className="text-[11px] text-slate-400 font-normal ml-1">available</span>
-                      <span className="text-[10px] text-slate-400 block mt-0.5">
-                        Auckland Yard
+                      <span className="text-[10px] text-slate-400 font-normal ml-0.5">avail</span>
+                      <span className="text-[9px] text-slate-400 block mt-0.5">
+                        Auckland
                       </span>
                     </td>
 
                     {/* Coverage % with Progress Bar */}
-                    <td className="py-3.5 px-4">
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between text-[11px]">
+                    <td className="py-2.5 px-3">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center justify-between text-[10px]">
                           <span className="font-bold text-slate-800">
                             {item.coveragePct}%
                           </span>
-                          <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold border ${coverage.textColor}`}>
+                          <span className={`px-1 py-0.2 rounded text-[9px] font-bold border ${coverage.textColor}`}>
                             {coverage.label}
                           </span>
                         </div>
-                        <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                        <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
                           <div 
                             className={`h-full rounded-full transition-all duration-500 ${coverage.barColor}`}
                             style={{ width: `${Math.min(100, item.coveragePct)}%` }}
                           />
                         </div>
                         {item.unmetGap > 0 && (
-                          <span className="text-[10px] text-rose-600 font-bold block">
-                            Unmet Gap: -{item.unmetGap} units
+                          <span className="text-[9px] text-rose-600 font-bold block">
+                            Deficit: -{item.unmetGap} units
                           </span>
                         )}
                       </div>
                     </td>
 
-                    {/* Est. days to land in NZ (indicative) */}
-                    <td className="py-3.5 px-4 font-bold text-slate-800">
-                      <div className="flex items-center gap-1.5">
-                        <Ship size={13} className="text-blue-600" />
-                        <span>18–22 days</span>
+                    {/* Est. days to land in NZ */}
+                    <td className="py-2.5 px-3 font-bold text-slate-800 text-xs">
+                      <div className="flex items-center gap-1 text-[11px]">
+                        <Ship size={11} className="text-blue-600" />
+                        <span>18–22d</span>
                       </div>
-                      <span className="text-[10px] text-slate-400 block mt-0.5">
-                        Direct Ro-Ro Japan → NZ
+                      <span className="text-[9px] text-slate-400 block mt-0.5">
+                        Japan &rarr; NZ
                       </span>
                     </td>
 
                     {/* Margin Potential */}
-                    <td className="py-3.5 px-4">
-                      <span className="font-black text-emerald-700 text-sm">
+                    <td className="py-2.5 px-3">
+                      <span className="font-extrabold text-emerald-800 text-xs">
                         +NZ${item.avgDealerMarginNzd.toLocaleString('en-US')}
                       </span>
-                      <span className="block text-[10px] text-slate-400 font-medium">
+                      <span className="block text-[9px] text-slate-400 font-medium">
                         ¥{item.avgDealerMarginJpy.toLocaleString('en-US')} JPY
                       </span>
                     </td>
 
                     {/* AI Recommendation Tag & Chevron */}
-                    <td className="py-3.5 px-5 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="py-2.5 px-3.5 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
                         {getRecBadge(item.recommendation)}
-                        <span className={`p-1 rounded-lg text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-slate-700 bg-slate-200/60' : ''}`}>
-                          <ChevronDown size={14} />
+                        <span className={`p-0.5 rounded text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-slate-700 bg-slate-200/60' : ''}`}>
+                          <ChevronDown size={13} />
                         </span>
                       </div>
                     </td>
@@ -447,14 +447,14 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                   {/* Expanded Row Detail Drawer */}
                   {isExpanded && (
                     <tr className="bg-slate-50/95 border-b border-slate-200">
-                      <td colSpan={7} className="p-4 sm:p-5">
-                        <div className="rounded-2xl bg-white border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-4">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                            <div className="flex items-center gap-2">
-                              <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-900 text-white">
-                                Demand &amp; Supply Match Intelligence
+                      <td colSpan={7} className="p-3 sm:p-3.5">
+                        <div className="rounded-xl bg-gradient-to-br from-white via-red-50/20 to-rose-50/30 border border-red-200/80 p-3 sm:p-3.5 shadow-2xs space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-red-100">
+                            <div className="flex items-center gap-1.5">
+                              <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">
+                                Intelligence
                               </span>
-                              <h5 className="font-black text-slate-900 text-sm">
+                              <h5 className="font-extrabold text-slate-900 text-xs sm:text-sm">
                                 {item.model} &mdash; Signal Ingestion &amp; Sourcing Breakdown
                               </h5>
                             </div>
@@ -464,75 +464,75 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                                 e.stopPropagation();
                                 setDrawerVehicle(matchingAuctionVehicle);
                               }}
-                              className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#B30D12] hover:bg-[#940B0F] text-white shadow-2xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                              className="px-3 py-1 rounded-lg text-[11px] font-bold bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                             >
-                              <Users size={13} />
+                              <Users size={12} />
                               <span>View Matched Dealers &amp; Notify</span>
                             </button>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
                             {/* Card 1: Demand Signals */}
-                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-                              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
-                                <Radio size={13} className="text-[#B30D12]" />
+                            <div className="p-2.5 rounded-lg bg-white border border-red-200/60 shadow-2xs space-y-1.5">
+                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
+                                <Radio size={12} className="text-[#B30D12]" />
                                 <span>Ingested Demand Signals</span>
                               </div>
-                              <div className="space-y-1 text-slate-600 text-[11px]">
+                              <div className="space-y-0.5 text-slate-600 text-[10px]">
                                 <div className="flex justify-between">
-                                  <span>Active Dealer Wish Lists:</span>
+                                  <span>Wish Lists:</span>
                                   <strong className="text-slate-900">{Math.round(item.demandUnits * 0.25)} orders</strong>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span>Searches &amp; Filter Queries:</span>
-                                  <strong className="text-slate-900">{Math.round(item.demandUnits * 4.2)} queries/wk</strong>
+                                  <span>Search Queries:</span>
+                                  <strong className="text-slate-900">{Math.round(item.demandUnits * 4.2)} /wk</strong>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span>Desired Specifications:</span>
+                                  <span>Specs:</span>
                                   <strong className="text-slate-900">Grade 4.5+ &bull; &lt;55k km</strong>
                                 </div>
                               </div>
                             </div>
 
                             {/* Card 2: 30-Day Forecast & Deficit */}
-                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-                              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
-                                <Sparkles size={13} className="text-amber-600" />
-                                <span>Demand Forecast &amp; Deficit</span>
+                            <div className="p-2.5 rounded-lg bg-white border border-red-200/60 shadow-2xs space-y-1.5">
+                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
+                                <Sparkles size={12} className="text-amber-600" />
+                                <span>30d Forecast &amp; Deficit</span>
                               </div>
-                              <div className="space-y-1 text-slate-600 text-[11px]">
+                              <div className="space-y-0.5 text-slate-600 text-[10px]">
                                 <div className="flex justify-between">
-                                  <span>30-Day Projected Demand:</span>
+                                  <span>Forecast:</span>
                                   <strong className="text-slate-900">{Math.round(item.demandUnits * 1.18)} units (+18%)</strong>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span>Unmet Supply Deficit:</span>
-                                  <strong className="text-rose-600 font-bold">-{item.unmetGap} units gap</strong>
+                                  <span>Unmet Gap:</span>
+                                  <strong className="text-rose-600 font-bold">-{item.unmetGap} units</strong>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span>Recommended Sourcing:</span>
-                                  <strong className="text-emerald-700 font-bold">+{Math.max(20, Math.round(item.unmetGap * 0.5))} units at USS</strong>
+                                  <span>Intake:</span>
+                                  <strong className="text-emerald-800 font-bold">+{Math.max(20, Math.round(item.unmetGap * 0.5))} units</strong>
                                 </div>
                               </div>
                             </div>
 
                             {/* Card 3: Supply Chain Matching */}
-                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
-                              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
-                                <Ship size={13} className="text-blue-600" />
-                                <span>Multi-Tier Supply Pipeline</span>
+                            <div className="p-2.5 rounded-lg bg-white border border-red-200/60 shadow-2xs space-y-1.5">
+                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
+                                <Ship size={12} className="text-blue-600" />
+                                <span>Multi-Tier Supply</span>
                               </div>
-                              <div className="space-y-1 text-slate-600 text-[11px]">
+                              <div className="space-y-0.5 text-slate-600 text-[10px]">
                                 <div className="flex justify-between">
-                                  <span>Local Stock in Yard:</span>
+                                  <span>Yard Stock:</span>
                                   <strong className="text-slate-900">{item.currentStockUnits} units</strong>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span>In-Transit Ro-Ro Ships:</span>
-                                  <strong className="text-blue-700 font-bold">18 units arriving in 8d</strong>
+                                  <span>Ro-Ro Sailing:</span>
+                                  <strong className="text-blue-800 font-bold">18 units (8d)</strong>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span>Auction Lots Tomorrow:</span>
+                                  <span>Auction Lots:</span>
                                   <strong className="text-[#B30D12] font-bold">14 candidate lots</strong>
                                 </div>
                               </div>

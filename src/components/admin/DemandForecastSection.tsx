@@ -64,172 +64,168 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
   const adjustedForecastItems = DEMAND_FORECAST_ITEMS.map(getScenarioAdjustedItem);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-5">
       
-      {/* 1. Demand Forecast & Unmet Demand Executive KPI Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 1. Demand Forecast & Unmet Demand Executive KPI Strip (Compact & Light Red Gradient) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
         
         {/* KPI 1: Total Unmet Demand Gap */}
-        <div className="bg-white p-5 rounded-2xl border border-red-200/90 shadow-xs flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-white via-red-50/50 to-rose-50/70 p-3.5 rounded-xl border border-red-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-[#B30D12] uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-[#B30D12] uppercase tracking-wider">
               Total Unmet Demand
             </span>
-            <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold">
-              <AlertTriangle size={15} />
+            <div className="w-6 h-6 rounded-md bg-red-100 text-[#B30D12] border border-red-200 flex items-center justify-center font-bold">
+              <AlertTriangle size={13} />
             </div>
           </div>
-          <div className="mt-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-[#B30D12] tracking-tight">
+          <div className="mt-2">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-black text-[#B30D12] tracking-tight">
                 {UNMET_DEMAND_METRICS.totalUnmetUnits.toLocaleString()}
               </span>
-              <span className="text-xs font-bold text-slate-500">units deficit</span>
+              <span className="text-[10px] font-bold text-slate-500">units deficit</span>
             </div>
-            <p className="text-[11px] text-slate-600 font-medium mt-1">
-              Active buyer orders exceeding stock &amp; in-transit pipeline
+            <p className="text-[10px] text-slate-600 font-medium mt-0.5 truncate">
+              Orders exceeding stock &amp; in-transit Ro-Ro
             </p>
           </div>
         </div>
 
         {/* KPI 2: Uncaptured Dealer GMV */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-white via-white to-red-50/20 p-3.5 rounded-xl border border-slate-200/90 hover:border-red-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               Uncaptured Dealer GMV
             </span>
-            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center font-bold">
-              <DollarSign size={15} />
+            <div className="w-6 h-6 rounded-md bg-amber-50 text-amber-800 border border-amber-200 flex items-center justify-center font-bold">
+              <DollarSign size={13} />
             </div>
           </div>
-          <div className="mt-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">
+          <div className="mt-2">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-black text-slate-900 tracking-tight">
                 NZ${(UNMET_DEMAND_METRICS.lostGmvNzd / 1000000).toFixed(2)}M
               </span>
-              <span className="text-xs font-bold text-slate-400">/ ¥156.9M</span>
+              <span className="text-[10px] font-bold text-slate-400">/ ¥156.9M</span>
             </div>
-            <p className="text-[11px] text-slate-500 font-medium mt-1">
-              Estimated wholesale revenue lost to auction stockouts
+            <p className="text-[10px] text-slate-500 font-medium mt-0.5 truncate">
+              Wholesale revenue lost to auction stockouts
             </p>
           </div>
         </div>
 
         {/* KPI 3: Severe Deficit Models */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-white via-white to-red-50/20 p-3.5 rounded-xl border border-slate-200/90 hover:border-red-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               Critical Shortage Models
             </span>
-            <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold">
-              <Compass size={15} />
+            <div className="w-6 h-6 rounded-md bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold">
+              <Compass size={13} />
             </div>
           </div>
-          <div className="mt-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-slate-900 tracking-tight">
+          <div className="mt-2">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-black text-slate-900 tracking-tight">
                 {UNMET_DEMAND_METRICS.criticalDeficitModelsCount} Models
               </span>
-              <span className="text-[10px] font-black text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">
+              <span className="text-[9px] font-black text-red-700 bg-red-100 px-1 py-0.2 rounded border border-red-200">
                 &lt; 40% Stocked
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 font-medium mt-1">
-              C-HR, Vezel, Aqua, CX-5, Note e-Power
+            <p className="text-[10px] text-slate-500 font-medium mt-0.5 truncate">
+              C-HR, Vezel, Aqua, CX-5, Note
             </p>
           </div>
         </div>
 
         {/* KPI 4: Turn Velocity of Shortage Models */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-white via-white to-red-50/20 p-3.5 rounded-xl border border-slate-200/90 hover:border-red-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              Avg Days to Sell (Yard Turn)
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Avg Yard Turn Velocity
             </span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-bold">
-              <Clock size={15} />
+            <div className="w-6 h-6 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center justify-center font-bold">
+              <Clock size={13} />
             </div>
           </div>
-          <div className="mt-3">
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-black text-emerald-700 tracking-tight">
+          <div className="mt-2">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-2xl font-black text-emerald-800 tracking-tight">
                 {UNMET_DEMAND_METRICS.avgTurnDaysForShortageModels} Days
               </span>
-              <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                Ultra Fast
+              <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1 py-0.2 rounded border border-emerald-200">
+                Fast Turn
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 font-medium mt-1">
-              Vehicles sell immediately upon clearing compliance
+            <p className="text-[10px] text-slate-500 font-medium mt-0.5 truncate">
+              Sells immediately on compliance release
             </p>
           </div>
         </div>
 
       </div>
 
-      {/* 2. Interactive Scenario Simulation & Horizon Controls */}
-      <div className="p-5 sm:p-6 bg-white rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+      {/* 2. Interactive Scenario Simulation & Horizon Controls (Compact, Light Red Gradient) */}
+      <div className="p-4 sm:p-4.5 bg-gradient-to-r from-red-50/40 via-white to-white rounded-2xl border border-red-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3.5 border-b border-red-100">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-900 text-white">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">
                 Predictive Model
               </span>
-              <span className="text-xs text-slate-400 font-medium">AutoHub 30–90 Day Forecasting Engine</span>
+              <span className="text-[10px] text-slate-400 font-medium">AutoHub 30–90 Day Forecasting Engine</span>
             </div>
-            <h3 className="text-lg font-black text-slate-900 tracking-tight">
+            <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
               AI Demand Forecast &amp; Sourcing Intake Schedule
             </h3>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">
+            <p className="text-[11px] text-slate-500 font-medium mt-0.5">
               Simulate forward vehicle intake requirements taking into account 21-day shipping lead times from Japan.
             </p>
           </div>
 
           {/* Horizon & Scenario Toggles */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             
             {/* Horizon Selector */}
-            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
-              <span className="text-slate-400 pl-2 text-[10px] uppercase font-bold hidden sm:inline">Horizon:</span>
+            <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-red-200/80 text-[11px] font-bold shadow-2xs">
               <button
                 onClick={() => setSelectedHorizon('30d')}
-                className={`px-3 py-1 rounded-lg transition-all ${
-                  selectedHorizon === '30d' ? 'bg-white text-slate-900 shadow-2xs font-black' : 'text-slate-500'
+                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                  selectedHorizon === '30d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                30 Days
+                30d
               </button>
               <button
                 onClick={() => setSelectedHorizon('60d')}
-                className={`px-3 py-1 rounded-lg transition-all ${
-                  selectedHorizon === '60d' ? 'bg-white text-slate-900 shadow-2xs font-black' : 'text-slate-500'
+                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                  selectedHorizon === '60d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                60 Days
+                60d
               </button>
               <button
                 onClick={() => setSelectedHorizon('90d')}
-                className={`px-3 py-1 rounded-lg transition-all ${
-                  selectedHorizon === '90d' ? 'bg-white text-slate-900 shadow-2xs font-black' : 'text-slate-500'
+                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
+                  selectedHorizon === '90d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
-                90 Days
+                90d
               </button>
             </div>
 
             {/* Scenario Dropdown */}
-            <div className="flex items-center gap-1.5 text-xs font-bold">
-              <span className="text-slate-400 text-[10px] uppercase font-bold hidden sm:inline">Scenario:</span>
-              <select
-                value={scenario}
-                onChange={(e) => setScenario(e.target.value as any)}
-                className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs font-bold outline-none cursor-pointer focus:border-[#B30D12]"
-              >
-                <option value="baseline">Baseline Forecast (+18% growth)</option>
-                <option value="hybrid_surge">High Fuel / Green Rush (+25% Hybrid)</option>
-                <option value="winter_awd">Winter AWD South Island Surge (+35% AWD)</option>
-              </select>
-            </div>
+            <select
+              value={scenario}
+              onChange={(e) => setScenario(e.target.value as any)}
+              className="px-2.5 py-1 bg-white border border-red-200/80 rounded-lg text-slate-800 text-[11px] font-bold outline-none cursor-pointer focus:border-[#B30D12] shadow-2xs"
+            >
+              <option value="baseline">Baseline Forecast (+18% growth)</option>
+              <option value="hybrid_surge">High Fuel / Green Rush (+25% Hybrid)</option>
+              <option value="winter_awd">Winter AWD South Island Surge (+35% AWD)</option>
+            </select>
 
           </div>
         </div>

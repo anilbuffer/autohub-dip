@@ -47,13 +47,13 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
             ? 'bg-[#1B2A4A] text-white shadow-xs'
             : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
         }`}
-        title="Switch to Autohub / Heiwa Admin Command Center"
+        title="Switch to AutoHub DIP Admin Command Center"
       >
         <ShieldCheck 
           size={14} 
           className={isAdmin ? 'text-blue-300' : 'text-slate-400'} 
         />
-        <span>Autohub Admin</span>
+        <span>AutoHub Admin</span>
         {isAdmin && (
           <span className="w-1.5 h-1.5 rounded-full bg-blue-400 hidden md:inline-block"></span>
         )}

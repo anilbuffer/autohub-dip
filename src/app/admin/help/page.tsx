@@ -20,7 +20,7 @@ export default function AdminHelpPage() {
   const guides = [
     {
       title: "Scraper Ingestion & Webhook Health",
-      content: "AutoHeiwa pulls Japanese auction inventory via automated worker scrapers running against USS Tokyo, USS Yokohama, CAA Chubu, and HAA Kobe. Ingestion cycles execute at 02:00, 06:00, and 11:00 JST. If a scraper health check drops below 98%, the system alerts the on-duty broker on Telegram."
+      content: "AutoHub DIP pulls Japanese auction inventory via automated worker scrapers running against USS Tokyo, USS Yokohama, CAA Chubu, and HAA Kobe. Ingestion cycles execute at 02:00, 06:00, and 11:00 JST. If a scraper health check drops below 98%, the system alerts the on-duty broker on Telegram."
     },
     {
       title: "Dealer Arbitrage & Scoring Algorithm",
@@ -32,7 +32,7 @@ export default function AdminHelpPage() {
     },
     {
       title: "Clean Car Standard & Emission Credits Management",
-      content: "Under NZTA Clean Car regulations, vehicles emitting over 112g CO2/km attract platform fee adjustments. AutoHeiwa checks the Japanese Ministry of Land, Infrastructure, Transport and Tourism (MLIT) database to pull verified vehicle emissions before calculating landed CIF."
+      content: "Under NZTA Clean Car regulations, vehicles emitting over 112g CO2/km attract platform fee adjustments. AutoHub DIP checks the Japanese Ministry of Land, Infrastructure, Transport and Tourism (MLIT) database to pull verified vehicle emissions before calculating landed CIF."
     }
   ];
 

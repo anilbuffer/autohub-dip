@@ -10,8 +10,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "AutoHeiwa · Japanese Auction Intelligence & Landed Cost SaaS",
-  description: "Next generation Japanese vehicle auction intelligence, landed cost calculation, and margin arbitrage platform for automotive dealers.",
+  title: "AutoHub Dealer Intelligence Platform (DIP)",
+  description: "Next-generation automotive dealer intelligence, Japanese vehicle auction sourcing, landed cost calculation, and margin arbitrage platform.",
 };
 
 export default function RootLayout({

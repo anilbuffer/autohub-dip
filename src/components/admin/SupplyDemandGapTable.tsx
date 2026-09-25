@@ -162,7 +162,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
             Supply vs Demand Gap Analysis
           </h4>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Real-time arbitrage opportunity matrix identifying where Heiwa is missing auction sales opportunities.
+            Real-time arbitrage opportunity matrix identifying where AutoHub is missing auction sales opportunities.
           </p>
         </div>
 
@@ -224,7 +224,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 onClick={() => handleSort('currentStockUnits')}
               >
                 <div className="flex items-center gap-1.5">
-                  <span>Current Heiwa Stock</span>
+                  <span>Current AutoHub Stock</span>
                   {sortField === 'currentStockUnits' ? (
                     sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
                   ) : (
@@ -329,7 +329,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                     <span className="text-[11px] text-slate-400 font-medium ml-1">units</span>
                   </td>
 
-                  {/* Current Heiwa Stock */}
+                  {/* Current AutoHub Stock */}
                   <td className="py-3.5 px-4 font-bold text-slate-700">
                     {item.currentStockUnits}
                     <span className="text-[11px] text-slate-400 font-normal ml-1">available</span>

@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { VEHICLES, GLOBAL_SETTINGS } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
-import { triggerHeiwaCopilot } from "@/components/chat/DealerChatAssistant";
+import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
 
 export default function VehicleDetail({ params }: { params: { id: string } }) {
   const vehicleId = parseInt(params?.id) || 1;
@@ -119,11 +119,11 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => triggerHeiwaCopilot(`Analyze landed margin, sheet condition, and bidding strategy for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`)}
+              onClick={() => triggerAutoHubCopilot(`Analyze landed margin, sheet condition, and bidding strategy for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`)}
               className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#0B1322] to-[#1B2A4A] text-white hover:bg-slate-800 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
-              title="Open Copilot Analysis for this vehicle"
+              title="Open AutoHub DIP Assistant for this vehicle"
             >
-              <Sparkles size={14} className="text-[#e56168]" /> Ask AI Copilot
+              <Sparkles size={14} className="text-blue-300" /> Ask AI Assistant
             </button>
 
             <div className="text-right">
@@ -413,7 +413,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
               </div>
               <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
                 <span className="w-3 h-3 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[8px]">★</span>
-                <span>This Heiwa Lot (Landed: NZ${totalLandedCost.toLocaleString('en-US')})</span>
+                <span>This Lot (Landed: NZ${totalLandedCost.toLocaleString('en-US')})</span>
               </div>
             </div>
 
@@ -443,7 +443,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <th className="px-5 py-3.5">Mileage</th>
                   <th className="px-5 py-3.5">Advertised Price</th>
                   <th className="px-5 py-3.5">Days on Yard</th>
-                  <th className="px-5 py-3.5 text-right">Spread vs Heiwa Landed</th>
+                  <th className="px-5 py-3.5 text-right">Spread vs Landed Cost</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">

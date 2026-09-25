@@ -43,7 +43,8 @@ export interface SyncState {
   dealerSearchesCount: number;
 }
 
-const STORAGE_KEY = 'autoheiwa_mvp_sync_state';
+const STORAGE_KEY = 'autohub_dip_sync_state';
+const LEGACY_STORAGE_KEY = 'autoheiwa_mvp_sync_state';
 
 const DEFAULT_STATE: SyncState = {
   fxRateJpyNzd: GLOBAL_SETTINGS.fxRateJpyNzd,
@@ -91,7 +92,7 @@ const DEFAULT_STATE: SyncState = {
 export function getStoredSyncState(): SyncState {
   if (typeof window === 'undefined') return DEFAULT_STATE;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
     if (!raw) return DEFAULT_STATE;
     return { ...DEFAULT_STATE, ...JSON.parse(raw) };
   } catch (e) {
@@ -108,6 +109,7 @@ export function setStoredSyncState(state: SyncState | ((prev: SyncState) => Sync
     const updated = typeof state === 'function' ? state(current) : state;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     // Trigger custom event for same-tab reactivity
+    window.dispatchEvent(new Event('autohub_dip_sync_change'));
     window.dispatchEvent(new Event('autoheiwa_sync_change'));
     return updated;
   } catch (e) {
@@ -130,10 +132,12 @@ export function useSyncStore() {
     };
 
     window.addEventListener('storage', handleSyncChange);
+    window.addEventListener('autohub_dip_sync_change', handleSyncChange);
     window.addEventListener('autoheiwa_sync_change', handleSyncChange);
 
     return () => {
       window.removeEventListener('storage', handleSyncChange);
+      window.removeEventListener('autohub_dip_sync_change', handleSyncChange);
       window.removeEventListener('autoheiwa_sync_change', handleSyncChange);
     };
   }, []);
@@ -146,8 +150,8 @@ export function useSyncStore() {
       
       const newNotification: DealerNotification = {
         id: `notif-${Date.now()}`,
-        title: `Heiwa Sourcing Match: ${modelName}`,
-        body: `Heiwa Japan located a ${modelName} matching your wishlist at auction! Click to inspect landed cost.`,
+        title: `AutoHub Sourcing Match: ${modelName}`,
+        body: `AutoHub Japan located a ${modelName} matching your wishlist at auction! Click to inspect landed cost.`,
         timestamp: 'Just now',
         isRead: false,
         type: 'sourcing_match',

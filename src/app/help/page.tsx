@@ -21,20 +21,20 @@ export default function HelpPage() {
 
   const faqs = [
     {
-      q: "How does AutoHeiwa calculate Recommended Maximum Bids?",
+      q: "How does AutoHub DIP calculate Recommended Maximum Bids?",
       a: "Our engine starts from the estimated NZ retail market value (derived from real-time Trade Me, Turners, and AutoTrader listings), then subtracts your target dealer margin (e.g. NZ$3,500), ocean freight, NZ entry compliance, bio-security, MAF fees, and 15% GST. The remainder is converted at the live bank FX rate to give the exact maximum FOB ceiling in Japanese Yen."
     },
     {
       q: "What do the Japanese Auction Grades (4.5, 4.0, 3.5, R) signify?",
-      a: "Grade 5.0 is practically brand new with under 15k km. Grade 4.5 is the Japanese gold standard with very minor grooming needed and verified low mileage. Grade 4.0 has normal wear commensurate with age. Grade 3.5 requires minor panel/reconditioning work. Grade R/RA denotes repaired past accident damage (which AutoHeiwa automatically flags with warnings)."
+      a: "Grade 5.0 is practically brand new with under 15k km. Grade 4.5 is the Japanese gold standard with very minor grooming needed and verified low mileage. Grade 4.0 has normal wear commensurate with age. Grade 3.5 requires minor panel/reconditioning work. Grade R/RA denotes repaired past accident damage (which AutoHub DIP automatically flags with warnings)."
     },
     {
       q: "How are currency fluctuations (JPY/NZD) handled during bidding?",
-      a: "AutoHeiwa syncs directly with wholesale institutional FX feeds every 15 minutes. When you place a maximum proxy bid, your bid is locked with a 1.5% volatility buffer to protect your gross margin against intra-day currency swings."
+      a: "AutoHub DIP syncs directly with wholesale institutional FX feeds every 15 minutes. When you place a maximum proxy bid, your bid is locked with a 1.5% volatility buffer to protect your gross margin against intra-day currency swings."
     },
     {
       q: "What happens after I win an auction lot?",
-      a: "The AutoHeiwa broker team handles inland transport to Yokohama or Nagoya port, performs secondary independent radiation and ODO verification checks, arranges Roll-on/Roll-off (RORO) shipping to Auckland or Lyttelton, and manages customs clearance and entry certification."
+      a: "The AutoHub logistics & broker team handles inland transport to Yokohama or Nagoya port, performs secondary independent radiation and ODO verification checks, arranges Roll-on/Roll-off (RORO) shipping to Auckland or Lyttelton, and manages customs clearance and entry certification."
     }
   ];
 
@@ -81,7 +81,7 @@ export default function HelpPage() {
               Updates on Ports of Auckland vessel schedules, MAF biosecurity inspections, and entry compliance.
             </p>
             <div className="pt-2 text-xs font-bold text-[#1B2A4A] font-mono">
-              nzops@autoheiwa.com
+              nzops@autohub.co.nz
             </div>
           </div>
 
@@ -136,7 +136,7 @@ export default function HelpPage() {
                 Grade 3.5 / R
               </span>
               <p className="font-bold text-slate-800 pt-1">Budget / Reconditioning</p>
-              <p className="text-slate-500">Visible scratches or cosmetic repairs. AutoHeiwa discounts max bids accordingly.</p>
+              <p className="text-slate-500">Visible scratches or cosmetic repairs. AutoHub DIP discounts max bids accordingly.</p>
             </div>
           </div>
         </div>

@@ -21,8 +21,8 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
       setIsDownloading(false);
       onNotifyToast(
         lang === 'en' 
-          ? "PDF Executive Brief downloaded for Heiwa Sourcing Board"
-          : "平和オート仕入れ役員会向けPDFブリーフをダウンロードしました"
+          ? "PDF Executive Brief downloaded for AutoHub Sourcing Board"
+          : "AutoHub DIP仕入れ役員会向けPDFブリーフをダウンロードしました"
       );
     }, 600);
   };
@@ -33,8 +33,8 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
       setIsSharing(false);
       onNotifyToast(
         lang === 'en'
-          ? "Dispatched to Heiwa Auto Japan procurement team (Tokyo & Yokohama offices)"
-          : "平和オート東京本社・横浜調達チームへ即時共有されました"
+          ? "Dispatched to AutoHub Japan procurement team (Tokyo & Yokohama offices)"
+          : "AutoHub東京本社・横浜調達チームへ即時共有されました"
       );
     }, 600);
   };
@@ -116,7 +116,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
             onClick={handleShare}
             disabled={isSharing}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#B30D12] hover:bg-[#8B090E] text-white text-xs font-bold shadow-lg shadow-[#B30D12]/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
-            title="Send real-time alert to Heiwa Auto Japan procurement team"
+            title="Send real-time alert to AutoHub Japan procurement team"
           >
             <Share2 size={14} className={isSharing ? 'animate-spin' : ''} />
             <span>

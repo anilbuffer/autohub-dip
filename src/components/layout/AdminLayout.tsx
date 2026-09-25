@@ -81,16 +81,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div>
           {/* Logo & Header */}
           <div className="h-[76px] flex items-center justify-between px-5 border-b border-[#1B2A4A]/80 bg-[#080E1A]">
-            <Link href="/admin" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] flex items-center justify-center shadow-lg shadow-blue-950/50 group-hover:scale-105 transition-transform border border-[#2B406B]">
-                <Shield size={20} className="text-white" />
+            <Link href="/admin" className="flex items-center gap-3 group" title="AutoHub Dealer Intelligence Platform (DIP)">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-[#1B2A4A] flex items-center justify-center shadow-lg shadow-blue-950/50 group-hover:scale-105 transition-transform border border-blue-400/40">
+                <Shield size={19} className="text-white" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[15px] font-black text-white tracking-wider leading-none">AUTOHEIWA</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-[#B30D12] text-white border border-[#B30D12]">OPS</span>
+                  <span className="text-[15px] font-black text-white tracking-wider leading-none">AUTOHUB</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">ADMIN</span>
                 </div>
-                <span className="block text-[10px] font-semibold text-slate-400 tracking-widest mt-1">BROKER & ADMIN</span>
+                <span className="block text-[9px] font-semibold text-slate-400 tracking-wider mt-1">DEALER INTELLIGENCE PLATFORM</span>
               </div>
             </Link>
             <button 
@@ -198,8 +198,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2 mt-0.5">
                 {pathname === '/admin' ? 'Demand Intelligence' : 'Command Center'}
                 <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-slate-800 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
-                  <Shield size={11} className="text-[#B30D12]" /> 
-                  {pathname === '/admin' ? 'Autohub & Heiwa Sourcing' : 'Brokerage Super Admin'}
+                  <Shield size={11} className="text-blue-600" /> 
+                  {pathname === '/admin' ? 'AutoHub DIP Sourcing Intelligence' : 'AutoHub Super Admin'}
                 </span>
               </div>
             </div>

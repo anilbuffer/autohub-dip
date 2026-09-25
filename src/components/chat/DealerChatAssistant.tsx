@@ -91,11 +91,13 @@ interface DealerChatAssistantProps {
   onClose: () => void;
 }
 
-export function triggerHeiwaCopilot(prompt?: string) {
+export function triggerAutoHubCopilot(prompt?: string) {
   if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("open-autohub-copilot", { detail: { prompt } }));
     window.dispatchEvent(new CustomEvent("open-heiwa-copilot", { detail: { prompt } }));
   }
 }
+export const triggerHeiwaCopilot = triggerAutoHubCopilot;
 
 export default function DealerChatAssistant({
   isOpen,
@@ -123,7 +125,7 @@ export default function DealerChatAssistant({
     {
       id: "msg-welcome-1",
       sender: "bot",
-      text: `**Konnichiwa David!** 👋\n\nI am your **Heiwa Japanese Auction Copilot**. I monitor **140+ Japanese auction houses** (USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
+      text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I monitor **140+ Japanese auction houses** (USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
       timestamp: "Just now",
       suggestedPrompts: [
         "💎 Top Arbitrage Picks Today",
@@ -138,7 +140,7 @@ export default function DealerChatAssistant({
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = sessionStorage.getItem("autoheiwa_chat_history");
+        const saved = sessionStorage.getItem("autohub_dip_chat_history") || sessionStorage.getItem("autoheiwa_chat_history");
         if (saved) return JSON.parse(saved);
       } catch {
         // Fallback
@@ -158,8 +160,12 @@ export default function DealerChatAssistant({
         handleSendMessage(customEvent.detail.prompt);
       }
     };
+    window.addEventListener("open-autohub-copilot", handleCustomTrigger);
     window.addEventListener("open-heiwa-copilot", handleCustomTrigger);
-    return () => window.removeEventListener("open-heiwa-copilot", handleCustomTrigger);
+    return () => {
+      window.removeEventListener("open-autohub-copilot", handleCustomTrigger);
+      window.removeEventListener("open-heiwa-copilot", handleCustomTrigger);
+    };
   }, []);
 
   // Scroll to bottom on new messages
@@ -173,7 +179,7 @@ export default function DealerChatAssistant({
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        sessionStorage.setItem("autoheiwa_chat_history", JSON.stringify(messages));
+        sessionStorage.setItem("autohub_dip_chat_history", JSON.stringify(messages));
       } catch {
         // ignore
       }
@@ -201,6 +207,7 @@ export default function DealerChatAssistant({
   const handleClearHistory = () => {
     setMessages(initialMessages);
     if (typeof window !== "undefined") {
+      sessionStorage.removeItem("autohub_dip_chat_history");
       sessionStorage.removeItem("autoheiwa_chat_history");
     }
   };
@@ -307,7 +314,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🧮 Live Landed Cost Simulator\nAdjust the **FOB Price in Japanese Yen (JPY)** below to simulate the exact all-inclusive landed cost at Ports of Auckland, including sea freight, compliance, Heiwa documentation, and 15% GST:`,
+        text: `### 🧮 Live Landed Cost Simulator\nAdjust the **FOB Price in Japanese Yen (JPY)** below to simulate the exact all-inclusive landed cost at Ports of Auckland, including sea freight, compliance, AutoHub documentation, and 15% GST:`,
         timestamp: "Just now",
         type: "calculator",
         calcParams: {
@@ -343,7 +350,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚢 Heiwa Japan ⇄ New Zealand Vessel Schedule\nHeiwa Auto reserves guaranteed vehicle space on dedicated RoRo car carriers from **Yokohama, Nagoya, and Kobe** to **Ports of Auckland, Tauranga, and Lyttelton**:`,
+        text: `### 🚢 AutoHub Japan ⇄ New Zealand Vessel Schedule\nAutoHub DIP reserves guaranteed vehicle space on dedicated RoRo car carriers from **Yokohama, Nagoya, and Kobe** to **Ports of Auckland, Tauranga, and Lyttelton**:`,
         timestamp: "Just now",
         type: "shipping",
         suggestedPrompts: [
@@ -359,7 +366,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### ⚡ NZ Clean Car Standard & Battery Intelligence\n\n**Current Regulatory Benchmark:**\n- **Target Threshold:** 112 g CO2/km (WLTP3).\n- **Toyota Aqua (1NZ-FXE):** Approx 82 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Honda Fit e:HEV:** Approx 85 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Toyota C-HR Hybrid:** Approx 95 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Pure Petrol 2.0L+ SUVs:** May incur modest NZ$300 – $800 importer penalties at entry compliance.\n\n**Battery SOH (State of Health) Protocol:**\nHeiwa Tokyo technicians perform OBD-II battery cell impedance tests on all Grade 4+ hybrids prior to export documentation. Guaranteed SOH > 85% on all shortlisted vehicles.`,
+        text: `### ⚡ NZ Clean Car Standard & Battery Intelligence\n\n**Current Regulatory Benchmark:**\n- **Target Threshold:** 112 g CO2/km (WLTP3).\n- **Toyota Aqua (1NZ-FXE):** Approx 82 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Honda Fit e:HEV:** Approx 85 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Toyota C-HR Hybrid:** Approx 95 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Pure Petrol 2.0L+ SUVs:** May incur modest NZ$300 – $800 importer penalties at entry compliance.\n\n**Battery SOH (State of Health) Protocol:**\nAutoHub inspection technicians perform OBD-II battery cell impedance tests on all Grade 4+ hybrids prior to export documentation. Guaranteed SOH > 85% on all shortlisted vehicles.`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Calculate Landed Cost for Aqua",
@@ -389,7 +396,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🎯 Heiwa Max Auction Bid Recommendation Formula\n\nTo lock in your required **NZ$3,500 dealer gross margin**, calculate backward from expected retail:\n\n$$\\text{Max Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Max Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable spread. Recommend placing bid up to ¥1,480,000.**`,
+        text: `### 🎯 AutoHub DIP Max Auction Bid Recommendation Formula\n\nTo lock in your required **NZ$3,500 dealer gross margin**, calculate backward from expected retail:\n\n$$\\text{Max Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Max Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable spread. Recommend placing bid up to ¥1,480,000.**`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Open Landed Cost Calculator",
@@ -403,7 +410,7 @@ export default function DealerChatAssistant({
     return {
       id: `bot-${Date.now()}`,
       sender: "bot",
-      text: `### 🤖 Japanese Auction Intelligence Analysis\n\nRegarding your inquiry: *"**${query}**"*\n\nBased on live data across **USS Tokyo, Yokohama & CAA Chubu** at current FX benchmark **¥${fx} / NZD**:\n\n- **Inventory Status:** 32 priority lots match Auckland Auto Group's criteria (Toyota, Honda, Mazda, Lexus).\n- **Landed Cost Index:** Freight benchmark is steady at NZ$${syncState.freightPerUnitNzd}, Compliance at NZ$${syncState.compliancePerUnitNzd}.\n- **Arbitrage Opportunity:** Median spread between Japan FOB + landed costs and NZ Trade Me retail is **+NZ$3,850**.\n\nWould you like me to calculate a specific landed cost, decode auction sheet markings, or pull up top vehicle matches?`,
+      text: `### 🤖 AutoHub DIP Auction Intelligence Analysis\n\nRegarding your inquiry: *"**${query}**"*\n\nBased on live data across **USS Tokyo, Yokohama & CAA Chubu** at current FX benchmark **¥${fx} / NZD**:\n\n- **Inventory Status:** 32 priority lots match Auckland Auto Group's criteria (Toyota, Honda, Mazda, Lexus).\n- **Landed Cost Index:** Freight benchmark is steady at NZ$${syncState.freightPerUnitNzd}, Compliance at NZ$${syncState.compliancePerUnitNzd}.\n- **Arbitrage Opportunity:** Median spread between Japan FOB + landed costs and NZ Trade Me retail is **+NZ$3,850**.\n\nWould you like me to calculate a specific landed cost, decode auction sheet markings, or pull up top vehicle matches?`,
       timestamp: "Just now",
       suggestedPrompts: [
         "💎 Top Arbitrage Picks Today",
@@ -460,7 +467,7 @@ export default function DealerChatAssistant({
 
       {/* Flyout Chatbot Assistant - Positioned ABSOLUTE / FIXED OVER the pages on the right side */}
       <aside
-        aria-label="Heiwa AI Assistant Flyout"
+        aria-label="AutoHub DIP Assistant Flyout"
         className={`fixed inset-y-0 right-0 z-50 ${
           isExpanded ? "w-[580px]" : "w-[440px]"
         } max-w-[94vw] bg-white shadow-[-12px_0_40px_rgba(0,0,0,0.22)] border-l border-slate-200/90 flex flex-col animate-in slide-in-from-right duration-300`}
@@ -469,12 +476,12 @@ export default function DealerChatAssistant({
         <div className="p-4 bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shrink-0 border-b border-[#1B2A4A]/80 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#B30D12] flex items-center justify-center font-bold text-white shadow-md shadow-[#B30D12]/30 shrink-0">
-                <span className="text-base font-black">和</span>
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-[#1B2A4A] flex items-center justify-center font-bold text-white shadow-md shadow-blue-900/40 shrink-0 border border-blue-400/30">
+                <Sparkles size={16} className="text-blue-200" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-black tracking-wide text-white">Heiwa AI Copilot</span>
+                  <span className="text-sm font-black tracking-wide text-white">AutoHub DIP Assistant</span>
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                     Live
@@ -555,8 +562,8 @@ export default function DealerChatAssistant({
             <div className="flex items-center gap-1.5 mb-1 px-1 text-[11px] text-slate-400 font-medium">
               {msg.sender === "bot" ? (
                 <>
-                  <span className="w-4 h-4 rounded bg-[#B30D12] text-white flex items-center justify-center text-[9px] font-bold">和</span>
-                  <span className="font-bold text-slate-700">Heiwa Copilot</span>
+                  <span className="w-4 h-4 rounded bg-gradient-to-br from-blue-600 to-[#1B2A4A] text-white flex items-center justify-center text-[8px] font-black">AH</span>
+                  <span className="font-bold text-slate-700">AutoHub DIP Assistant</span>
                 </>
               ) : (
                 <>
@@ -658,14 +665,14 @@ export default function DealerChatAssistant({
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex items-center gap-2 text-slate-500 text-xs py-2 px-1">
-            <div className="w-5 h-5 rounded-lg bg-[#B30D12] text-white flex items-center justify-center text-[10px] font-bold">
-              和
+            <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-blue-600 to-[#1B2A4A] text-white flex items-center justify-center text-[9px] font-black">
+              AH
             </div>
             <div className="flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-2xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce [animation-delay:0.2s]"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce [animation-delay:0.4s]"></span>
-              <span className="text-[11px] font-medium text-slate-500 ml-1">Analyzing Japanese auction data...</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.2s]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.4s]"></span>
+              <span className="text-[11px] font-medium text-slate-500 ml-1">AutoHub DIP analyzing Japanese auction data...</span>
             </div>
           </div>
         )}
@@ -727,7 +734,7 @@ export default function DealerChatAssistant({
         </div>
         <div className="flex items-center justify-between mt-2 px-1 text-[10px] text-slate-400">
           <span>Press Enter to send · Press ⌘J to focus</span>
-          <span className="font-semibold text-slate-500">AutoHeiwa Intelligence v2.4</span>
+          <span className="font-semibold text-slate-500">AutoHub DIP Intelligence v2.4</span>
         </div>
       </div>
     </aside>
@@ -975,7 +982,7 @@ function ShippingScheduleWidget() {
     <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
       <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 font-bold text-slate-800 text-[11px]">
         <span className="flex items-center gap-1.5">
-          <Ship size={13} className="text-blue-600" /> Confirmed Heiwa RoRo Sailings
+          <Ship size={13} className="text-blue-600" /> Confirmed AutoHub RoRo Sailings
         </span>
         <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
           Guaranteed Space

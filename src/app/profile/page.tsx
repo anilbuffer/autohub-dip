@@ -128,7 +128,7 @@ export default function ProfilePage() {
           <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800 flex items-center gap-2 animate-in fade-in duration-200">
             <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
             <span>
-              Buying preferences updated! Successfully synchronized with Heiwa Auto Japan procurement engine and Autohub demand intelligence.
+              Buying preferences updated! Successfully synchronized with AutoHub procurement engine and demand intelligence.
             </span>
           </div>
         )}
@@ -160,7 +160,7 @@ export default function ProfilePage() {
                 <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
                   Target Vehicle Models (Wish List)
                 </label>
-                <span className="text-[11px] text-slate-400 font-medium">Click to add/remove models for Heiwa sourcing alerts</span>
+                <span className="text-[11px] text-slate-400 font-medium">Click to add/remove models for AutoHub sourcing alerts</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {availableModels.map((model) => {
@@ -299,7 +299,7 @@ export default function ProfilePage() {
                     <Zap size={20} />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900">Heiwa Autonomous Match Notifications</div>
+                    <div className="text-xs font-bold text-slate-900">AutoHub Autonomous Match Notifications</div>
                     <div className="text-[11px] text-slate-500">Receive priority dispatch alerts when Japanese auctions list vehicles matching your Auckland yard criteria.</div>
                   </div>
                 </div>

@@ -73,7 +73,7 @@ export default function AdminDealerProfile({ params }: { params: { id: string } 
             <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
               <Settings2 size={18} className="text-[#1B2A4A]" /> Client Buying Rules & Preferences
             </h2>
-            <span className="text-xs text-slate-400 font-medium">Used by AutoHeiwa scraper match algorithm</span>
+            <span className="text-xs text-slate-400 font-medium">Used by AutoHub DIP scraper match algorithm</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-xs">

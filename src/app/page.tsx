@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { VEHICLES, GLOBAL_SETTINGS } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
-import { triggerHeiwaCopilot } from "@/components/chat/DealerChatAssistant";
+import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
 
 export default function Dashboard() {
   const [filterTab, setFilterTab] = useState<'all' | 'priority' | 'under20k'>('priority');
@@ -67,10 +67,10 @@ export default function Dashboard() {
               </span>
             </div>
             <button
-              onClick={() => triggerHeiwaCopilot("Top Arbitrage Picks Today")}
+              onClick={() => triggerAutoHubCopilot("Top Arbitrage Picks Today")}
               className="px-3.5 py-2.5 bg-gradient-to-r from-[#0B1322] to-[#1B2A4A] hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
             >
-              <Sparkles size={14} className="text-[#e56168]" /> Ask AI Copilot
+              <Sparkles size={14} className="text-blue-300" /> Ask AI Assistant
             </button>
             <Link
               href="/vehicles"
@@ -81,7 +81,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Real-Time Live Sourcing Match Alert Banner from Heiwa Tokyo */}
+        {/* Real-Time Live Sourcing Match Alert Banner from AutoHub Japan */}
         {latestSourcingMatch && !latestSourcingMatch.isRead && (
           <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-red-950 via-[#1B2A4A] to-[#0B1322] text-white border border-[#B30D12]/50 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="flex items-start sm:items-center gap-3.5">
@@ -93,7 +93,7 @@ export default function Dashboard() {
                   <span className="px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider bg-white/20 text-red-200">
                     Real-Time Sourcing Alert
                   </span>
-                  <span className="text-xs text-slate-300 font-medium">From Heiwa Auto Japan Desk</span>
+                  <span className="text-xs text-slate-300 font-medium">From AutoHub Japan Sourcing Desk</span>
                 </div>
                 <h4 className="font-black text-sm sm:text-base text-white">
                   {latestSourcingMatch.title}

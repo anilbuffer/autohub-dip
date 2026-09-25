@@ -31,8 +31,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     const handleOpen = () => setChatOpen(true);
+    window.addEventListener('open-autohub-copilot', handleOpen);
     window.addEventListener('open-heiwa-copilot', handleOpen);
-    return () => window.removeEventListener('open-heiwa-copilot', handleOpen);
+    return () => {
+      window.removeEventListener('open-autohub-copilot', handleOpen);
+      window.removeEventListener('open-heiwa-copilot', handleOpen);
+    };
   }, []);
 
   const { state: syncState, markNotificationAsRead } = useSyncStore();
@@ -61,16 +65,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div>
           {/* Brand Logo & Header */}
           <div className="h-[76px] flex items-center justify-between px-5 border-b border-[#1B2A4A]/70 bg-[#080E1A]">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-xl bg-[#B30D12] flex items-center justify-center shadow-lg shadow-[#B30D12]/30 group-hover:scale-105 transition-transform">
-                <span className="text-white font-extrabold text-lg tracking-wider">和</span>
+            <Link href="/" className="flex items-center gap-3 group" title="AutoHub Dealer Intelligence Platform (DIP)">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-[#1B2A4A] flex items-center justify-center shadow-lg shadow-blue-950/40 group-hover:scale-105 transition-transform border border-blue-400/30">
+                <span className="text-white font-black text-sm tracking-wider">AH</span>
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[15px] font-black text-white tracking-wider leading-none">AUTOHEIWA</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-[#B30D12]/20 text-red-300 border border-[#B30D12]/40">NZ</span>
+                  <span className="text-[15px] font-black text-white tracking-wider leading-none">AUTOHUB</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded font-black bg-blue-500/20 text-blue-300 border border-blue-500/40">DIP</span>
                 </div>
-                <span className="block text-[10px] font-semibold text-slate-400 tracking-widest mt-1">AUCTION INTELLIGENCE</span>
+                <span className="block text-[9px] font-semibold text-slate-400 tracking-wider mt-1">DEALER INTELLIGENCE PLATFORM</span>
               </div>
             </Link>
             <button
@@ -203,7 +207,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               {notificationsOpen && (
                 <div className="absolute right-0 mt-2 w-84 bg-white rounded-2xl border border-slate-200 shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-2">
-                    <span className="text-xs font-bold text-slate-900">Heiwa Sourcing & Auction Alerts</span>
+                    <span className="text-xs font-bold text-slate-900">AutoHub Sourcing & Auction Alerts</span>
                     <span className="text-[10px] font-bold text-[#B30D12] bg-red-50 px-2 py-0.5 rounded-full">
                       {syncState.dealerNotifications.filter(n => !n.isRead).length} New
                     </span>
@@ -268,17 +272,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {!chatOpen && (
           <button
             onClick={() => setChatOpen(true)}
-            className="fixed bottom-6 right-6 z-30 flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shadow-2xl border border-white/20 hover:scale-105 hover:shadow-red-950/40 transition-all duration-200 group"
-            title="Open Heiwa AI Auction Copilot"
+            className="fixed bottom-6 right-6 z-30 flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shadow-2xl border border-white/20 hover:scale-105 hover:shadow-blue-950/40 transition-all duration-200 group"
+            title="Open AutoHub DIP Assistant"
           >
-            <div className="relative w-8 h-8 rounded-xl bg-[#B30D12] flex items-center justify-center font-bold text-sm shadow-md group-hover:rotate-6 transition-transform">
-              <span>和</span>
+            <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-[#1B2A4A] flex items-center justify-center font-black text-xs text-white shadow-md group-hover:rotate-6 transition-transform border border-blue-400/30">
+              <Sparkles size={16} className="text-blue-200" />
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#0B1322] animate-pulse"></span>
             </div>
             <div className="text-left">
               <div className="text-xs font-black tracking-wide flex items-center gap-1.5">
-                Heiwa AI Copilot
-                <span className="text-[9px] px-1.5 py-0.2 rounded bg-white/20 text-red-200 font-bold">Online</span>
+                AutoHub DIP Assistant
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-white/20 text-emerald-300 font-bold">Online</span>
               </div>
               <div className="text-[10px] text-slate-300">
                 Landed cost · Sheet codes · Max bid

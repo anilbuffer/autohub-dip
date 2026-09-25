@@ -119,8 +119,8 @@ export default function DemandIntelligencePage() {
             <div>
               {/* Badge & Info Tooltip Trigger */}
               <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-[#B30D12]/10 text-[#B30D12] border border-[#B30D12]/20 shadow-2xs">
-                  Autohub & Heiwa Sourcing Intelligence
+                <span className="px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-blue-600/10 text-blue-700 border border-blue-600/20 shadow-2xs">
+                  AutoHub Dealer Intelligence Platform (DIP)
                 </span>
                 
                 {/* Where the data comes from info button */}
@@ -139,7 +139,7 @@ export default function DemandIntelligencePage() {
                 Demand Intelligence
               </h1>
               <p className="text-slate-600 text-sm sm:text-base font-medium mt-1 max-w-3xl">
-                What NZ dealers are looking for, and what Heiwa should source next.
+                What NZ dealers are looking for, and what AutoHub should source next.
               </p>
             </div>
 
@@ -398,7 +398,7 @@ export default function DemandIntelligencePage() {
             </span>
           </div>
           <span className="text-[11px] text-slate-400">
-            AutoHeiwa Intelligence Engine · Developed for Heiwa Auto Co., Ltd. & Autohub NZ Sourcing Board
+            AutoHub Dealer Intelligence Platform (DIP) · Developed for AutoHub NZ Sourcing Board
           </span>
         </div>
 

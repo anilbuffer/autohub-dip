@@ -23,7 +23,7 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
       title: "2. Dealer Searches & 'Ask AI' Queries",
       icon: Search,
       color: "text-blue-500 bg-blue-50 border-blue-200",
-      description: "Real-time search telemetry and natural language questions submitted to the AutoHeiwa Concierge AI (e.g., 'Find me 2019+ hybrid SUVs with high margin spread').",
+      description: "Real-time search telemetry and natural language questions submitted to the AutoHub DIP Concierge AI (e.g., 'Find me 2019+ hybrid SUVs with high margin spread').",
       metric: "4,860 Searches / Month"
     },
     {
@@ -62,7 +62,7 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
                 Demand Intelligence Pipeline
               </h3>
               <p className="text-xs text-slate-500 font-medium">
-                Where does AutoHeiwa sourcing data come from?
+                Where does AutoHub DIP sourcing data come from?
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
         <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
             <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-            <span>Synced in real-time with Heiwa Auto Japan procurement engine.</span>
+            <span>Synced in real-time with AutoHub procurement & auction intelligence engine.</span>
           </div>
           <button
             onClick={onClose}

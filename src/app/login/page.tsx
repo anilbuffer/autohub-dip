@@ -34,7 +34,7 @@ export default function LoginPage() {
   const loginAsDemo = (role: 'dealer' | 'admin') => {
     setLoadingRole(role);
     if (role === 'admin') {
-      setEmail("admin@autoheiwa.com");
+      setEmail("admin@autohub-dip.com");
       setPassword("brokerSecure2026");
       setTimeout(() => router.push("/admin"), 400);
     } else {
@@ -60,16 +60,16 @@ export default function LoginPage() {
 
         {/* Top Brand Logo */}
         <div className="relative z-10 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#B30D12] flex items-center justify-center shadow-lg shadow-[#B30D12]/40">
-            <span className="text-white font-extrabold text-xl tracking-wider">和</span>
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-[#1B2A4A] flex items-center justify-center shadow-lg shadow-blue-900/40 border border-blue-400/30">
+            <span className="text-white font-black text-lg tracking-wider">AH</span>
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-lg font-black text-white tracking-wider leading-none">AUTOHEIWA</span>
-              <span className="text-[10px] px-2 py-0.5 rounded font-bold bg-[#B30D12]/20 text-red-300 border border-[#B30D12]/40">NZ</span>
+              <span className="text-lg font-black text-white tracking-wider leading-none">AUTOHUB</span>
+              <span className="text-[10px] px-2 py-0.5 rounded font-black bg-blue-500/20 text-blue-300 border border-blue-500/40">DIP</span>
             </div>
-            <span className="text-[10px] font-semibold text-slate-400 tracking-widest block mt-0.5">
-              JAPANESE AUCTION INTELLIGENCE
+            <span className="text-[9px] font-semibold text-slate-400 tracking-wider block mt-0.5">
+              DEALER INTELLIGENCE PLATFORM
             </span>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function LoginPage() {
         {/* Bottom Testimonial */}
         <div className="relative z-10 p-4 rounded-xl bg-[#0E182A]/80 border border-[#1B2A4A] backdrop-blur-md">
           <p className="text-xs text-slate-300 italic">
-            &ldquo;AutoHeiwa turned our import bidding from guesswork into precision arbitrage. We secured 18 Grade 4.5 hybrids last month with guaranteed margin.&rdquo;
+            &ldquo;AutoHub DIP turned our import bidding from guesswork into precision arbitrage. We secured 18 Grade 4.5 hybrids last month with guaranteed margin.&rdquo;
           </p>
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#1B2A4A]/80 text-[11px]">
             <span className="font-bold text-white">David Miller</span>
@@ -124,12 +124,12 @@ export default function LoginPage() {
           
           <div>
             <div className="flex items-center gap-2 lg:hidden mb-4">
-              <div className="w-8 h-8 rounded-lg bg-[#B30D12] flex items-center justify-center text-white font-bold text-sm">
-                和
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-[#1B2A4A] flex items-center justify-center text-white font-black text-xs">
+                AH
               </div>
-              <span className="font-black text-slate-900 tracking-wider">AUTOHEIWA</span>
+              <span className="font-black text-slate-900 tracking-wider">AUTOHUB DIP</span>
             </div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Sign In to AutoHeiwa</h2>
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Sign In to AutoHub DIP</h2>
             <p className="text-xs text-slate-500 font-medium mt-1">
               Select a demo portal below or enter your authorized dealer credentials.
             </p>
@@ -228,7 +228,7 @@ export default function LoginPage() {
           </form>
 
           <div className="pt-2 text-center text-[11px] text-slate-400 font-medium">
-            Protected by AutoHeiwa 256-bit broker encryption & Tokyo exchange link.
+            Protected by AutoHub DIP 256-bit broker encryption & Tokyo exchange link.
           </div>
 
         </div>

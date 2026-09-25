@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import Link from "next/link";
 import {
@@ -9,11 +9,26 @@ import {
   Clock,
   TrendingUp,
   Car,
-  Info
+  Info,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { VEHICLES } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
 import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
+
+function getPaginationPages(currentPage: number, totalPages: number) {
+  if (totalPages <= 6) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 3) {
+    return [1, 2, 3, 4, '...', totalPages];
+  }
+  if (currentPage >= totalPages - 2) {
+    return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+}
 
 export default function Dashboard() {
   const { state: syncState } = useSyncStore();
@@ -23,6 +38,23 @@ export default function Dashboard() {
   const otherVehicles = VEHICLES.filter((v) => v.status !== "Priority").sort((a, b) => b.score - a.score);
   const avgPriorityMargin = Math.round(
     bestMatches.reduce((acc, v) => acc + v.targetMarginNzd, 0) / (bestMatches.length || 1)
+  );
+
+  // Pagination states (2-3 cards per page for user friendly layout)
+  const BEST_PER_PAGE = 3;
+  const [bestPage, setBestPage] = useState(1);
+  const totalBestPages = Math.ceil(bestMatches.length / BEST_PER_PAGE);
+  const paginatedBestMatches = bestMatches.slice(
+    (bestPage - 1) * BEST_PER_PAGE,
+    bestPage * BEST_PER_PAGE
+  );
+
+  const OTHER_PER_PAGE = 4;
+  const [otherPage, setOtherPage] = useState(1);
+  const totalOtherPages = Math.ceil(otherVehicles.length / OTHER_PER_PAGE);
+  const paginatedOtherVehicles = otherVehicles.slice(
+    (otherPage - 1) * OTHER_PER_PAGE,
+    otherPage * OTHER_PER_PAGE
   );
 
   return (
@@ -170,7 +202,7 @@ export default function Dashboard() {
           </div>
 
           <div className="space-y-3">
-            {bestMatches.map((vehicle) => (
+            {paginatedBestMatches.map((vehicle) => (
               <div
                 key={vehicle.id}
                 className="bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_8px_20px_-4px_rgba(15,23,42,0.1),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/90 transition-all duration-200 overflow-hidden flex flex-col sm:flex-row group"
@@ -299,6 +331,53 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+
+          {/* Best Matches Pagination Controls */}
+          {totalBestPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1.5 bg-slate-50/60 p-2.5 rounded-xl border border-slate-200/60">
+              <span className="text-[11px] font-semibold text-slate-500">
+                Showing <strong className="text-slate-900 font-bold">{((bestPage - 1) * BEST_PER_PAGE) + 1}–{Math.min(bestPage * BEST_PER_PAGE, bestMatches.length)}</strong> of <strong className="text-slate-900 font-bold">{bestMatches.length}</strong> priority lots
+              </span>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setBestPage(Math.max(1, bestPage - 1))}
+                  disabled={bestPage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                >
+                  <ChevronLeft size={13} />
+                  <span>Prev</span>
+                </button>
+
+                {getPaginationPages(bestPage, totalBestPages).map((p, idx) => (
+                  typeof p === "number" ? (
+                    <button
+                      key={idx}
+                      onClick={() => setBestPage(p)}
+                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${
+                        bestPage === p
+                          ? "bg-[#B30D12] text-white shadow-2xs"
+                          : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ) : (
+                    <span key={idx} className="px-1 text-slate-400 font-bold text-xs">...</span>
+                  )
+                ))}
+
+                <button
+                  onClick={() => setBestPage(Math.min(totalBestPages, bestPage + 1))}
+                  disabled={bestPage === totalBestPages}
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                >
+                  <span>Next</span>
+                  <ChevronRight size={13} />
+                </button>
+              </div>
+            </div>
+          )}
         </section>
 
         {/* 3. The "Other qualifying vehicles" list (Cards with Soft Shadows) */}
@@ -317,13 +396,13 @@ export default function Dashboard() {
               href="/vehicles"
               className="text-xs font-bold text-slate-600 hover:text-[#B30D12] flex items-center gap-1 transition-colors"
             >
-              <span>Explore All (32)</span>
+              <span>Explore All ({otherVehicles.length})</span>
               <ArrowRight size={12} />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
-            {otherVehicles.map((vehicle) => (
+            {paginatedOtherVehicles.map((vehicle) => (
               <div
                 key={vehicle.id}
                 className="bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_8px_20px_-4px_rgba(15,23,42,0.1),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/90 transition-all duration-200 p-3.5 sm:p-4 flex flex-col justify-between"
@@ -411,12 +490,59 @@ export default function Dashboard() {
             ))}
           </div>
 
+          {/* Other Vehicles Pagination Controls */}
+          {totalOtherPages > 1 && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 bg-slate-50/60 p-2.5 rounded-xl border border-slate-200/60">
+              <span className="text-[11px] font-semibold text-slate-500">
+                Showing <strong className="text-slate-900 font-bold">{((otherPage - 1) * OTHER_PER_PAGE) + 1}–{Math.min(otherPage * OTHER_PER_PAGE, otherVehicles.length)}</strong> of <strong className="text-slate-900 font-bold">{otherVehicles.length}</strong> qualifying lots (Page {otherPage} of {totalOtherPages})
+              </span>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => setOtherPage(Math.max(1, otherPage - 1))}
+                  disabled={otherPage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                >
+                  <ChevronLeft size={13} />
+                  <span>Prev</span>
+                </button>
+
+                {getPaginationPages(otherPage, totalOtherPages).map((p, idx) => (
+                  typeof p === "number" ? (
+                    <button
+                      key={idx}
+                      onClick={() => setOtherPage(p)}
+                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${
+                        otherPage === p
+                          ? "bg-[#B30D12] text-white shadow-2xs"
+                          : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ) : (
+                    <span key={idx} className="px-1 text-slate-400 font-bold text-xs">...</span>
+                  )
+                ))}
+
+                <button
+                  onClick={() => setOtherPage(Math.min(totalOtherPages, otherPage + 1))}
+                  disabled={otherPage === totalOtherPages}
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                >
+                  <span>Next</span>
+                  <ChevronRight size={13} />
+                </button>
+              </div>
+            </div>
+          )}
+
           <div className="text-center pt-1">
             <Link
               href="/vehicles"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-[#B30D12] bg-white hover:bg-slate-50 px-4 py-2 rounded-lg border border-slate-200/90 shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:shadow-[0_3px_8px_-1px_rgba(15,23,42,0.08)] transition-all"
             >
-              <span>Explore all 32 qualified vehicles in full live catalog</span>
+              <span>Explore all {VEHICLES.length} qualified vehicles in full live catalog</span>
               <ArrowRight size={12} className="text-slate-400" />
             </Link>
           </div>

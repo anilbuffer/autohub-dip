@@ -187,8 +187,8 @@ export function useSyncStore() {
     });
   }, []);
 
-  // Action: Dealer updates wishlist in Profile
-  const updateDealerWishlist = useCallback((models: string[], makes: string[], targetBudget: number, targetMargin: number) => {
+  // Action: Dealer updates wishlist in Profile or Login Prompt
+  const updateDealerWishlist = useCallback((models: string[], makes: string[], targetBudget: number, targetMargin: number, maxKm?: number) => {
     setStoredSyncState(prev => {
       const addedCount = Math.max(0, models.length - prev.dealerModels.length);
       return {
@@ -197,6 +197,7 @@ export function useSyncStore() {
         dealerMakes: makes,
         dealerTargetBudget: targetBudget,
         dealerTargetMargin: targetMargin,
+        dealerMaxKm: maxKm ?? prev.dealerMaxKm,
         activeWishListsCount: prev.activeWishListsCount + addedCount,
         unmetDemandCount: prev.unmetDemandCount + (addedCount * 12)
       };

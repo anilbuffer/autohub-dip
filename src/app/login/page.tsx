@@ -27,7 +27,10 @@ export default function LoginPage() {
     if (email.toLowerCase().includes("admin")) {
       router.push("/admin");
     } else {
-      router.push("/");
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("autohub_prompt_preferences_on_login", "true");
+      }
+      router.push("/?login=true");
     }
   };
 
@@ -40,7 +43,10 @@ export default function LoginPage() {
     } else {
       setEmail("david@aucklandauto.co.nz");
       setPassword("dealerSecure2026");
-      setTimeout(() => router.push("/"), 400);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("autohub_prompt_preferences_on_login", "true");
+      }
+      setTimeout(() => router.push("/?login=true"), 400);
     }
   };
 

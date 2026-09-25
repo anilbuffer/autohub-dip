@@ -125,7 +125,7 @@ export default function DealerChatAssistant({
     {
       id: "msg-welcome-1",
       sender: "bot",
-      text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I monitor **140+ Japanese auction houses** (USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
+      text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I analyze **Japanese auction pipeline lots** (including USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
       timestamp: "Just now",
       suggestedPrompts: [
         "💎 Best Value vs NZ Market",
@@ -350,7 +350,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚢 AutoHub Japan ⇄ New Zealand Vessel Schedule\nAutoHub DIP reserves guaranteed vehicle space on dedicated RoRo car carriers from **Yokohama, Nagoya, and Kobe** to **Ports of Auckland, Tauranga, and Lyttelton**:`,
+        text: `### 🚢 AutoHub Japan ⇄ New Zealand Vessel Schedule\nAutoHub DIP coordinates scheduled vehicle space on dedicated RoRo car carriers from **Yokohama, Nagoya, and Kobe** to **Ports of Auckland, Tauranga, and Lyttelton**:`,
         timestamp: "Just now",
         type: "shipping",
         suggestedPrompts: [
@@ -366,7 +366,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### ⚡ NZ Clean Car Standard & Battery Intelligence\n\n**Current Regulatory Benchmark:**\n- **Target Threshold:** 112 g CO2/km (WLTP3).\n- **Toyota Aqua (1NZ-FXE):** Approx 82 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Honda Fit e:HEV:** Approx 85 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Toyota C-HR Hybrid:** Approx 95 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Pure Petrol 2.0L+ SUVs:** May incur modest NZ$300 – $800 importer penalties at entry compliance.\n\n**Battery SOH (State of Health) Protocol:**\nAutoHub inspection technicians perform OBD-II battery cell impedance tests on all Grade 4+ hybrids prior to export documentation. Guaranteed SOH > 85% on all shortlisted vehicles.`,
+        text: `### ⚡ NZ Clean Car Standard & Battery Intelligence\n\n**Current Regulatory Benchmark:**\n- **Target Threshold:** 112 g CO2/km (WLTP3).\n- **Toyota Aqua (1NZ-FXE):** Approx 82 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Honda Fit e:HEV:** Approx 85 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Toyota C-HR Hybrid:** Approx 95 g/km → **Neutral (Zero Clean Car Fee)**.\n- **Pure Petrol 2.0L+ SUVs:** May incur modest NZ$300 – $800 importer penalties at entry compliance.\n\n**Battery SOH (State of Health) Protocol:**\nAutoHub inspection technicians perform OBD-II battery cell impedance tests on all Grade 4+ hybrids prior to export documentation. Target SOH > 85% on verified hybrid vehicles.`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Calculate Landed Cost for Aqua",
@@ -995,8 +995,8 @@ function ShippingScheduleWidget() {
         <span className="flex items-center gap-1.5">
           <Ship size={13} className="text-blue-600" /> Confirmed AutoHub RoRo Sailings
         </span>
-        <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-          Guaranteed Space
+        <span className="text-[10px] text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+          Scheduled Space
         </span>
       </div>
 

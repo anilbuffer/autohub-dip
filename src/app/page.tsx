@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import Link from "next/link";
 import {
@@ -11,11 +11,14 @@ import {
   Car,
   Info,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  SlidersHorizontal,
+  X
 } from "lucide-react";
 import { VEHICLES } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
 import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
+import PreferencesLoginPromptModal from "@/components/dealer/PreferencesLoginPromptModal";
 
 function getPaginationPages(currentPage: number, totalPages: number) {
   if (totalPages <= 6) {
@@ -33,11 +36,81 @@ function getPaginationPages(currentPage: number, totalPages: number) {
 export default function Dashboard() {
   const { state: syncState } = useSyncStore();
 
-  // Categorize vehicles into Best Matches (Priority buys) and Other Qualifying
-  const bestMatches = VEHICLES.filter((v) => v.status === "Priority").sort((a, b) => b.score - a.score);
-  const otherVehicles = VEHICLES.filter((v) => v.status !== "Priority").sort((a, b) => b.score - a.score);
+  const [showPreferencesPrompt, setShowPreferencesPrompt] = useState(false);
+  const [rerunNotification, setRerunNotification] = useState<string | null>(null);
+
+  // Check on mount if user just logged in or is starting session
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isFromLogin = urlParams.get("login") === "true";
+      const loginSessionFlag = sessionStorage.getItem("autohub_prompt_preferences_on_login");
+      const alreadyDismissed = sessionStorage.getItem("autohub_preferences_dismissed_session");
+
+      if (isFromLogin || loginSessionFlag === "true" || !alreadyDismissed) {
+        setShowPreferencesPrompt(true);
+        sessionStorage.removeItem("autohub_prompt_preferences_on_login");
+        sessionStorage.setItem("autohub_preferences_dismissed_session", "true");
+        if (isFromLogin) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    }
+  }, []);
+
+  // Dynamically re-run vehicle matches against dealer's active criteria
+  const { bestMatches, otherVehicles } = useMemo(() => {
+    const preferredModels = (syncState.dealerModels || []).map(m => m.toLowerCase());
+    const preferredMakes = (syncState.dealerMakes || []).map(m => m.toLowerCase());
+    const maxBudget = syncState.dealerTargetBudget || 26000;
+    const minMargin = syncState.dealerTargetMargin || 3500;
+    const maxKm = syncState.dealerMaxKm || 75000;
+
+    const scoredVehicles = VEHICLES.map(v => {
+      const landed = Math.round(((v.fobJpy / syncState.fxRateJpyNzd) + syncState.freightPerUnitNzd + syncState.compliancePerUnitNzd) * 1.15);
+      const margin = Math.max(1500, v.estRetailNzd - landed);
+
+      const matchesModel = preferredModels.some(m => v.model.toLowerCase().includes(m));
+      const matchesMake = preferredMakes.length === 0 || preferredMakes.includes(v.make.toLowerCase());
+      const matchesBudget = landed <= maxBudget * 1.25;
+      const matchesKm = v.km <= maxKm * 1.25;
+      const matchesMargin = margin >= minMargin * 0.8;
+
+      let matchScore = v.score;
+      if (matchesModel) matchScore += 10;
+      if (matchesMake) matchScore += 4;
+      if (matchesBudget) matchScore += 4;
+      if (matchesMargin) matchScore += 6;
+
+      const isPriority = (matchesModel || (matchesMake && matchesMargin)) && matchesBudget;
+
+      return {
+        ...v,
+        dynamicLanded: landed,
+        dynamicMargin: margin,
+        matchScore,
+        isPriority
+      };
+    });
+
+    const priorityMatches = scoredVehicles.filter(v => v.isPriority).sort((a, b) => b.matchScore - a.matchScore);
+    const qualifyingVehicles = scoredVehicles.filter(v => !v.isPriority).sort((a, b) => b.matchScore - a.matchScore);
+
+    if (priorityMatches.length === 0) {
+      return {
+        bestMatches: VEHICLES.filter((v) => v.status === "Priority").sort((a, b) => b.score - a.score),
+        otherVehicles: VEHICLES.filter((v) => v.status !== "Priority").sort((a, b) => b.score - a.score)
+      };
+    }
+
+    return {
+      bestMatches: priorityMatches,
+      otherVehicles: qualifyingVehicles
+    };
+  }, [syncState]);
+
   const avgPriorityMargin = Math.round(
-    bestMatches.reduce((acc, v) => acc + v.targetMarginNzd, 0) / (bestMatches.length || 1)
+    bestMatches.reduce((acc, v) => acc + (v.targetMarginNzd || 3500), 0) / (bestMatches.length || 1)
   );
 
   // Pagination states (2-3 cards per page for user friendly layout)
@@ -57,9 +130,38 @@ export default function Dashboard() {
     otherPage * OTHER_PER_PAGE
   );
 
+  const handleMatchesRecalculated = (newCount: number) => {
+    setBestPage(1);
+    setOtherPage(1);
+    setRerunNotification(`Weekly preferences updated! Re-ran matching across ${VEHICLES.length} auction lots (${bestMatches.length} priority matches ready).`);
+    setTimeout(() => {
+      setRerunNotification(null);
+    }, 5500);
+  };
+
   return (
     <AppLayout>
+      {/* Weekly Preferences Login Prompt Modal */}
+      <PreferencesLoginPromptModal
+        isOpen={showPreferencesPrompt}
+        onClose={() => setShowPreferencesPrompt(false)}
+        onMatchesReCalculated={handleMatchesRecalculated}
+      />
+
       <div className="max-w-7xl mx-auto space-y-6 sm:space-y-7 pb-10 pt-1">
+
+        {/* Dynamic Match Re-run Toast */}
+        {rerunNotification && (
+          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center justify-between shadow-xs animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="flex items-center gap-2">
+              <Sparkles size={15} className="text-emerald-600" />
+              <span>{rerunNotification}</span>
+            </div>
+            <button onClick={() => setRerunNotification(null)} className="text-emerald-600 hover:text-emerald-900 cursor-pointer">
+              <X size={14} />
+            </button>
+          </div>
+        )}
 
         {/* 1. Greeting and Top KPIs (Compact & Light Theme with Soft Shadows) */}
         <section className="space-y-4">
@@ -75,6 +177,15 @@ export default function Dashboard() {
                 <span className="text-[11px] text-slate-500 font-medium">
                   Live FX: <strong className="font-mono text-slate-700 font-bold">1 NZD = {syncState.fxRateJpyNzd} JPY</strong>
                 </span>
+                <span className="text-slate-300">•</span>
+                <button
+                  onClick={() => setShowPreferencesPrompt(true)}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer border border-slate-200 shadow-2xs"
+                  title="Review or update this week's buying criteria"
+                >
+                  <SlidersHorizontal size={11} className="text-[#B30D12]" />
+                  <span>Update Preferences</span>
+                </button>
               </div>
 
               <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
@@ -105,7 +216,7 @@ export default function Dashboard() {
           </div>
 
           {/* Top 3 Compact KPIs with Soft Shadows */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {/* KPI 1: Best Matches */}
             <div className="bg-white p-4 sm:p-4.5 rounded-xl border border-slate-200/80 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_6px_16px_-3px_rgba(15,23,42,0.08),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/80 transition-all duration-200 flex flex-col justify-between">
               <div className="flex items-center justify-between">
@@ -181,7 +292,7 @@ export default function Dashboard() {
         </section>
 
         {/* 2. The "Best matches for you" list (Cards with Soft Shadows) */}
-        <section className="space-y-3.5">
+        <section className="space-y-4">
           <div className="flex items-center justify-between pb-1.5 border-b border-slate-200">
             <div className="flex items-center gap-2">
               <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
@@ -201,14 +312,14 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-6">
             {paginatedBestMatches.map((vehicle) => (
               <div
                 key={vehicle.id}
                 className="bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_8px_20px_-4px_rgba(15,23,42,0.1),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/90 transition-all duration-200 overflow-hidden flex flex-col sm:flex-row group"
               >
                 {/* Vehicle Thumbnail with Compact Overlay */}
-                <div className="w-full sm:w-[220px] md:w-[240px] h-[150px] sm:h-auto min-h-[150px] relative shrink-0 overflow-hidden bg-slate-100">
+                <div className="w-full sm:w-[220px] md:w-[280px] h-[150px] sm:h-auto min-h-[150px] relative shrink-0 overflow-hidden bg-slate-100">
                   <img
                     src={vehicle.image}
                     alt={`${vehicle.make} ${vehicle.model}`}
@@ -238,10 +349,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* Main Vehicle Information & Pricing */}
-                <div className="p-4 sm:p-4.5 flex-1 flex flex-col justify-between gap-3">
+                <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between gap-3">
                   <div>
                     {/* Header Row */}
-                    <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-start justify-between gap-4">
                       <div>
                         <div className="flex flex-wrap items-center gap-1.5">
                           <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-[#B30D12] transition-colors">
@@ -264,12 +375,12 @@ export default function Dashboard() {
                     </div>
 
                     {/* AI Summary Note */}
-                    <div className="bg-slate-50/80 rounded-lg px-3 py-1.5 border-l-2 border-[#B30D12] text-[11px] text-slate-600 leading-relaxed font-medium mt-2.5">
+                    <div className="bg-slate-100 rounded-lg px-3 py-1.5 border-l-2 border-[#B30D12] text-[11px] text-slate-600 leading-relaxed font-medium mt-4">
                       {vehicle.aiAnalysis.summary}
                     </div>
 
                     {/* Financial Figures Strip */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-2.5 bg-slate-50/80 rounded-lg border border-slate-200/60 text-xs mt-2.5">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs mt-4">
                       <div>
                         <span className="text-[9px] font-bold text-slate-400 uppercase block">
                           Est. Landed (NZD)
@@ -306,14 +417,14 @@ export default function Dashboard() {
                   </div>
 
                   {/* Actions Row */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-4">
                     <button
                       onClick={() =>
                         triggerAutoHubCopilot(
                           `Analyze landed margin, sheet condition, and bidding strategy for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`
                         )
                       }
-                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 hover:text-[#B30D12] transition-colors"
+                      className="inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold bg-red-50 text-[#B30D12] rounded-lg border border-red-200"
                     >
                       <Sparkles size={12} className="text-[#B30D12]" />
                       <span>Ask AI About This Lot</span>
@@ -321,7 +432,7 @@ export default function Dashboard() {
 
                     <Link
                       href={`/vehicles/${vehicle.id}`}
-                      className="px-3.5 py-1.5 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-lg transition-all shadow-xs hover:shadow flex items-center gap-1"
+                      className="px-4 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white text-sm font-bold rounded-lg transition-all shadow-xs hover:shadow flex items-center gap-1"
                     >
                       <span>Calculate & Bid</span>
                       <ArrowRight size={12} />
@@ -334,8 +445,8 @@ export default function Dashboard() {
 
           {/* Best Matches Pagination Controls */}
           {totalBestPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1.5 bg-slate-50/60 p-2.5 rounded-xl border border-slate-200/60">
-              <span className="text-[11px] font-semibold text-slate-500">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1.5 bg-white p-2.5 rounded-xl border border-slate-200/60">
+              <span className="text-[12px] font-semibold text-slate-500">
                 Showing <strong className="text-slate-900 font-bold">{((bestPage - 1) * BEST_PER_PAGE) + 1}–{Math.min(bestPage * BEST_PER_PAGE, bestMatches.length)}</strong> of <strong className="text-slate-900 font-bold">{bestMatches.length}</strong> priority lots
               </span>
 
@@ -354,11 +465,10 @@ export default function Dashboard() {
                     <button
                       key={idx}
                       onClick={() => setBestPage(p)}
-                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${
-                        bestPage === p
-                          ? "bg-[#B30D12] text-white shadow-2xs"
-                          : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
-                      }`}
+                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${bestPage === p
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
+                        }`}
                     >
                       {p}
                     </button>
@@ -401,7 +511,7 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {paginatedOtherVehicles.map((vehicle) => (
               <div
                 key={vehicle.id}
@@ -409,23 +519,23 @@ export default function Dashboard() {
               >
                 <div>
                   <div className="flex items-start gap-3">
-                    <div className="w-20 h-16 rounded-lg overflow-hidden bg-slate-100 shrink-0 relative">
+                    <div className="w-24 h-24 rounded-lg overflow-hidden bg-slate-100 shrink-0 relative">
                       <img
                         src={vehicle.image}
                         alt={`${vehicle.make} ${vehicle.model}`}
                         className="w-full h-full object-cover"
                       />
-                      <span className="absolute bottom-0.5 left-0.5 px-1 py-0.2 bg-black/75 text-[8px] font-bold text-white rounded">
+                      <span className="absolute bottom-0.5 left-0.5 px-1 py-0.2 bg-black/75 text-[10px] font-bold text-white rounded">
                         Gr {vehicle.grade}
                       </span>
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="text-[10px] font-medium text-slate-500 font-mono">
+                        <span className="text-[12px] font-medium text-slate-500">
                           {vehicle.auctionHouse} #{vehicle.lotNumber}
                         </span>
-                        <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded shadow-2xs ${vehicle.status === "Consider"
+                        <span className={`px-3 py-1.5 rounded-lg text-base font-bold shadow-2xs ${vehicle.status === "Consider"
                           ? "bg-amber-50 text-amber-700 border border-amber-200/60"
                           : "bg-slate-100 text-slate-600 border border-slate-200/50"
                           }`}>
@@ -472,15 +582,15 @@ export default function Dashboard() {
                         `Inspect condition sheet and estimate margin for ${vehicle.year} ${vehicle.make} ${vehicle.model}`
                       )
                     }
-                    className="text-[11px] font-semibold text-slate-500 hover:text-[#B30D12] transition-colors flex items-center gap-1"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-red-50 text-[#B30D12] rounded-lg border border-red-200"
                   >
-                    <Sparkles size={11} className="text-[#B30D12]" />
+                    <Sparkles size={12} className="text-[#B30D12]" />
                     <span>Quick Scan</span>
                   </button>
 
                   <Link
                     href={`/vehicles/${vehicle.id}`}
-                    className="text-xs font-bold text-slate-800 hover:text-[#B30D12] flex items-center gap-1 transition-colors"
+                    className="font-bold px-3 py-1.5 text-sm bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg flex items-center gap-1 transition-colors"
                   >
                     <span>Inspect Lot</span>
                     <ArrowRight size={11} />
@@ -492,8 +602,8 @@ export default function Dashboard() {
 
           {/* Other Vehicles Pagination Controls */}
           {totalOtherPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 bg-slate-50/60 p-2.5 rounded-xl border border-slate-200/60">
-              <span className="text-[11px] font-semibold text-slate-500">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 bg-white p-2.5 rounded-xl border border-slate-200/60">
+              <span className="text-[12px] font-semibold text-slate-500">
                 Showing <strong className="text-slate-900 font-bold">{((otherPage - 1) * OTHER_PER_PAGE) + 1}–{Math.min(otherPage * OTHER_PER_PAGE, otherVehicles.length)}</strong> of <strong className="text-slate-900 font-bold">{otherVehicles.length}</strong> qualifying lots (Page {otherPage} of {totalOtherPages})
               </span>
 
@@ -512,11 +622,10 @@ export default function Dashboard() {
                     <button
                       key={idx}
                       onClick={() => setOtherPage(p)}
-                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${
-                        otherPage === p
-                          ? "bg-[#B30D12] text-white shadow-2xs"
-                          : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
-                      }`}
+                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${otherPage === p
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
+                        }`}
                     >
                       {p}
                     </button>

@@ -838,7 +838,7 @@ export const AI_WEEKLY_BRIEF = {
     title: 'AI Weekly Brief for AutoHub Sourcing',
     subtitle: 'Generated from 4,860 dealer search queries, 318 active wish lists, and NZ retail sales demand telemetry.',
     badge: 'AutoHub DIP Autonomous Sourcing Intelligence',
-    confidenceText: '96% Recommendation Confidence',
+    confidenceText: 'Data confidence: High',
     timestamp: 'Today at 07:00 JST / 11:00 NZST (Pre-Auction USS Tokyo Dispatch)',
     body: 'Demand for hybrid SUVs is rising sharply among NZ dealers. Vezel searches are up 40% this month and C-HR remains the most-requested model. Current AutoHub stock covers only 35% of C-HR demand. Sourcing an additional 60–80 C-HR and Vezel units for the next two auctions is recommended.',
     targets: [
@@ -851,7 +851,7 @@ export const AI_WEEKLY_BRIEF = {
     title: 'AutoHub仕入れ向けAI週次ブリーフ',
     subtitle: 'NZディーラーの4,860件の検索データ、318件の希望リスト、およびNZ国内販売速度から自動生成された調達推奨レポート。',
     badge: 'AutoHub DIP 自律調達インテリジェンス',
-    confidenceText: 'AI推奨信頼度 96%',
+    confidenceText: 'データ信頼度: 高',
     timestamp: '本日 07:00 JST / 11:00 NZST 更新（USS東京オークション直前ブリーフィング）',
     body: 'NZディーラー間においてハイブリッドSUVの需要が急増しています。今月ヴェゼルの検索数は40%増加し、C-HRは依然として最も要望の多いモデルです。現在のAutoHubの在庫はC-HR需要の35%しかカバーできていません。次回2回のオークションに向けて、C-HRおよびヴェゼルをさらに60〜80台仕入れることを強く推奨します。',
     targets: [

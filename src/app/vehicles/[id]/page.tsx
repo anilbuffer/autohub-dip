@@ -20,6 +20,7 @@ import {
   Layers,
   Download,
   Ship,
+  FileText,
   X
 } from "lucide-react";
 import { VEHICLES, GLOBAL_SETTINGS } from "@/lib/data";
@@ -37,7 +38,12 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
   const [targetMargin, setTargetMargin] = useState(vehicle.targetMarginNzd);
   const [bidPlaced, setBidPlaced] = useState(false);
   const [activePhoto, setActivePhoto] = useState(vehicle.image);
-  const [pdfToast, setPdfToast] = useState(false);
+  const [downloadToast, setDownloadToast] = useState<{
+    visible: boolean;
+    title: string;
+    lang: "Japanese" | "English – AI translated";
+    filename: string;
+  } | null>(null);
 
   // Dynamic calculations based on live inputs and Admin synced FX
   const fxRate = syncState.fxRateJpyNzd;
@@ -51,9 +57,33 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
   const maxBidJpy = Math.round((maxBidNzd - freightNzd - complianceNzd - (maxBidNzd * 0.13)) * fxRate);
   const profitMarginPercent = Math.round((targetMargin / totalLandedCost) * 100);
 
-  const handleDownloadSheet = () => {
-    setPdfToast(true);
-    setTimeout(() => setPdfToast(false), 3000);
+  const handleDownloadSheet = (lang: "Japanese" | "English – AI translated") => {
+    const url = lang === "Japanese" 
+      ? "/sheets/sample_inspection_sheet_japanese.html"
+      : "/sheets/sample_inspection_sheet_english.html";
+    
+    const filename = lang === "Japanese"
+      ? `Inspection_Sheet_Japanese_${vehicle.stockid || vehicle.lotNumber}.html`
+      : `Inspection_Sheet_English_AI_Translated_${vehicle.stockid || vehicle.lotNumber}.html`;
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setDownloadToast({
+      visible: true,
+      title: `Inspection sheet (${lang})`,
+      lang,
+      filename
+    });
+
+    setTimeout(() => {
+      setDownloadToast(null);
+    }, 5000);
   };
 
   const handlePlaceBid = () => {
@@ -83,15 +113,37 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
         </div>
 
         {/* PDF Download Toast Notification */}
-        {pdfToast && (
-          <div className="p-4 rounded-xl bg-[#1B2A4A] text-white text-xs font-bold flex items-center justify-between shadow-lg animate-in fade-in slide-in-from-top-2 duration-150">
-            <div className="flex items-center gap-2">
-              <Download size={16} className="text-emerald-400" />
-              <span>Japanese USS Auction Inspection Sheet downloaded for Lot #{vehicle.lotNumber} (Verified Grade {vehicle.grade})</span>
+        {downloadToast && downloadToast.visible && (
+          <div className="p-4 rounded-xl bg-[#1B2A4A] text-white text-xs font-bold flex items-center justify-between shadow-xl border border-white/10 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <Download size={15} />
+              </div>
+              <div>
+                <div className="text-white font-extrabold flex items-center gap-1.5">
+                  <span>{downloadToast.title} downloaded</span>
+                  {downloadToast.lang.includes("AI") && (
+                    <span className="px-1.5 py-0.2 bg-red-600 text-white text-[9px] font-bold rounded">Prototype Sample</span>
+                  )}
+                </div>
+                <div className="text-[11px] text-slate-300 font-medium mt-0.5 font-mono">
+                  {downloadToast.filename} • Ready to view/print
+                </div>
+              </div>
             </div>
-            <button onClick={() => setPdfToast(false)} className="text-slate-400 hover:text-white">
-              <X size={14} />
-            </button>
+            <div className="flex items-center gap-2">
+              <a
+                href={downloadToast.lang === "Japanese" ? "/sheets/sample_inspection_sheet_japanese.html" : "/sheets/sample_inspection_sheet_english.html"}
+                target="_blank"
+                rel="noreferrer"
+                className="px-2.5 py-1 rounded bg-white/15 hover:bg-white/25 text-white text-[11px] font-bold transition-colors"
+              >
+                Open in Tab
+              </a>
+              <button onClick={() => setDownloadToast(null)} className="text-slate-400 hover:text-white p-1">
+                <X size={15} />
+              </button>
+            </div>
           </div>
         )}
 
@@ -254,12 +306,36 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 </button>
               )}
 
-              <button 
-                onClick={handleDownloadSheet}
-                className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
-              >
-                <FileCheck2 size={14} /> Download Japanese Inspection Sheet (PDF)
-              </button>
+              {/* Inspection Sheet Download Buttons */}
+              <div className="pt-2 space-y-2">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Auction Inspection Documentation
+                </span>
+                
+                {/* 1. Inspection sheet (Japanese) */}
+                <button 
+                  onClick={() => handleDownloadSheet("Japanese")}
+                  className="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all flex items-center justify-between border border-slate-200 shadow-2xs hover:shadow-xs group cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <FileCheck2 size={15} className="text-slate-500 group-hover:text-slate-700 shrink-0" />
+                    <span>Inspection sheet (Japanese)</span>
+                  </div>
+                  <Download size={13} className="text-slate-400 group-hover:text-slate-600 shrink-0" />
+                </button>
+
+                {/* 2. Inspection sheet (English – AI translated) */}
+                <button 
+                  onClick={() => handleDownloadSheet("English – AI translated")}
+                  className="w-full py-2.5 px-3 bg-gradient-to-r from-red-50 to-rose-50 hover:from-red-100 hover:to-rose-100 text-[#B30D12] font-bold text-xs rounded-xl transition-all flex items-center justify-between border border-red-200/80 shadow-2xs hover:shadow-xs group cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={15} className="text-[#B30D12] shrink-0" />
+                    <span>Inspection sheet (English – AI translated)</span>
+                  </div>
+                  <Download size={13} className="text-[#B30D12]/70 group-hover:text-[#B30D12] shrink-0" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -276,7 +352,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   AI Appraisal & Margin Potential Rationale
                 </h3>
                 <span className="text-xs font-bold text-slate-600 bg-white px-2.5 py-0.5 rounded-full border border-slate-200 shadow-2xs">
-                  {vehicle.aiAnalysis.confidence}% Statistical Confidence
+                  Data confidence: High
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
@@ -440,9 +516,9 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
 
         {/* Heiwa Japanese Auction Sheet Verified Data */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] overflow-hidden">
-          <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+          <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] flex items-center justify-center font-bold">
+              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0">
                 <FileCheck2 size={16} />
               </div>
               <div>
@@ -450,9 +526,28 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 <p className="text-xs text-slate-500 font-medium">Exact data fields extracted directly from the verified Heiwa auction inventory record.</p>
               </div>
             </div>
-            <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg">
-              Stock #{vehicle.stockid}
-            </span>
+
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-lg border border-slate-200">
+                Stock #{vehicle.stockid}
+              </span>
+
+              <button
+                onClick={() => handleDownloadSheet("Japanese")}
+                className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 border border-slate-200 cursor-pointer"
+              >
+                <Download size={13} />
+                <span>Inspection sheet (Japanese)</span>
+              </button>
+
+              <button
+                onClick={() => handleDownloadSheet("English – AI translated")}
+                className="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-[#B30D12] border border-red-200 font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs cursor-pointer"
+              >
+                <Sparkles size={13} />
+                <span>Inspection sheet (English – AI translated)</span>
+              </button>
+            </div>
           </div>
 
           <div className="p-5 sm:p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 text-xs">

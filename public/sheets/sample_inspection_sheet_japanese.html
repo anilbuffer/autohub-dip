@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>USS / Heiwa Japanese Auction Inspection Sheet (出品票)</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      margin: 0;
+      padding: 24px;
+    }
+    .sheet {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #fff;
+      border: 2px solid #1e293b;
+      padding: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #1e293b;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #dc2626;
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #94a3b8;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 700;
+      width: 18%;
+    }
+    .score-box {
+      font-size: 24px;
+      font-weight: 900;
+      color: #dc2626;
+      text-align: center;
+    }
+    .diagram-box {
+      border: 1px dashed #94a3b8;
+      background: #f8fafc;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 16px;
+      border-radius: 6px;
+    }
+    .inspector-notes {
+      background: #fef2f2;
+      border-left: 4px solid #dc2626;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .sheet { box-shadow: none; border: 1px solid #000; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="header">
+      <div>
+        <span class="badge">USS TOKYO / HEIWA 認定出品票</span>
+        <div class="title" style="margin-top: 6px;">自動車オークション検査報告書</div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 12px; color: #64748b;">開催日: 2026年09月</div>
+        <div style="font-size: 18px; font-weight: 900; font-family: monospace;">LOT #4028</div>
+      </div>
+    </div>
+
+    <table>
+      <tr>
+        <th>車名 (Make)</th>
+        <td style="font-weight:bold;">TOYOTA (トヨタ)</td>
+        <th>型式 (Model)</th>
+        <td>PRIUS 5D (プリウス)</td>
+        <th>評価点 (Grade)</th>
+        <td class="score-box">4.0 / B</td>
+      </tr>
+      <tr>
+        <th>車台番号 (Chassis)</th>
+        <td style="font-family: monospace;">ZVW30-1982701</td>
+        <th>年式 (Year)</th>
+        <td>平成27年 (2015)</td>
+        <th>排気量 (CC)</th>
+        <td>1,800 cc</td>
+      </tr>
+      <tr>
+        <th>走行距離 (ODO)</th>
+        <td><strong>43,000 km</strong> (実走行・改ざんなし)</td>
+        <th>シフト (Trans)</th>
+        <td>FAT (CVT)</td>
+        <th>燃料 (Fuel)</th>
+        <td>ハイブリッド (HV)</td>
+      </tr>
+      <tr>
+        <th>車体色 (Color)</th>
+        <td>ブラック (202)</td>
+        <th>冷房 (A/C)</th>
+        <td>AAC (オートエアコン良好)</td>
+        <th>装備 (Equip)</th>
+        <td>PS, PW, ABS, AIRBAG, ナビ, TV</td>
+      </tr>
+    </table>
+
+    <div class="diagram-box">
+      <div style="font-weight: bold; margin-bottom: 8px; font-size: 13px;">車両外装状態展開図 (Exterior Condition Map)</div>
+      <svg width="420" height="140" viewBox="0 0 420 140" style="margin: 0 auto; display: block;">
+        <rect x="60" y="30" width="300" height="80" rx="20" fill="#e2e8f0" stroke="#475569" stroke-width="2"/>
+        <rect x="120" y="45" width="180" height="50" rx="8" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+        <text x="210" y="75" font-size="12" font-family="sans-serif" text-anchor="middle" fill="#334155">ROOF [ OK ]</text>
+        <!-- Markings -->
+        <circle cx="85" cy="50" r="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="85" y="54" font-size="10" font-weight="bold" fill="#dc2626" text-anchor="middle">A1</text>
+        <circle cx="335" cy="90" r="10" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+        <text x="335" y="94" font-size="10" font-weight="bold" fill="#dc2626" text-anchor="middle">U1</text>
+      </svg>
+      <div style="font-size: 11px; color: #64748b; margin-top: 6px;">
+        記号凡例: A1=小キズ (Minor scratch) | U1=極小ヘコミ (Tiny ping dent) | W=修復跡なし
+      </div>
+    </div>
+
+    <div class="inspector-notes">
+      <strong>検査員記入欄 (Inspector Field Notes):</strong><br>
+      ・内装：シート若干のスレあり、禁煙車、天張りヤニ汚れなし。<br>
+      ・機関：エンジン・インバーターハイブリッドシステム異音なし、警告灯点灯なし。<br>
+      ・下回り：サビ腐食なし、良好。<br>
+      ・特記事項：スマートキー2個、純正SDナビ、バックカメラ、取扱説明書付属。
+    </div>
+
+    <div class="footer">
+      <span>AutoHub DIP • Heiwa Auto Verification Partner Pipeline</span>
+      <span>発行元: 日本自動車査定協会基準準拠 (Original Japanese Auction Sheet)</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from 'react';
-import { SUPPLY_DEMAND_GAP, SupplyGapItem } from '@/lib/demandIntelligenceData';
+import { SUPPLY_DEMAND_GAP, SupplyGapItem, UPCOMING_AUCTION_MATCHES } from '@/lib/demandIntelligenceData';
 import { 
   Zap, 
   ArrowUpDown, 
@@ -17,12 +17,20 @@ import {
   Filter,
   CheckCircle2,
   Ship,
-  ExternalLink
+  ExternalLink,
+  Warehouse,
+  Radio,
+  Building2,
+  Send,
+  Compass,
+  Users
 } from 'lucide-react';
 import Image from 'next/image';
+import MatchedDealersDrawer from './MatchedDealersDrawer';
 
 interface SupplyDemandGapTableProps {
   onSelectModel?: (modelName: string) => void;
+  onNotifyToast?: (msg: string) => void;
 }
 
 type SortField = 'unmetGap' | 'demandUnits' | 'currentStockUnits' | 'coveragePct' | 'avgDaysToSell' | 'avgDealerMarginNzd';
@@ -40,11 +48,13 @@ function getPaginationPages(currentPage: number, totalPages: number) {
   return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
 }
 
-export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapTableProps) {
+export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: SupplyDemandGapTableProps) {
   const [filterTag, setFilterTag] = useState<'All' | 'Source more' | 'Balanced' | 'Oversupplied'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<SortField>('unmetGap');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [expandedModelId, setExpandedModelId] = useState<string | null>('chr');
+  const [drawerVehicle, setDrawerVehicle] = useState<any | null>(null);
 
   // Pagination matching Dealer panel design system
   const ITEMS_PER_PAGE = 5;
@@ -315,110 +325,224 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
           <tbody className="divide-y divide-slate-100 text-xs font-medium">
             {paginatedItems.map((item) => {
               const coverage = getCoverageBadge(item.coveragePct);
+              const isExpanded = expandedModelId === item.id;
+              const matchingAuctionVehicle = UPCOMING_AUCTION_MATCHES.find(v => v.model.toLowerCase().includes(item.model.toLowerCase())) || UPCOMING_AUCTION_MATCHES[0];
 
               return (
-                <tr 
-                  key={item.id}
-                  className={`hover:bg-slate-50/90 transition-colors ${
-                    item.immediateSeller 
-                      ? 'bg-amber-50/25 border-l-4 border-l-[#B30D12]' 
-                      : ''
-                  }`}
-                >
-                  {/* Model Column */}
-                  <td className="py-3.5 px-5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
-                        <img 
-                          src={item.image} 
-                          alt={item.model}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-black text-slate-900 text-sm">
-                            {item.model}
-                          </span>
-                          {item.immediateSeller && (
-                            <span className="px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
-                              Immediate Seller
+                <React.Fragment key={item.id}>
+                  <tr 
+                    onClick={() => setExpandedModelId(isExpanded ? null : item.id)}
+                    className={`hover:bg-slate-50/90 transition-colors cursor-pointer select-none ${
+                      item.immediateSeller 
+                        ? 'bg-amber-50/25 border-l-4 border-l-[#B30D12]' 
+                        : ''
+                    } ${isExpanded ? 'bg-slate-50/90 font-medium' : ''}`}
+                  >
+                    {/* Model Column */}
+                    <td className="py-3.5 px-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
+                          <img 
+                            src={item.image} 
+                            alt={item.model}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-black text-slate-900 text-sm">
+                              {item.model}
                             </span>
-                          )}
+                            {item.immediateSeller && (
+                              <span className="px-1.5 py-0.5 rounded font-black text-[9px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
+                                Immediate Seller
+                              </span>
+                            )}
+                          </div>
+                          <div className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                            {item.badge}
+                          </div>
+                          <span className="text-[10px] text-slate-400 font-medium">
+                            {item.segment}
+                          </span>
                         </div>
-                        <div className="text-[11px] text-slate-500 font-medium truncate mt-0.5">
-                          {item.badge}
+                      </div>
+                    </td>
+
+                    {/* Dealer Demand */}
+                    <td className="py-3.5 px-4 font-black text-slate-900 text-sm">
+                      {item.demandUnits}
+                      <span className="text-[11px] text-slate-400 font-medium ml-1">units</span>
+                      <span className="text-[10px] text-emerald-700 font-bold block mt-0.5">
+                        {item.unmetGap > 0 ? `${item.demandUnits - item.currentStockUnits} unfulfilled` : 'Fully covered'}
+                      </span>
+                    </td>
+
+                    {/* Current AutoHub Stock */}
+                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                      {item.currentStockUnits}
+                      <span className="text-[11px] text-slate-400 font-normal ml-1">available</span>
+                      <span className="text-[10px] text-slate-400 block mt-0.5">
+                        Auckland Yard
+                      </span>
+                    </td>
+
+                    {/* Coverage % with Progress Bar */}
+                    <td className="py-3.5 px-4">
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-bold text-slate-800">
+                            {item.coveragePct}%
+                          </span>
+                          <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold border ${coverage.textColor}`}>
+                            {coverage.label}
+                          </span>
                         </div>
-                        <span className="text-[10px] text-slate-400 font-medium">
-                          {item.segment}
+                        <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full transition-all duration-500 ${coverage.barColor}`}
+                            style={{ width: `${Math.min(100, item.coveragePct)}%` }}
+                          />
+                        </div>
+                        {item.unmetGap > 0 && (
+                          <span className="text-[10px] text-rose-600 font-bold block">
+                            Unmet Gap: -{item.unmetGap} units
+                          </span>
+                        )}
+                      </div>
+                    </td>
+
+                    {/* Est. days to land in NZ (indicative) */}
+                    <td className="py-3.5 px-4 font-bold text-slate-800">
+                      <div className="flex items-center gap-1.5">
+                        <Ship size={13} className="text-blue-600" />
+                        <span>18–22 days</span>
+                      </div>
+                      <span className="text-[10px] text-slate-400 block mt-0.5">
+                        Direct Ro-Ro Japan → NZ
+                      </span>
+                    </td>
+
+                    {/* Margin Potential */}
+                    <td className="py-3.5 px-4">
+                      <span className="font-black text-emerald-700 text-sm">
+                        +NZ${item.avgDealerMarginNzd.toLocaleString('en-US')}
+                      </span>
+                      <span className="block text-[10px] text-slate-400 font-medium">
+                        ¥{item.avgDealerMarginJpy.toLocaleString('en-US')} JPY
+                      </span>
+                    </td>
+
+                    {/* AI Recommendation Tag & Chevron */}
+                    <td className="py-3.5 px-5 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        {getRecBadge(item.recommendation)}
+                        <span className={`p-1 rounded-lg text-slate-400 transition-transform ${isExpanded ? 'rotate-180 text-slate-700 bg-slate-200/60' : ''}`}>
+                          <ChevronDown size={14} />
                         </span>
                       </div>
-                    </div>
-                  </td>
+                    </td>
+                  </tr>
 
-                  {/* Dealer Demand */}
-                  <td className="py-3.5 px-4 font-black text-slate-900 text-sm">
-                    {item.demandUnits}
-                    <span className="text-[11px] text-slate-400 font-medium ml-1">units</span>
-                  </td>
+                  {/* Expanded Row Detail Drawer */}
+                  {isExpanded && (
+                    <tr className="bg-slate-50/95 border-b border-slate-200">
+                      <td colSpan={7} className="p-4 sm:p-5">
+                        <div className="rounded-2xl bg-white border border-slate-200/90 p-4 sm:p-5 shadow-xs space-y-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                            <div className="flex items-center gap-2">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-900 text-white">
+                                Demand &amp; Supply Match Intelligence
+                              </span>
+                              <h5 className="font-black text-slate-900 text-sm">
+                                {item.model} &mdash; Signal Ingestion &amp; Sourcing Breakdown
+                              </h5>
+                            </div>
 
-                  {/* Current AutoHub Stock */}
-                  <td className="py-3.5 px-4 font-bold text-slate-700">
-                    {item.currentStockUnits}
-                    <span className="text-[11px] text-slate-400 font-normal ml-1">available</span>
-                  </td>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setDrawerVehicle(matchingAuctionVehicle);
+                              }}
+                              className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[#B30D12] hover:bg-[#940B0F] text-white shadow-2xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                            >
+                              <Users size={13} />
+                              <span>View Matched Dealers &amp; Notify</span>
+                            </button>
+                          </div>
 
-                  {/* Coverage % with Progress Bar */}
-                  <td className="py-3.5 px-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between text-[11px]">
-                        <span className="font-bold text-slate-800">
-                          {item.coveragePct}%
-                        </span>
-                        <span className={`px-1.5 py-0.2 rounded text-[10px] font-bold border ${coverage.textColor}`}>
-                          {coverage.label}
-                        </span>
-                      </div>
-                      <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                        <div 
-                          className={`h-full rounded-full transition-all duration-500 ${coverage.barColor}`}
-                          style={{ width: `${Math.min(100, item.coveragePct)}%` }}
-                        />
-                      </div>
-                      {item.unmetGap > 0 && (
-                        <span className="text-[10px] text-rose-600 font-bold block">
-                          Unmet Gap: -{item.unmetGap} units
-                        </span>
-                      )}
-                    </div>
-                  </td>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            {/* Card 1: Demand Signals */}
+                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+                              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
+                                <Radio size={13} className="text-[#B30D12]" />
+                                <span>Ingested Demand Signals</span>
+                              </div>
+                              <div className="space-y-1 text-slate-600 text-[11px]">
+                                <div className="flex justify-between">
+                                  <span>Active Dealer Wish Lists:</span>
+                                  <strong className="text-slate-900">{Math.round(item.demandUnits * 0.25)} orders</strong>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Searches &amp; Filter Queries:</span>
+                                  <strong className="text-slate-900">{Math.round(item.demandUnits * 4.2)} queries/wk</strong>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Desired Specifications:</span>
+                                  <strong className="text-slate-900">Grade 4.5+ &bull; &lt;55k km</strong>
+                                </div>
+                              </div>
+                            </div>
 
-                  {/* Est. days to land in NZ (indicative) */}
-                  <td className="py-3.5 px-4 font-bold text-slate-800">
-                    <div className="flex items-center gap-1.5">
-                      <Ship size={13} className="text-blue-600" />
-                      <span>18–22 days</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 block mt-0.5">
-                      Direct Ro-Ro Japan → NZ
-                    </span>
-                  </td>
+                            {/* Card 2: 30-Day Forecast & Deficit */}
+                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+                              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
+                                <Sparkles size={13} className="text-amber-600" />
+                                <span>Demand Forecast &amp; Deficit</span>
+                              </div>
+                              <div className="space-y-1 text-slate-600 text-[11px]">
+                                <div className="flex justify-between">
+                                  <span>30-Day Projected Demand:</span>
+                                  <strong className="text-slate-900">{Math.round(item.demandUnits * 1.18)} units (+18%)</strong>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Unmet Supply Deficit:</span>
+                                  <strong className="text-rose-600 font-bold">-{item.unmetGap} units gap</strong>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Recommended Sourcing:</span>
+                                  <strong className="text-emerald-700 font-bold">+{Math.max(20, Math.round(item.unmetGap * 0.5))} units at USS</strong>
+                                </div>
+                              </div>
+                            </div>
 
-                  {/* Margin Potential */}
-                  <td className="py-3.5 px-4">
-                    <span className="font-black text-emerald-700 text-sm">
-                      +NZ${item.avgDealerMarginNzd.toLocaleString('en-US')}
-                    </span>
-                    <span className="block text-[10px] text-slate-400 font-medium">
-                      ¥{item.avgDealerMarginJpy.toLocaleString('en-US')} JPY
-                    </span>
-                  </td>
-
-                  {/* AI Recommendation Tag */}
-                  <td className="py-3.5 px-5 text-right">
-                    {getRecBadge(item.recommendation)}
-                  </td>
-                </tr>
+                            {/* Card 3: Supply Chain Matching */}
+                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2">
+                              <div className="flex items-center gap-1.5 text-slate-900 font-bold">
+                                <Ship size={13} className="text-blue-600" />
+                                <span>Multi-Tier Supply Pipeline</span>
+                              </div>
+                              <div className="space-y-1 text-slate-600 text-[11px]">
+                                <div className="flex justify-between">
+                                  <span>Local Stock in Yard:</span>
+                                  <strong className="text-slate-900">{item.currentStockUnits} units</strong>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>In-Transit Ro-Ro Ships:</span>
+                                  <strong className="text-blue-700 font-bold">18 units arriving in 8d</strong>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Auction Lots Tomorrow:</span>
+                                  <strong className="text-[#B30D12] font-bold">14 candidate lots</strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               );
             })}
           </tbody>
@@ -470,6 +594,16 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
           </div>
         )}
       </div>
+
+      {/* Matched Dealers Drawer */}
+      <MatchedDealersDrawer
+        vehicle={drawerVehicle}
+        isOpen={Boolean(drawerVehicle)}
+        onClose={() => setDrawerVehicle(null)}
+        onNotifyToast={(msg) => {
+          if (onNotifyToast) onNotifyToast(msg);
+        }}
+      />
     </div>
   );
 }

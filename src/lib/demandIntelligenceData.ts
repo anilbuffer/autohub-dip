@@ -861,3 +861,754 @@ export const AI_WEEKLY_BRIEF = {
     ]
   }
 };
+
+// ==========================================
+// 1. DEMAND SIGNALS DATA & TYPES
+// ==========================================
+export interface IngestedDealerActivity {
+  id: string;
+  timestamp: string;
+  dealerId: number;
+  dealerName: string;
+  region: string;
+  type: 'wishlist' | 'search_spike' | 'filter_drop' | 'repeat_bid';
+  modelTarget: string;
+  rawQueryOrCriteria: string;
+  urgency: 'high' | 'medium' | 'normal';
+  targetBudgetNzd: number;
+  marginTargetNzd: number;
+  convertedToSignalId: string;
+}
+
+export interface SynthesizedDemandSignal {
+  id: string;
+  model: string;
+  make: string;
+  segment: 'SUV' | 'Compact' | 'Sedan/Wagon' | 'Hybrid';
+  badge: string;
+  fuel: string;
+  signalScore: number; // 0-100
+  momentum: 'Surging (+40%)' | 'Accelerating (+25%)' | 'Steady (+8%)' | 'Cooling (-12%)';
+  momentumDirection: 'up' | 'down' | 'steady';
+  
+  // Signal Sources Breakdown
+  wishlistCount: number;
+  searchQueriesCount: number;
+  savedAlertsCount: number;
+  activeDealerCount: number;
+  
+  // Synthesized specifications desired by dealers
+  yearRange: string;
+  maxMileageKm: number;
+  gradePreference: string;
+  avgTargetBudgetNzd: number;
+  avgExpectedMarginNzd: number;
+  topRequestingRegion: string;
+  topRequestingDealers: string[];
+  
+  // Status
+  supplyStatus: 'Severe Deficit' | 'Moderate Gap' | 'Covered' | 'Oversupplied';
+  unmetDemandUnits: number;
+}
+
+// Ingested Real-Time Dealer Activities (Wishlists & Search queries)
+export const INGESTED_DEALER_ACTIVITIES: IngestedDealerActivity[] = [
+  {
+    id: 'act-101',
+    timestamp: '4 mins ago',
+    dealerId: 1,
+    dealerName: 'Auckland Auto Group',
+    region: 'Auckland',
+    type: 'wishlist',
+    modelTarget: 'Toyota C-HR Hybrid',
+    rawQueryOrCriteria: 'Toyota C-HR 2019+, Grade 4.5+, <55k km, Black roof / Pearl White, max $23,500 landed',
+    urgency: 'high',
+    targetBudgetNzd: 23500,
+    marginTargetNzd: 4200,
+    convertedToSignalId: 'sig-chr'
+  },
+  {
+    id: 'act-102',
+    timestamp: '11 mins ago',
+    dealerId: 2,
+    dealerName: 'Hamilton Motors',
+    region: 'Waikato',
+    type: 'search_spike',
+    modelTarget: 'Honda Vezel e:HEV',
+    rawQueryOrCriteria: 'Honda Vezel Hybrid Sensing 2019-2022 <60,000km Hamilton delivery',
+    urgency: 'high',
+    targetBudgetNzd: 21500,
+    marginTargetNzd: 3800,
+    convertedToSignalId: 'sig-vezel'
+  },
+  {
+    id: 'act-103',
+    timestamp: '19 mins ago',
+    dealerId: 3,
+    dealerName: 'Christchurch Cars',
+    region: 'Canterbury',
+    type: 'wishlist',
+    modelTarget: 'Toyota Aqua S / G',
+    rawQueryOrCriteria: 'Aqua Hybrid 2019-2021, Grade 4.5, <50k km, 5-unit batch order, target margin $3.5k',
+    urgency: 'high',
+    targetBudgetNzd: 18000,
+    marginTargetNzd: 3500,
+    convertedToSignalId: 'sig-aqua'
+  },
+  {
+    id: 'act-104',
+    timestamp: '28 mins ago',
+    dealerId: 4,
+    dealerName: 'North Shore Hybrid Centre',
+    region: 'Auckland',
+    type: 'search_spike',
+    modelTarget: 'Lexus NX300h F-Sport',
+    rawQueryOrCriteria: 'Lexus NX300h AWD Sunroof Leather Takapuna retail <$45,000',
+    urgency: 'medium',
+    targetBudgetNzd: 42500,
+    marginTargetNzd: 5200,
+    convertedToSignalId: 'sig-nx300h'
+  },
+  {
+    id: 'act-105',
+    timestamp: '35 mins ago',
+    dealerId: 5,
+    dealerName: 'Wellington City Direct',
+    region: 'Wellington',
+    type: 'filter_drop',
+    modelTarget: 'Nissan Note e-Power',
+    rawQueryOrCriteria: 'Nissan Note e-Power Medalist <45k km under $16,500 (0 results found in yard stock)',
+    urgency: 'high',
+    targetBudgetNzd: 16500,
+    marginTargetNzd: 3100,
+    convertedToSignalId: 'sig-note'
+  },
+  {
+    id: 'act-106',
+    timestamp: '42 mins ago',
+    dealerId: 3,
+    dealerName: 'Christchurch Cars',
+    region: 'Canterbury',
+    type: 'wishlist',
+    modelTarget: 'Mazda CX-5 AWD',
+    rawQueryOrCriteria: 'Mazda CX-5 25S L-Package AWD, Leather interior, Grade 4.0+, retail $29k',
+    urgency: 'high',
+    targetBudgetNzd: 24500,
+    marginTargetNzd: 3900,
+    convertedToSignalId: 'sig-cx5'
+  },
+  {
+    id: 'act-107',
+    timestamp: '58 mins ago',
+    dealerId: 6,
+    dealerName: 'Tauranga Car Hub',
+    region: 'Bay of Plenty',
+    type: 'search_spike',
+    modelTarget: 'Honda Vezel Hybrid',
+    rawQueryOrCriteria: 'Vezel Hybrid e:HEV Grade 4.5 under $21,000 landed',
+    urgency: 'medium',
+    targetBudgetNzd: 20800,
+    marginTargetNzd: 3600,
+    convertedToSignalId: 'sig-vezel'
+  }
+];
+
+// Synthesized Demand Signals (Aggregation of 4,860 searches + 318 wish lists)
+export const SYNTHESIZED_DEMAND_SIGNALS: SynthesizedDemandSignal[] = [
+  {
+    id: 'sig-chr',
+    model: 'Toyota C-HR',
+    make: 'Toyota',
+    segment: 'SUV',
+    badge: '1.8L G LED Hybrid',
+    fuel: 'Hybrid',
+    signalScore: 98,
+    momentum: 'Surging (+40%)',
+    momentumDirection: 'up',
+    wishlistCount: 42,
+    searchQueriesCount: 680,
+    savedAlertsCount: 38,
+    activeDealerCount: 61,
+    yearRange: '2019 – 2022',
+    maxMileageKm: 55000,
+    gradePreference: 'Grade 4.5+ / Int A-B',
+    avgTargetBudgetNzd: 23200,
+    avgExpectedMarginNzd: 4100,
+    topRequestingRegion: 'Auckland & Waikato',
+    topRequestingDealers: ['Auckland Auto Group', 'Hamilton Motors', 'North Shore Hybrid Centre'],
+    supplyStatus: 'Severe Deficit',
+    unmetDemandUnits: 105
+  },
+  {
+    id: 'sig-vezel',
+    model: 'Honda Vezel',
+    make: 'Honda',
+    segment: 'SUV',
+    badge: '1.5L e:HEV / Hybrid Z',
+    fuel: 'Hybrid',
+    signalScore: 95,
+    momentum: 'Surging (+40%)',
+    momentumDirection: 'up',
+    wishlistCount: 36,
+    searchQueriesCount: 540,
+    savedAlertsCount: 31,
+    activeDealerCount: 49,
+    yearRange: '2019 – 2022',
+    maxMileageKm: 60000,
+    gradePreference: 'Grade 4.5 (Honda Sensing)',
+    avgTargetBudgetNzd: 21200,
+    avgExpectedMarginNzd: 3850,
+    topRequestingRegion: 'Auckland & Bay of Plenty',
+    topRequestingDealers: ['Hamilton Motors', 'Auckland Auto Group', 'Tauranga Car Hub'],
+    supplyStatus: 'Severe Deficit',
+    unmetDemandUnits: 97
+  },
+  {
+    id: 'sig-aqua',
+    model: 'Toyota Aqua',
+    make: 'Toyota',
+    segment: 'Compact',
+    badge: '1.5L S / G Package',
+    fuel: 'Hybrid',
+    signalScore: 96,
+    momentum: 'Accelerating (+25%)',
+    momentumDirection: 'up',
+    wishlistCount: 58,
+    searchQueriesCount: 890,
+    savedAlertsCount: 45,
+    activeDealerCount: 68,
+    yearRange: '2019 – 2021',
+    maxMileageKm: 50000,
+    gradePreference: 'Grade 4.5 (Safety Sense)',
+    avgTargetBudgetNzd: 18200,
+    avgExpectedMarginNzd: 4000,
+    topRequestingRegion: 'Canterbury & Auckland',
+    topRequestingDealers: ['Christchurch Cars', 'Auckland Auto Group', 'Dunedin Metro Autos'],
+    supplyStatus: 'Severe Deficit',
+    unmetDemandUnits: 96
+  },
+  {
+    id: 'sig-cx5',
+    model: 'Mazda CX-5',
+    make: 'Mazda',
+    segment: 'SUV',
+    badge: '2.5L / 2.2D L-Package AWD',
+    fuel: 'Petrol/Diesel',
+    signalScore: 89,
+    momentum: 'Accelerating (+25%)',
+    momentumDirection: 'up',
+    wishlistCount: 29,
+    searchQueriesCount: 420,
+    savedAlertsCount: 24,
+    activeDealerCount: 38,
+    yearRange: '2018 – 2021',
+    maxMileageKm: 65000,
+    gradePreference: 'Grade 4.0+ (AWD Leather)',
+    avgTargetBudgetNzd: 24200,
+    avgExpectedMarginNzd: 3600,
+    topRequestingRegion: 'Canterbury & Otago',
+    topRequestingDealers: ['Christchurch Cars', 'Hamilton Motors'],
+    supplyStatus: 'Severe Deficit',
+    unmetDemandUnits: 67
+  },
+  {
+    id: 'sig-note',
+    model: 'Nissan Note e-Power',
+    make: 'Nissan',
+    segment: 'Compact',
+    badge: '1.2L e-POWER X / Medalist',
+    fuel: 'Hybrid',
+    signalScore: 86,
+    momentum: 'Accelerating (+25%)',
+    momentumDirection: 'up',
+    wishlistCount: 24,
+    searchQueriesCount: 380,
+    savedAlertsCount: 19,
+    activeDealerCount: 35,
+    yearRange: '2019 – 2021',
+    maxMileageKm: 45000,
+    gradePreference: 'Grade 4.5 (Medalist trim)',
+    avgTargetBudgetNzd: 16400,
+    avgExpectedMarginNzd: 3100,
+    topRequestingRegion: 'Auckland & Wellington',
+    topRequestingDealers: ['Wellington City Direct', 'Auckland Auto Group'],
+    supplyStatus: 'Severe Deficit',
+    unmetDemandUnits: 64
+  },
+  {
+    id: 'sig-prius',
+    model: 'Toyota Prius',
+    make: 'Toyota',
+    segment: 'Sedan/Wagon',
+    badge: '1.8L S Touring / A Premium',
+    fuel: 'Hybrid',
+    signalScore: 78,
+    momentum: 'Steady (+8%)',
+    momentumDirection: 'steady',
+    wishlistCount: 38,
+    searchQueriesCount: 520,
+    savedAlertsCount: 27,
+    activeDealerCount: 54,
+    yearRange: '2017 – 2020',
+    maxMileageKm: 80000,
+    gradePreference: 'Grade 4.0+',
+    avgTargetBudgetNzd: 19800,
+    avgExpectedMarginNzd: 3400,
+    topRequestingRegion: 'Auckland & Wellington',
+    topRequestingDealers: ['Auckland Auto Group', 'Wellington City Direct'],
+    supplyStatus: 'Moderate Gap',
+    unmetDemandUnits: 46
+  }
+];
+
+// ==========================================
+// 2. DEMAND FORECAST & UNMET DEMAND TYPES
+// ==========================================
+export interface DemandForecastItem {
+  id: string;
+  model: string;
+  make: string;
+  segment: string;
+  currentMonthlyDemand: number;
+  forecast30d: number;
+  forecast60d: number;
+  forecast90d: number;
+  trendPct: number;
+  confidenceScore: number;
+  seasonalityDriver: string;
+  projectedSupplyUnits: number;
+  unmetForecastGap: number;
+  recommendedAuctionIntake: number;
+  targetAuctionHouses: string[];
+  procurementDeadline: string;
+}
+
+export interface UnmetDemandMetric {
+  totalUnmetUnits: number;
+  lostGmvNzd: number;
+  lostGmvJpy: number;
+  unfulfilledDealersCount: number;
+  criticalDeficitModelsCount: number;
+  avgTurnDaysForShortageModels: number;
+}
+
+export interface UnmetDealerRequest {
+  id: string;
+  dealerId: number;
+  dealerName: string;
+  region: string;
+  model: string;
+  specRequirements: string;
+  daysWaiting: number;
+  maxBudgetNzd: number;
+  priorityScore: number;
+  status: 'Waiting for Stock' | 'Partially Matched' | 'Auction Proxy Set';
+}
+
+// 30 / 60 / 90 Day Demand Forecast Data
+export const DEMAND_FORECAST_ITEMS: DemandForecastItem[] = [
+  {
+    id: 'fc-chr',
+    model: 'Toyota C-HR',
+    make: 'Toyota',
+    segment: 'Hybrid SUV',
+    currentMonthlyDemand: 162,
+    forecast30d: 190,
+    forecast60d: 215,
+    forecast90d: 238,
+    trendPct: 28,
+    confidenceScore: 96,
+    seasonalityDriver: 'Rapid transition to compact hybrid crossovers across Auckland suburban dealerships',
+    projectedSupplyUnits: 65,
+    unmetForecastGap: 125,
+    recommendedAuctionIntake: 60,
+    targetAuctionHouses: ['USS Tokyo', 'USS Yokohama'],
+    procurementDeadline: 'Next 10 days'
+  },
+  {
+    id: 'fc-vezel',
+    model: 'Honda Vezel',
+    make: 'Honda',
+    segment: 'Hybrid SUV',
+    currentMonthlyDemand: 139,
+    forecast30d: 172,
+    forecast60d: 198,
+    forecast90d: 220,
+    trendPct: 34,
+    confidenceScore: 94,
+    seasonalityDriver: 'Strong search volume spike (+40% MoM) driven by family buyers and suburban commuters',
+    projectedSupplyUnits: 50,
+    unmetForecastGap: 122,
+    recommendedAuctionIntake: 50,
+    targetAuctionHouses: ['USS Tokyo', 'USS Nagoya'],
+    procurementDeadline: 'Next 10 days'
+  },
+  {
+    id: 'fc-aqua',
+    model: 'Toyota Aqua',
+    make: 'Toyota',
+    segment: 'Compact Hybrid',
+    currentMonthlyDemand: 184,
+    forecast30d: 205,
+    forecast60d: 225,
+    forecast90d: 240,
+    trendPct: 18,
+    confidenceScore: 97,
+    seasonalityDriver: 'Sustained retail kingpin; consistent 12-day inventory turnover on dealer yards',
+    projectedSupplyUnits: 105,
+    unmetForecastGap: 100,
+    recommendedAuctionIntake: 55,
+    targetAuctionHouses: ['CAA Chubu', 'HAA Kobe'],
+    procurementDeadline: 'Continuous'
+  },
+  {
+    id: 'fc-cx5',
+    model: 'Mazda CX-5',
+    make: 'Mazda',
+    segment: 'Mid SUV AWD',
+    currentMonthlyDemand: 112,
+    forecast30d: 130,
+    forecast60d: 148,
+    forecast90d: 160,
+    trendPct: 22,
+    confidenceScore: 91,
+    seasonalityDriver: 'Winter AWD buying surge across South Island (Canterbury and Otago dealerships)',
+    projectedSupplyUnits: 55,
+    unmetForecastGap: 75,
+    recommendedAuctionIntake: 35,
+    targetAuctionHouses: ['HAA Kobe', 'USS Tokyo'],
+    procurementDeadline: 'Next 14 days'
+  },
+  {
+    id: 'fc-note',
+    model: 'Nissan Note e-Power',
+    make: 'Nissan',
+    segment: 'Compact Hybrid',
+    currentMonthlyDemand: 98,
+    forecast30d: 118,
+    forecast60d: 135,
+    forecast90d: 145,
+    trendPct: 26,
+    confidenceScore: 92,
+    seasonalityDriver: 'High urban rideshare & commuter fuel-efficiency preference in Wellington and Auckland',
+    projectedSupplyUnits: 42,
+    unmetForecastGap: 76,
+    recommendedAuctionIntake: 30,
+    targetAuctionHouses: ['USS Nagoya', 'USS Yokohama'],
+    procurementDeadline: 'Next 14 days'
+  }
+];
+
+export const UNMET_DEMAND_METRICS: UnmetDemandMetric = {
+  totalUnmetUnits: 1120,
+  lostGmvNzd: 1720000,
+  lostGmvJpy: 156900000,
+  unfulfilledDealersCount: 78,
+  criticalDeficitModelsCount: 5,
+  avgTurnDaysForShortageModels: 14.8
+};
+
+export const UNMET_DEALER_REQUESTS: UnmetDealerRequest[] = [
+  {
+    id: 'unmet-01',
+    dealerId: 1,
+    dealerName: 'Auckland Auto Group',
+    region: 'Auckland',
+    model: 'Toyota C-HR Hybrid (2019-2022)',
+    specRequirements: 'Grade 4.5, <55k km, 2WD Sensing, White/Black Two-tone',
+    daysWaiting: 12,
+    maxBudgetNzd: 23500,
+    priorityScore: 98,
+    status: 'Partially Matched'
+  },
+  {
+    id: 'unmet-02',
+    dealerId: 2,
+    dealerName: 'Hamilton Motors',
+    region: 'Waikato',
+    model: 'Honda Vezel Hybrid Z',
+    specRequirements: 'e:HEV Sensing, <60k km, Grade 4.5, Black/Grey',
+    daysWaiting: 9,
+    maxBudgetNzd: 21500,
+    priorityScore: 95,
+    status: 'Waiting for Stock'
+  },
+  {
+    id: 'unmet-03',
+    dealerId: 3,
+    dealerName: 'Christchurch Cars',
+    region: 'Canterbury',
+    model: 'Toyota Aqua S / G (Batch of 5)',
+    specRequirements: 'Grade 4.5+, <50k km, Push start, Safety Sense',
+    daysWaiting: 15,
+    maxBudgetNzd: 18000,
+    priorityScore: 94,
+    status: 'Auction Proxy Set'
+  },
+  {
+    id: 'unmet-04',
+    dealerId: 4,
+    dealerName: 'North Shore Hybrid Centre',
+    region: 'Auckland',
+    model: 'Lexus NX300h F-Sport AWD',
+    specRequirements: 'Grade 4.5, <50k km, Sunroof, Mark Levinson, Pearl White',
+    daysWaiting: 18,
+    maxBudgetNzd: 43000,
+    priorityScore: 92,
+    status: 'Waiting for Stock'
+  },
+  {
+    id: 'unmet-05',
+    dealerId: 5,
+    dealerName: 'Wellington City Direct',
+    region: 'Wellington',
+    model: 'Nissan Note e-POWER Medalist',
+    specRequirements: 'Grade 4.5, <45k km, 360 Camera, Dual Airbags',
+    daysWaiting: 7,
+    maxBudgetNzd: 16500,
+    priorityScore: 90,
+    status: 'Waiting for Stock'
+  }
+];
+
+// ==========================================
+// 3. MULTI-TIER SUPPLY MATCHING TYPES
+// ==========================================
+export interface InTransitRoRoShipment {
+  id: string;
+  vesselName: string;
+  shippingLine: string;
+  originPort: string;
+  destinationPort: string;
+  departureDate: string;
+  etaDate: string;
+  daysToArrival: number;
+  totalUnitsOnboard: number;
+  manifestModels: {
+    model: string;
+    units: number;
+    availableUnreserved: number;
+  }[];
+}
+
+export interface MultiTierSupplyMatch {
+  id: string;
+  dealerId: number;
+  dealerName: string;
+  region: string;
+  wishlistCriteria: string;
+  targetBudgetNzd: number;
+  
+  // Supply Matched
+  supplyTier: 'Yard Stock' | 'In-Transit Ro-Ro' | 'Upcoming Auction';
+  supplyAssetTitle: string;
+  supplyIdentifier: string; // e.g. VIN / Lot # / Ro-Ro Vessel
+  supplyLocation: string; // e.g. "Auckland Yard, Penrose" / "MV Trans Future 7 (ETA 8d)" / "USS Tokyo Lot #48201"
+  year: number;
+  grade: string;
+  km: number;
+  landedCostNzd: number;
+  estimatedMarginNzd: number;
+  matchScore: number; // 0-100%
+  status: 'Available to Assign' | 'Pre-Allocated' | 'Dealer Notified';
+  image: string;
+}
+
+// Active In-Transit Ro-Ro Ships Sailing from Japan to NZ
+export const IN_TRANSIT_RORO_SHIPMENTS: InTransitRoRoShipment[] = [
+  {
+    id: 'vessel-tf7',
+    vesselName: 'MV Trans Future 7',
+    shippingLine: 'Toyofuji Shipping',
+    originPort: 'Yokohama, Japan',
+    destinationPort: 'Port of Auckland, NZ',
+    departureDate: '14 Sept 2026',
+    etaDate: '03 Oct 2026',
+    daysToArrival: 8,
+    totalUnitsOnboard: 124,
+    manifestModels: [
+      { model: 'Toyota C-HR Hybrid', units: 18, availableUnreserved: 6 },
+      { model: 'Toyota Aqua', units: 34, availableUnreserved: 12 },
+      { model: 'Honda Vezel Hybrid', units: 14, availableUnreserved: 4 },
+      { model: 'Nissan Note e-Power', units: 12, availableUnreserved: 5 },
+      { model: 'Mazda CX-5', units: 10, availableUnreserved: 3 }
+    ]
+  },
+  {
+    id: 'vessel-mc',
+    vesselName: 'MV Morning Chorus',
+    shippingLine: 'EUKOR Car Carriers',
+    originPort: 'Nagoya, Japan',
+    destinationPort: 'Lyttelton / Christchurch, NZ',
+    departureDate: '19 Sept 2026',
+    etaDate: '11 Oct 2026',
+    daysToArrival: 16,
+    totalUnitsOnboard: 98,
+    manifestModels: [
+      { model: 'Mazda CX-5 AWD', units: 22, availableUnreserved: 9 },
+      { model: 'Toyota Aqua Hybrid', units: 28, availableUnreserved: 11 },
+      { model: 'Subaru Forester AWD', units: 14, availableUnreserved: 6 }
+    ]
+  },
+  {
+    id: 'vessel-ph',
+    vesselName: 'MV Poseidon Highway',
+    shippingLine: 'K-Line Ro-Ro',
+    originPort: 'Kobe, Japan',
+    destinationPort: 'Port of Auckland, NZ',
+    departureDate: '24 Sept 2026',
+    etaDate: '19 Oct 2026',
+    daysToArrival: 24,
+    totalUnitsOnboard: 160,
+    manifestModels: [
+      { model: 'Toyota C-HR Hybrid', units: 25, availableUnreserved: 20 },
+      { model: 'Honda Vezel Hybrid', units: 20, availableUnreserved: 16 },
+      { model: 'Toyota Prius', units: 30, availableUnreserved: 24 }
+    ]
+  }
+];
+
+// Multi-Tier Supply Matching (Connecting Wishlists & Demand Signals to Yard, Ro-Ro, and Japan Auction Lots)
+export const MULTI_TIER_SUPPLY_MATCHES: MultiTierSupplyMatch[] = [
+  {
+    id: 'match-01',
+    dealerId: 1,
+    dealerName: 'Auckland Auto Group',
+    region: 'Auckland',
+    wishlistCriteria: 'Toyota C-HR 2019+, <55k km, Hybrid, Black roof, max $23,500',
+    targetBudgetNzd: 23500,
+    supplyTier: 'Upcoming Auction',
+    supplyAssetTitle: '2020 Toyota C-HR G LED Hybrid (Two-Tone)',
+    supplyIdentifier: 'USS Tokyo · Lot #48201',
+    supplyLocation: 'Tomorrow 11:20 AM JST',
+    year: 2020,
+    grade: '4.5 / A',
+    km: 48200,
+    landedCostNzd: 22350,
+    estimatedMarginNzd: 4100,
+    matchScore: 98,
+    status: 'Available to Assign',
+    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'match-02',
+    dealerId: 2,
+    dealerName: 'Hamilton Motors',
+    region: 'Waikato',
+    wishlistCriteria: 'Honda Vezel Hybrid 2018+, <60k km, Sensing Package, under $21.5k',
+    targetBudgetNzd: 21500,
+    supplyTier: 'In-Transit Ro-Ro',
+    supplyAssetTitle: '2019 Honda Vezel Hybrid Z Sensing',
+    supplyIdentifier: 'MV Trans Future 7 · Unit #TF7-042',
+    supplyLocation: 'Arriving Auckland Port in 8 days',
+    year: 2019,
+    grade: '4.5 / B',
+    km: 51200,
+    landedCostNzd: 20450,
+    estimatedMarginNzd: 3850,
+    matchScore: 97,
+    status: 'Pre-Allocated',
+    image: 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'match-03',
+    dealerId: 3,
+    dealerName: 'Christchurch Cars',
+    region: 'Canterbury',
+    wishlistCriteria: 'Toyota Aqua 2019-2021, Grade 4.5, <50k km, Batch order',
+    targetBudgetNzd: 18000,
+    supplyTier: 'In-Transit Ro-Ro',
+    supplyAssetTitle: '2020 Toyota Aqua S Hybrid (Safety Sense)',
+    supplyIdentifier: 'MV Morning Chorus · Unit #MC-019',
+    supplyLocation: 'Arriving Lyttelton Port in 16 days',
+    year: 2020,
+    grade: '4.5 / A',
+    km: 44100,
+    landedCostNzd: 17650,
+    estimatedMarginNzd: 3500,
+    matchScore: 96,
+    status: 'Available to Assign',
+    image: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'match-04',
+    dealerId: 1,
+    dealerName: 'Auckland Auto Group',
+    region: 'Auckland',
+    wishlistCriteria: 'Lexus NX300h F-Sport, <50k km, Grade 4.5, Target margin $5k+',
+    targetBudgetNzd: 42500,
+    supplyTier: 'Upcoming Auction',
+    supplyAssetTitle: '2019 Lexus NX300h F-Sport AWD (Sunroof)',
+    supplyIdentifier: 'USS Tokyo · Lot #91204',
+    supplyLocation: 'Tomorrow 04:45 PM JST',
+    year: 2019,
+    grade: '4.5 / A',
+    km: 42100,
+    landedCostNzd: 41200,
+    estimatedMarginNzd: 5200,
+    matchScore: 95,
+    status: 'Dealer Notified',
+    image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'match-05',
+    dealerId: 5,
+    dealerName: 'Wellington City Direct',
+    region: 'Wellington',
+    wishlistCriteria: 'Nissan Note e-Power 2019+, Medalist, <45k km, budget $16.5k',
+    targetBudgetNzd: 16500,
+    supplyTier: 'Upcoming Auction',
+    supplyAssetTitle: '2020 Nissan Note e-POWER Medalist (Surround View)',
+    supplyIdentifier: 'USS Nagoya · Lot #33841',
+    supplyLocation: 'In 2 days 02:15 PM JST',
+    year: 2020,
+    grade: '4.5 / B',
+    km: 39500,
+    landedCostNzd: 16100,
+    estimatedMarginNzd: 3100,
+    matchScore: 94,
+    status: 'Available to Assign',
+    image: 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'match-06',
+    dealerId: 3,
+    dealerName: 'Christchurch Cars',
+    region: 'Canterbury',
+    wishlistCriteria: 'Mazda CX-5 AWD, Leather interior, Grade 4.0+, retail $29k',
+    targetBudgetNzd: 24500,
+    supplyTier: 'In-Transit Ro-Ro',
+    supplyAssetTitle: '2019 Mazda CX-5 25S L-Package AWD',
+    supplyIdentifier: 'MV Morning Chorus · Unit #MC-008',
+    supplyLocation: 'Arriving Lyttelton Port in 16 days',
+    year: 2019,
+    grade: '4.0 / B',
+    km: 58000,
+    landedCostNzd: 23400,
+    estimatedMarginNzd: 3900,
+    matchScore: 93,
+    status: 'Available to Assign',
+    image: 'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=600&q=80'
+  },
+  {
+    id: 'match-07',
+    dealerId: 4,
+    dealerName: 'North Shore Hybrid Centre',
+    region: 'Auckland',
+    wishlistCriteria: 'Grade 4.5 C-HR or Vezel, <60,000 km, Pearl White',
+    targetBudgetNzd: 24000,
+    supplyTier: 'Yard Stock',
+    supplyAssetTitle: '2019 Toyota C-HR G LED Hybrid (Pearl White)',
+    supplyIdentifier: 'Auckland Yard · VIN #ZYX10-204911',
+    supplyLocation: 'Penrose Yard, Auckland (Ready for Delivery)',
+    year: 2019,
+    grade: '4.5 / B',
+    km: 53400,
+    landedCostNzd: 22800,
+    estimatedMarginNzd: 3950,
+    matchScore: 92,
+    status: 'Available to Assign',
+    image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80'
+  }
+];
+

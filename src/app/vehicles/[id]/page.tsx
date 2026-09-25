@@ -19,6 +19,7 @@ import {
   Calendar,
   Layers,
   Download,
+  Ship,
   X
 } from "lucide-react";
 import { VEHICLES, GLOBAL_SETTINGS } from "@/lib/data";
@@ -210,6 +211,13 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 <div className="flex justify-between">
                   <span className="text-slate-500">Target Profit Margin</span>
                   <span className="font-bold text-emerald-600">+NZ${targetMargin.toLocaleString('en-US')}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-500">Est. days to land in NZ (indicative)</span>
+                  <span className="font-bold text-slate-800 flex items-center gap-1">
+                    <Ship size={12} className="text-blue-600" />
+                    18–22 days
+                  </span>
                 </div>
                 <div className="flex justify-between pt-2 border-t border-slate-200 font-bold">
                   <span className="text-slate-700">Market-Based Bid Guide</span>
@@ -508,9 +516,16 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">equip</span>
               <span className="font-mono text-slate-900 mt-1 block">{vehicle.equip || 'ps, pw'}</span>
             </div>
-            <div className="p-3 bg-red-50/60 rounded-xl border border-red-100 sm:col-span-2">
+            <div className="p-3 bg-red-50/60 rounded-xl border border-red-100">
               <span className="text-[10px] font-bold text-[#B30D12] uppercase tracking-wider block">jpy fob (Auction)</span>
               <span className="font-mono font-black text-slate-900 text-sm mt-1 block">¥{(vehicle.fobJpy).toLocaleString('en-US')}</span>
+            </div>
+            <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100">
+              <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Est. days to land in NZ (indicative)</span>
+              <span className="font-bold text-slate-900 text-sm mt-1 flex items-center gap-1.5">
+                <Ship size={14} className="text-blue-600" />
+                18–22 days (Direct Ro-Ro)
+              </span>
             </div>
           </div>
         </div>
@@ -533,7 +548,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <th className="px-5 py-3.5">Year</th>
                   <th className="px-5 py-3.5">Mileage</th>
                   <th className="px-5 py-3.5">Advertised Price</th>
-                  <th className="px-5 py-3.5">Days on Yard</th>
+                  <th className="px-5 py-3.5">Trade Me Days Listed</th>
                   <th className="px-5 py-3.5 text-right">Spread vs Landed Cost</th>
                 </tr>
               </thead>

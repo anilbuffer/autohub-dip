@@ -261,7 +261,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🚗 2019 Toyota C-HR G LED Hybrid (Lot #${chr.lotNumber})\n**Auction House:** ${chr.auctionHouse} | **Grade:** ${chr.grade}\n\n- **FOB:** ¥${chr.fobJpy.toLocaleString()} | **Landed NZD:** **NZ$${chr.landedNzd.toLocaleString()}**\n- **Est. Retail:** NZ$${chr.estRetailNzd.toLocaleString()} | **Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${chr.targetMarginNzd.toLocaleString()}</span>\n- **Market Analysis:** Compact crossovers command premium retail velocity in Auckland & Hamilton. 2-tone black/pearl roof is the highest-spec variant.`,
+        text: `### 🚗 2019 Toyota C-HR G LED Hybrid (Lot #${chr.lotNumber})\n**Auction House:** ${chr.auctionHouse} | **Grade:** ${chr.grade}\n\n- **FOB:** ¥${chr.fobJpy.toLocaleString()} | **Landed NZD:** **NZ$${chr.landedNzd.toLocaleString()}**\n- **Est. Retail:** NZ$${chr.estRetailNzd.toLocaleString()} | **Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${chr.targetMarginNzd.toLocaleString()}</span>\n- **Market Analysis:** Compact crossovers command strong retail demand in Auckland & Hamilton. 2-tone black/pearl roof is the highest-spec variant.`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: [chr],
@@ -381,7 +381,7 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 📈 Auckland Metro Demand & Trade Me Comps\n\n**Market Velocity Highlights:**\n- **Sub-NZ$25k Hybrids:** 78% of Trade Me Motors listings sell within **18 calendar days** in the Auckland region.\n- **Toyota Aqua 2018–2020:** Active Trade Me listings: 142 units. Median listed price: **NZ$24,200**. Inventory turnover: **14 days**.\n- **Honda Fit e:HEV 2020+:** Active Trade Me listings: 48 units. Median listed price: **NZ$22,900**. High buyer interest due to modern Apple CarPlay interior.\n- **Market-Based Strategy:** Target auction bids yielding at least **NZ$3,500 gross margin** to absorb 60 days of floor plan financing and dealer preparation.`,
+        text: `### 📈 Auckland Metro Demand & Trade Me Comps\n\n**Market Demand Highlights:**\n- **Sub-NZ$25k Hybrids:** 78% of Trade Me Motors listings sell within **18 calendar days** in the Auckland region.\n- **Toyota Aqua 2018–2020:** Active Trade Me listings: 142 units. Median listed price: **NZ$24,200**. Inventory turnover: **14 days**.\n- **Honda Fit e:HEV 2020+:** Active Trade Me listings: 48 units. Median listed price: **NZ$22,900**. High buyer interest due to modern Apple CarPlay interior.\n- **Market-Based Strategy:** Target auction bids yielding at least **NZ$3,500 gross margin** to absorb 60 days of floor plan financing and dealer preparation.`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Show Best Value Vehicles",

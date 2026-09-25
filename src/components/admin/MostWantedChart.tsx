@@ -120,7 +120,7 @@ export default function MostWantedChart({ segmentFilter = 'All' }: MostWantedCha
                 <div className="mt-2.5 pt-2 border-t border-slate-200/80 flex flex-wrap items-center justify-between text-[11px] text-slate-600 animate-in fade-in duration-150">
                   <div className="flex items-center gap-3">
                     <span>
-                      <strong className="text-slate-900">Avg Days to Sell:</strong> {model.turnDays} days (Trade Me)
+                      <strong className="text-slate-900">Est. days to land in NZ (indicative):</strong> 18–22 days
                     </span>
                     <span>
                       <strong className="text-slate-900">Avg Dealer Margin:</strong> NZ${model.avgMarginNzd.toLocaleString('en-US')}

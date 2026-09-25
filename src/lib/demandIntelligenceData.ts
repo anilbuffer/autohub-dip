@@ -836,7 +836,7 @@ export const DEMAND_BY_REGION: RegionDemand[] = [
 export const AI_WEEKLY_BRIEF = {
   en: {
     title: 'AI Weekly Brief for AutoHub Sourcing',
-    subtitle: 'Generated from 4,860 dealer search queries, 318 active wish lists, and NZ retail sales velocity telemetry.',
+    subtitle: 'Generated from 4,860 dealer search queries, 318 active wish lists, and NZ retail sales demand telemetry.',
     badge: 'AutoHub DIP Autonomous Sourcing Intelligence',
     confidenceText: '96% Recommendation Confidence',
     timestamp: 'Today at 07:00 JST / 11:00 NZST (Pre-Auction USS Tokyo Dispatch)',

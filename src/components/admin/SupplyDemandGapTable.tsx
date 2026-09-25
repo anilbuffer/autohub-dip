@@ -14,6 +14,7 @@ import {
   Search,
   Filter,
   CheckCircle2,
+  Ship,
   ExternalLink
 } from 'lucide-react';
 import Image from 'next/image';
@@ -252,7 +253,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 onClick={() => handleSort('avgDaysToSell')}
               >
                 <div className="flex items-center gap-1.5">
-                  <span>NZ Days to Sell</span>
+                  <span>Est. days to land in NZ (indicative)</span>
                   {sortField === 'avgDaysToSell' ? (
                     sortDirection === 'desc' ? <ChevronDown size={14} className="text-[#B30D12]" /> : <ChevronUp size={14} className="text-[#B30D12]" />
                   ) : (
@@ -360,14 +361,14 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                     </div>
                   </td>
 
-                  {/* NZ Days to Sell */}
+                  {/* Est. days to land in NZ (indicative) */}
                   <td className="py-3.5 px-4 font-bold text-slate-800">
                     <div className="flex items-center gap-1.5">
-                      <Clock size={13} className="text-slate-400" />
-                      <span>{item.avgDaysToSell} days</span>
+                      <Ship size={13} className="text-blue-600" />
+                      <span>18–22 days</span>
                     </div>
                     <span className="text-[10px] text-slate-400 block mt-0.5">
-                      {item.avgDaysToSell <= 15 ? '🚀 Fast Turnover' : item.avgDaysToSell <= 25 ? 'Steady' : 'Slower Pace'}
+                      Direct Ro-Ro Japan → NZ
                     </span>
                   </td>
 

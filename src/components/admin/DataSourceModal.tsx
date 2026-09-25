@@ -34,11 +34,11 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
       metric: "1,120 Unmet Demand Units"
     },
     {
-      title: "4. NZ Market Velocity & Price Trends",
+      title: "4. NZ Market Demand & Price Trends",
       icon: TrendingUp,
       color: "text-emerald-500 bg-emerald-50 border-emerald-200",
-      description: "Aggregated Trade Me Motors and independent dealer yard sales velocity (median days listed until sold) cross-referenced against realized gross retail margins.",
-      metric: "14.2 Days Median Turn"
+      description: "Aggregated Trade Me Motors and independent dealer yard sales activity cross-referenced against realized gross retail margins and indicative landing lead times.",
+      metric: "18-22 Days Est. Land"
     }
   ];
 

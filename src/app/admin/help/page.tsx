@@ -24,7 +24,7 @@ export default function AdminHelpPage() {
     },
     {
       title: "Dealer Margin Potential & Scoring Algorithm",
-      content: "The proprietary Opportunity Score (1-100) measures: (1) Gross profit margin spread vs target, (2) Historical NZ yard turnaround days for this exact make/badge, (3) Auction grade integrity (Grade 4.5/A receives a +12 score weight), (4) Distance from average market price regression line."
+      content: "The proprietary Opportunity Score (1-100) measures: (1) Gross profit margin spread vs target, (2) Est. days to land in NZ (indicative shipping lead time), (3) Auction grade integrity (Grade 4.5/A receives a +12 score weight), (4) Distance from average market price regression line."
     },
     {
       title: "Manual Proxy Bidding Protocol",

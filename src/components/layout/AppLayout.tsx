@@ -17,7 +17,7 @@ import {
   CheckCircle2,
   Sparkles
 } from 'lucide-react';
-import { GLOBAL_SETTINGS } from '@/lib/data';
+import { GLOBAL_SETTINGS, VEHICLES } from '@/lib/data';
 import RoleSwitcher from './RoleSwitcher';
 import { useSyncStore } from '@/lib/syncStore';
 import DealerChatAssistant from '@/components/chat/DealerChatAssistant';
@@ -43,7 +43,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { label: 'Overview', href: '/', icon: LayoutDashboard, badge: null },
-    { label: 'Live Vehicles', href: '/vehicles', icon: Car, badge: '32 Lots' },
+    { label: 'Live Vehicles', href: '/vehicles', icon: Car, badge: `${VEHICLES.length} Lots` },
     { label: 'Buying Criteria', href: '/profile', icon: User, badge: null },
   ];
 

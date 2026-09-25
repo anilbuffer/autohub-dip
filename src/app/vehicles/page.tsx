@@ -34,14 +34,22 @@ export default function VehiclesPage() {
   const [sortBy, setSortBy] = useState<"score" | "priceAsc" | "yearDesc" | "kmAsc">("score");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
+  const makes = useMemo(() => ["All", ...Array.from(new Set(VEHICLES.map((v) => v.make))).filter(Boolean).sort()], []);
+  const fuels = useMemo(() => ["All", ...Array.from(new Set(VEHICLES.map((v) => v.fuel))).filter(Boolean).sort()], []);
+
   const filteredVehicles = useMemo(() => {
     return VEHICLES.filter((v) => {
+      const q = searchTerm.toLowerCase();
       const matchesSearch = 
-        v.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.lotNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.vin.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.badge.toLowerCase().includes(searchTerm.toLowerCase());
+        v.make.toLowerCase().includes(q) ||
+        v.model.toLowerCase().includes(q) ||
+        v.lotNumber.toLowerCase().includes(q) ||
+        v.vin.toLowerCase().includes(q) ||
+        v.badge.toLowerCase().includes(q) ||
+        (v.stockid && v.stockid.toString().toLowerCase().includes(q)) ||
+        (v.chassis && v.chassis.toLowerCase().includes(q)) ||
+        (v.color && v.color.toLowerCase().includes(q)) ||
+        (v.equip && v.equip.toLowerCase().includes(q));
 
       const matchesMake = selectedMake === "All" || v.make === selectedMake;
       const matchesStatus = selectedStatus === "All" || v.status === selectedStatus;
@@ -66,8 +74,6 @@ export default function VehiclesPage() {
     setSelectedFuel("All");
     setSortBy("score");
   };
-
-  const makes = ["All", "Toyota", "Honda", "Mazda", "Nissan", "Lexus"];
 
   return (
     <AppLayout>
@@ -188,7 +194,7 @@ export default function VehiclesPage() {
               <div className="h-4 w-px bg-slate-200 mx-2 hidden sm:block"></div>
 
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">Fuel:</span>
-              {["All", "Hybrid", "Petrol"].map((f) => (
+              {fuels.map((f) => (
                 <button
                   key={f}
                   onClick={() => setSelectedFuel(f)}

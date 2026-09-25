@@ -21,6 +21,9 @@ export default function Dashboard() {
   // Categorize vehicles into Best Matches (Priority buys) and Other Qualifying
   const bestMatches = VEHICLES.filter((v) => v.status === "Priority").sort((a, b) => b.score - a.score);
   const otherVehicles = VEHICLES.filter((v) => v.status !== "Priority").sort((a, b) => b.score - a.score);
+  const avgPriorityMargin = Math.round(
+    bestMatches.reduce((acc, v) => acc + v.targetMarginNzd, 0) / (bestMatches.length || 1)
+  );
 
   return (
     <AppLayout>
@@ -47,7 +50,7 @@ export default function Dashboard() {
               </h1>
 
               <p className="text-slate-500 text-xs sm:text-sm font-normal mt-0.5">
-                32 qualifying vehicles identified across USS Tokyo and Yokohama, with 4 high-margin priority lots ready for review.
+                {VEHICLES.length} qualifying Japanese auction lots synced from Heiwa pipeline, with {bestMatches.length} high-margin priority lots ready for review.
               </p>
             </div>
 
@@ -63,7 +66,7 @@ export default function Dashboard() {
                 href="/vehicles"
                 className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-[#B30D12] border border-slate-200/90 hover:border-[#B30D12]/30 rounded-lg text-sm font-semibold transition-all shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:shadow-[0_3px_8px_-1px_rgba(15,23,42,0.08)] flex items-center gap-1"
               >
-                <span>Browse All (32)</span>
+                <span>Browse All ({VEHICLES.length})</span>
                 <ArrowRight size={12} className="text-slate-400" />
               </Link>
             </div>
@@ -83,7 +86,9 @@ export default function Dashboard() {
               </div>
               <div className="mt-2.5">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">04</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    {bestMatches.length < 10 ? `0${bestMatches.length}` : bestMatches.length}
+                  </span>
                   <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60 shadow-2xs">
                     Score 90+
                   </span>
@@ -106,9 +111,11 @@ export default function Dashboard() {
               </div>
               <div className="mt-2.5">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">28</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    {otherVehicles.length}
+                  </span>
                   <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/60">
-                    Auckland Specs
+                    Heiwa Live Lots
                   </span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1 font-medium">
@@ -129,10 +136,12 @@ export default function Dashboard() {
               </div>
               <div className="mt-2.5">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-emerald-700 tracking-tight">NZ$4,275</span>
+                  <span className="text-2xl sm:text-3xl font-extrabold text-emerald-700 tracking-tight">
+                    NZ${avgPriorityMargin.toLocaleString("en-US")}
+                  </span>
                 </div>
                 <p className="text-[11px] text-slate-500 mt-1 font-medium">
-                  Top 15% estimated dealer gross profit
+                  Top tier projected dealer gross profit
                 </p>
               </div>
             </div>
@@ -206,7 +215,7 @@ export default function Dashboard() {
                           <h3 className="text-sm sm:text-base font-bold text-slate-900 group-hover:text-[#B30D12] transition-colors">
                             {vehicle.year} {vehicle.make} {vehicle.model}
                           </h3>
-                          <span className="text-[11px] font-medium text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/50">
+                          <span className="px-2 py-0.5 bg-red-50 text-[#B30D12] text-[11px] font-bold rounded-md border border-red-100 shadow-2xs">
                             {vehicle.badge}
                           </span>
                         </div>
@@ -216,8 +225,8 @@ export default function Dashboard() {
                       </div>
 
                       {/* AI Score Badge */}
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/80 shrink-0 shadow-2xs">
-                        <Sparkles size={12} className="text-emerald-600" />
+                      <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-base font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/80 shrink-0 shadow-2xs">
+                        <Sparkles size={16} className="text-emerald-600" />
                         Score {vehicle.score}
                       </span>
                     </div>
@@ -299,7 +308,7 @@ export default function Dashboard() {
               <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 Other qualifying vehicles
               </h2>
-              <span className="px-2 py-0.5 bg-slate-100 text-slate-700 text-[11px] font-bold rounded-md border border-slate-200/50 shadow-2xs">
+              <span className="px-2 py-0.5 bg-red-50 text-[#B30D12] text-[11px] font-bold rounded-md border border-red-100 shadow-2xs">
                 {otherVehicles.length} Qualifying Lots
               </span>
             </div>

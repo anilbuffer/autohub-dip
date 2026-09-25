@@ -24,12 +24,16 @@ export default function AdminVehicles() {
 
   const filteredVehicles = useMemo(() => {
     return VEHICLES.filter((v) => {
+      const q = searchTerm.toLowerCase();
       const matchesSearch = 
-        v.make.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.lotNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.vin.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        v.auctionHouse.toLowerCase().includes(searchTerm.toLowerCase());
+        v.make.toLowerCase().includes(q) ||
+        v.model.toLowerCase().includes(q) ||
+        v.lotNumber.toLowerCase().includes(q) ||
+        v.vin.toLowerCase().includes(q) ||
+        v.auctionHouse.toLowerCase().includes(q) ||
+        (v.stockid && v.stockid.toString().toLowerCase().includes(q)) ||
+        (v.chassis && v.chassis.toLowerCase().includes(q)) ||
+        (v.equip && v.equip.toLowerCase().includes(q));
 
       const matchesDealer = selectedDealer === "All" || v.dealer === selectedDealer;
       const matchesStatus = selectedStatus === "All" || v.status === selectedStatus;

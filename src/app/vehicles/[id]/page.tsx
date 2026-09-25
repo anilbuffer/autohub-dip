@@ -27,12 +27,12 @@ import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
 
 export default function VehicleDetail({ params }: { params: { id: string } }) {
   const vehicleId = parseInt(params?.id) || 1;
-  const vehicle = VEHICLES.find(v => v.id === vehicleId) || VEHICLES[0];
+  const vehicle = VEHICLES.find(v => v.id === vehicleId || v.stockid.toString() === params?.id) || VEHICLES[0];
 
   const { state: syncState, toggleShortlistVehicle } = useSyncStore();
 
   // Interactive Bid Simulator State
-  const [fobJpy, setFobJpy] = useState(vehicle.fobJpy);
+  const [fobJpy, setFobJpy] = useState(vehicle.fobJpy || vehicle.jpy_fob);
   const [targetMargin, setTargetMargin] = useState(vehicle.targetMarginNzd);
   const [bidPlaced, setBidPlaced] = useState(false);
   const [activePhoto, setActivePhoto] = useState(vehicle.image);
@@ -428,6 +428,91 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             </div>
           </div>
 
+        </div>
+
+        {/* Heiwa Japanese Auction Sheet Verified Data */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] overflow-hidden">
+          <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] flex items-center justify-center font-bold">
+                <FileCheck2 size={16} />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-slate-900">Heiwa Japanese Auction Sheet Specifications</h3>
+                <p className="text-xs text-slate-500 font-medium">Exact data fields extracted directly from the verified Heiwa auction inventory record.</p>
+              </div>
+            </div>
+            <span className="text-xs font-mono font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg">
+              Stock #{vehicle.stockid}
+            </span>
+          </div>
+
+          <div className="p-5 sm:p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 text-xs">
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">stockid</span>
+              <span className="font-mono font-bold text-slate-900 mt-1 block">{vehicle.stockid}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">make</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.make}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">model</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.model}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">grade</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.grade}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">chassis</span>
+              <span className="font-mono font-bold text-slate-900 mt-1 block">{vehicle.chassis}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">year / month</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.year}{vehicle.month ? ` / M${vehicle.month}` : ''}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">kms (ODO)</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.kms}k km ({(vehicle.km).toLocaleString('en-US')} km)</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">color</span>
+              <span className="font-bold text-slate-900 mt-1 capitalize block">{vehicle.color}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">doors</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.doors > 0 ? `${vehicle.doors} doors` : 'Standard'}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">cc (Engine)</span>
+              <span className="font-mono font-bold text-slate-900 mt-1 block">{vehicle.cc > 0 ? `${vehicle.cc} cc` : 'EV 0cc'}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">trans</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.trans || 'AT'}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">fueltype</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.fueltype || '-'} ({vehicle.fuel})</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">condition</span>
+              <span className="font-bold text-emerald-700 mt-1 block">Grade {vehicle.condition}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">ac</span>
+              <span className="font-bold text-slate-900 mt-1 block">{vehicle.ac || 'AC'}</span>
+            </div>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 sm:col-span-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">equip</span>
+              <span className="font-mono text-slate-900 mt-1 block">{vehicle.equip || 'ps, pw'}</span>
+            </div>
+            <div className="p-3 bg-red-50/60 rounded-xl border border-red-100 sm:col-span-2">
+              <span className="text-[10px] font-bold text-[#B30D12] uppercase tracking-wider block">jpy fob (Auction)</span>
+              <span className="font-mono font-black text-slate-900 text-sm mt-1 block">¥{(vehicle.fobJpy).toLocaleString('en-US')}</span>
+            </div>
+          </div>
         </div>
 
         {/* Live NZ Market Evidence Table */}

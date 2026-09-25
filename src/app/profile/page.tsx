@@ -42,6 +42,9 @@ export default function ProfilePage() {
     setTargetBudget(syncState.dealerTargetBudget);
   }, [syncState]);
 
+  const kmPercent = Math.min(100, Math.max(0, ((maxKm - 40000) / (120000 - 40000)) * 100));
+  const marginPercent = Math.min(100, Math.max(0, ((targetMargin - 2000) / (6000 - 2000)) * 100));
+
   const toggleMake = (make: string) => {
     if (selectedMakes.includes(make)) {
       setSelectedMakes(selectedMakes.filter(m => m !== make));
@@ -252,7 +255,10 @@ export default function ProfilePage() {
                   step={5000}
                   value={maxKm}
                   onChange={(e) => setMaxKm(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#1B2A4A]"
+                  style={{
+                    background: `linear-gradient(to right, #1B2A4A 0%, #1B2A4A ${kmPercent}%, #e2e8f0 ${kmPercent}%, #e2e8f0 100%)`
+                  }}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-[#1B2A4A]"
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-bold">
                   <span>40,000 km</span>
@@ -278,7 +284,10 @@ export default function ProfilePage() {
                   step={250}
                   value={targetMargin}
                   onChange={(e) => setTargetMargin(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                  style={{
+                    background: `linear-gradient(to right, #059669 0%, #059669 ${marginPercent}%, #e2e8f0 ${marginPercent}%, #e2e8f0 100%)`
+                  }}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-emerald-600"
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-bold">
                   <span>NZ$2,000</span>

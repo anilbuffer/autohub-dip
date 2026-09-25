@@ -13,7 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   SlidersHorizontal,
-  X
+  X,
+  CheckCircle2
 } from "lucide-react";
 import { VEHICLES } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
@@ -165,54 +166,65 @@ export default function Dashboard() {
 
         {/* 1. Greeting and Top KPIs (Compact & Light Theme with Soft Shadows) */}
         <section className="space-y-4">
-          {/* Compact Greeting Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-1">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(15,23,42,0.04)] text-[11px] font-semibold text-slate-700">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-pulse" />
-                  Auckland Auto Group
-                </span>
-                <span className="text-slate-300">•</span>
-                <span className="text-[11px] text-slate-500 font-medium">
-                  Live FX: <strong className="font-mono text-slate-700 font-bold">1 NZD = {syncState.fxRateJpyNzd} JPY</strong>
-                </span>
-                <span className="text-slate-300">•</span>
-                <button
-                  onClick={() => setShowPreferencesPrompt(true)}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-[11px] font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer border border-slate-200 shadow-2xs"
-                  title="Review or update this week's buying criteria"
-                >
-                  <SlidersHorizontal size={11} className="text-[#B30D12]" />
-                  <span>Update Preferences</span>
-                </button>
+          {/* Enhanced Greeting Header Card */}
+          <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.03)] p-5 sm:p-6 transition-all">
+            {/* Subtle Brand Crimson Top Accent Line */}
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-400/20" />
+
+            {/* Ambient Background Glow (Subtle Depth) */}
+            <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-br from-rose-500/[0.04] to-transparent blur-3xl pointer-events-none" />
+
+            <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100/90 border border-slate-200/80 text-[11px] font-semibold text-slate-700 shadow-2xs">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B30D12] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B30D12]"></span>
+                    </span>
+                    Auckland Auto Group
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-[11px] text-amber-600 font-medium shadow-2xs">
+                    <span className="text-amber-600">Live FX:</span>
+                    <strong className="font-mono text-amber-800 font-bold">1 NZD = {syncState.fxRateJpyNzd} JPY</strong>
+                  </span>
+                  <button
+                    onClick={() => setShowPreferencesPrompt(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 hover:bg-red-100 text-[11px] font-semibold text-red-600 hover:text-red-900 transition-colors cursor-pointer border border-red-200/80 hover:border-red-300 shadow-2xs group"
+                    title="Review or update this week's buying criteria"
+                  >
+                    <SlidersHorizontal size={11} className="text-[#B30D12] transition-transform group-hover:rotate-45" />
+                    <span>Update Preferences</span>
+                  </button>
+                </div>
+
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  Good morning, David
+                </h1>
+
+                <p className="text-slate-500 text-xs sm:text-sm font-normal mt-1 leading-relaxed max-w-3xl">
+                  <span className="font-semibold text-slate-700">{VEHICLES.length} qualifying Japanese auction lots</span> synced from Heiwa pipeline, with{" "}
+                  <span className="font-semibold text-[#B30D12]">{bestMatches.length} high-margin priority lots</span> ready for review.
+                </p>
               </div>
 
-              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                Good morning, David
-              </h1>
-
-              <p className="text-slate-500 text-xs sm:text-sm font-normal mt-0.5">
-                {VEHICLES.length} qualifying Japanese auction lots synced from Heiwa pipeline, with {bestMatches.length} high-margin priority lots ready for review.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2.5 shrink-0">
-              <button
-                onClick={() => triggerAutoHubCopilot("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}
-                className="px-3.5 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-sm font-semibold transition-all shadow-[0_2px_8px_-1px_rgba(15,23,42,0.15)] hover:shadow-[0_4px_12px_-2px_rgba(15,23,42,0.25)] flex items-center gap-1.5 active:scale-[0.99] cursor-pointer"
-                title="Try budget allocation query"
-              >
-                <Sparkles size={13} className="text-white" />
-                <span>Ask AI Copilot</span>
-              </button>
-              <Link
-                href="/vehicles"
-                className="px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-[#B30D12] border border-slate-200/90 hover:border-[#B30D12]/30 rounded-lg text-sm font-semibold transition-all shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:shadow-[0_3px_8px_-1px_rgba(15,23,42,0.08)] flex items-center gap-1"
-              >
-                <span>Browse All ({VEHICLES.length})</span>
-                <ArrowRight size={12} className="text-slate-400" />
-              </Link>
+              <div className="flex items-center gap-2.5 shrink-0 self-start md:self-center">
+                <button
+                  onClick={() => triggerAutoHubCopilot("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}
+                  className="px-4 py-2.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-xl text-sm font-semibold transition-all shadow-[0_2px_8px_-1px_rgba(179,13,18,0.3)] hover:shadow-[0_4px_14px_-2px_rgba(179,13,18,0.4)] flex items-center gap-2 active:scale-[0.99] cursor-pointer"
+                  title="Try budget allocation query"
+                >
+                  <Sparkles size={14} className="text-white" />
+                  <span>Ask AI Copilot</span>
+                </button>
+                <Link
+                  href="/vehicles"
+                  className="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 rounded-xl text-sm font-semibold transition-all shadow-2xs hover:shadow-xs flex items-center gap-1.5 group"
+                >
+                  <span>Browse All ({VEHICLES.length})</span>
+                  <ArrowRight size={13} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -561,10 +573,11 @@ export default function Dashboard() {
                           <span className="text-[12px] font-medium text-slate-500">
                             {vehicle.auctionHouse} #{vehicle.lotNumber}
                           </span>
-                          <span className={`px-2.5 py-1 rounded-lg text-sm font-bold shadow-2xs ${vehicle.status === "Consider"
-                            ? "bg-amber-50 text-amber-700 border border-amber-200/60"
-                            : "bg-slate-100 text-slate-600 border border-slate-200/50"
+                          <span className={`px-2.5 py-1 inline-flex items-center gap-1 rounded-lg text-base font-bold shadow-2xs ${vehicle.status === "Consider"
+                            ? "bg-amber-50 text-amber-800 border border-amber-200"
+                            : "bg-emerald-50 text-emerald-800 border border-emerald-200"
                             }`}>
+                            <CheckCircle2 size={16} className="text-emerald-600" />
                             Score {vehicle.score}
                           </span>
                         </div>
@@ -616,7 +629,7 @@ export default function Dashboard() {
 
                     <Link
                       href={`/vehicles/${vehicle.id}`}
-                      className="font-bold px-3 py-1.5 text-xs sm:text-sm bg-emerald-50 hover:bg-emerald-100/80 text-emerald-700 border border-emerald-200 rounded-lg flex items-center gap-1 transition-all"
+                      className="font-bold px-3 py-1.5 text-xs sm:text-sm bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg flex items-center gap-1 transition-all"
                     >
                       <span>Inspect Lot</span>
                       <ArrowRight size={11} />

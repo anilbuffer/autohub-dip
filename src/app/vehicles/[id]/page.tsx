@@ -3,17 +3,17 @@
 import React, { useState } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import Link from "next/link";
-import { 
-  ArrowLeft, 
-  Sparkles, 
-  ChevronDown, 
-  Info, 
-  Clock, 
-  ShieldCheck, 
-  CheckCircle2, 
-  TrendingUp, 
-  ExternalLink, 
-  Calculator, 
+import {
+  ArrowLeft,
+  Sparkles,
+  ChevronDown,
+  Info,
+  Clock,
+  ShieldCheck,
+  CheckCircle2,
+  TrendingUp,
+  ExternalLink,
+  Calculator,
   HelpCircle,
   FileCheck2,
   Calendar,
@@ -56,12 +56,89 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
   const maxBidNzd = vehicle.estRetailNzd - targetMargin;
   const maxBidJpy = Math.round((maxBidNzd - freightNzd - complianceNzd - (maxBidNzd * 0.13)) * fxRate);
   const profitMarginPercent = Math.round((targetMargin / totalLandedCost) * 100);
+  const fobPercent = Math.min(100, Math.max(0, ((fobJpy - 800000) / (2500000 - 800000)) * 100));
+  const marginPercent = Math.min(100, Math.max(0, ((targetMargin - 1500) / (8000 - 1500)) * 100));
+
+  // Hover state for interactive scatter points
+  const [activeTooltip, setActiveTooltip] = useState<{
+    title: string;
+    subtitle: string;
+    price: number;
+    km: number;
+    isThisLot?: boolean;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  // Dynamic realistic comparable NZ yard listings & chart calculations
+  const vehicleKm = vehicle.km || (vehicle.kms ? (vehicle.kms < 1000 ? vehicle.kms * 1000 : vehicle.kms) : 51000);
+  const estRetail = vehicle.estRetailNzd || (totalLandedCost + (vehicle.targetMarginNzd || 4800));
+  const currentSpread = estRetail - totalLandedCost;
+
+  const compListings = React.useMemo(() => {
+    return [
+      { source: "Trade Me (Auckland)", dealer: "Giltrap Prestige", km: Math.max(12000, vehicleKm - 25000), price: Math.round(estRetail * 1.14) },
+      { source: "Turners Cars (Penrose)", dealer: "Turners Auckland", km: Math.max(18000, vehicleKm - 15000), price: Math.round(estRetail * 1.08) },
+      { source: "Trade Me (Christchurch)", dealer: "City Motor Group", km: Math.max(25000, vehicleKm - 7000), price: Math.round(estRetail * 1.03) },
+      { source: "2CheapCars (Greenlane)", dealer: "2CheapCars Ltd", km: vehicleKm + 6000, price: Math.round(estRetail * 0.96) },
+      { source: "AutoTrader (Wellington)", dealer: "Capital City Cars", km: vehicleKm + 18000, price: Math.round(estRetail * 0.90) },
+      { source: "Trade Me (Hamilton)", dealer: "Waikato Vehicle Centre", km: vehicleKm + 28000, price: Math.round(estRetail * 0.84) },
+      { source: "Turners (Tauranga)", dealer: "Turners Regional", km: vehicleKm + 40000, price: Math.round(estRetail * 0.78) },
+    ];
+  }, [vehicleKm, estRetail]);
+
+  const chartW = 540;
+  const chartH = 240;
+  const padLeft = 65;
+  const padRight = 25;
+  const padTop = 24;
+  const padBottom = 38;
+  const plotW = chartW - padLeft - padRight;
+  const plotH = chartH - padTop - padBottom;
+
+  const allKm = [...compListings.map(c => c.km), vehicleKm];
+  const allPrice = [...compListings.map(c => c.price), estRetail, totalLandedCost];
+
+  const minKm = Math.max(0, Math.floor((Math.min(...allKm) * 0.85) / 10000) * 10000);
+  const maxKm = Math.ceil((Math.max(...allKm) * 1.15) / 10000) * 10000;
+
+  const minPrice = Math.floor((Math.min(...allPrice) * 0.88) / 2000) * 2000;
+  const maxPrice = Math.ceil((Math.max(...allPrice) * 1.08) / 2000) * 2000;
+
+  const kmRange = Math.max(1, maxKm - minKm);
+  const priceRange = Math.max(1, maxPrice - minPrice);
+
+  const getChartX = (km: number) => padLeft + ((km - minKm) / kmRange) * plotW;
+  const getChartY = (price: number) => padTop + plotH - ((price - minPrice) / priceRange) * plotH;
+
+  const yTicks = [
+    minPrice,
+    Math.round(minPrice + priceRange * 0.33),
+    Math.round(minPrice + priceRange * 0.66),
+    maxPrice
+  ];
+
+  const xTicks = [
+    minKm,
+    Math.round(minKm + kmRange * 0.33),
+    Math.round(minKm + kmRange * 0.66),
+    maxKm
+  ];
+
+  const regPriceMin = estRetail + ((vehicleKm - minKm) / kmRange) * (priceRange * 0.35);
+  const regPriceMax = estRetail - ((maxKm - vehicleKm) / kmRange) * (priceRange * 0.35);
+  const regP1 = { x: getChartX(minKm), y: getChartY(regPriceMin) };
+  const regP2 = { x: getChartX(maxKm), y: getChartY(regPriceMax) };
+
+  const thisLotX = getChartX(vehicleKm);
+  const thisLotY = getChartY(totalLandedCost);
+  const thisLotRetailY = getChartY(estRetail);
 
   const handleDownloadSheet = (lang: "Japanese" | "English – AI translated") => {
-    const url = lang === "Japanese" 
+    const url = lang === "Japanese"
       ? "/sheets/sample_inspection_sheet_japanese.html"
       : "/sheets/sample_inspection_sheet_english.html";
-    
+
     const filename = lang === "Japanese"
       ? `Inspection_Sheet_Japanese_${vehicle.stockid || vehicle.lotNumber}.html`
       : `Inspection_Sheet_English_AI_Translated_${vehicle.stockid || vehicle.lotNumber}.html`;
@@ -94,11 +171,11 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
   return (
     <AppLayout>
       <div className="space-y-8 pb-16 max-w-6xl mx-auto">
-        
+
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
-          <Link 
-            href="/vehicles" 
+          <Link
+            href="/vehicles"
             className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors bg-white px-3.5 py-2 rounded-xl border border-slate-200 shadow-2xs"
           >
             <ArrowLeft size={14} /> Back to Auction Lots
@@ -196,13 +273,13 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
           {/* Photo Gallery (2 Spans) */}
           <div className="lg:col-span-2 space-y-3">
             <div className="h-[380px] rounded-2xl overflow-hidden relative shadow-sm border border-slate-200 bg-[#0B1322] group">
-              <img 
-                src={activePhoto} 
-                alt={vehicle.model} 
-                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" 
+              <img
+                src={activePhoto}
+                alt={vehicle.model}
+                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0B1322]/70 via-transparent to-transparent pointer-events-none" />
-              
+
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white">
                 <div className="flex items-center gap-2">
                   <span className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg font-bold border border-white/20">
@@ -221,16 +298,15 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             {/* Thumbnail Strip with Interactive Selector */}
             <div className="grid grid-cols-3 gap-3">
               {vehicle.gallery.map((img, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   onClick={() => setActivePhoto(img)}
-                  className={`h-24 rounded-xl overflow-hidden border cursor-pointer transition-all ${
-                    activePhoto === img 
-                      ? 'border-[#B30D12] ring-2 ring-[#B30D12]/40 scale-102' 
-                      : 'border-slate-200 hover:opacity-90'
-                  }`}
+                  className={`h-24 rounded-xl overflow-hidden border cursor-pointer transition-all ${activePhoto === img
+                    ? 'border-[#B30D12] ring-2 ring-[#B30D12]/40 scale-102'
+                    : 'border-slate-200 hover:opacity-90'
+                    }`}
                 >
-                  <img src={img} alt={`Angle ${i+1}`} className="w-full h-full object-cover" />
+                  <img src={img} alt={`Angle ${i + 1}`} className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
@@ -290,7 +366,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <p className="text-[11px] text-emerald-700">
                     Broker proxy bid placed up to <strong>NZ${maxBidNzd.toLocaleString('en-US')}</strong> on USS Tokyo.
                   </p>
-                  <button 
+                  <button
                     onClick={() => setBidPlaced(false)}
                     className="text-[11px] font-bold text-slate-600 hover:text-slate-900 underline"
                   >
@@ -298,7 +374,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   </button>
                 </div>
               ) : (
-                <button 
+                <button
                   onClick={() => setBidPlaced(true)}
                   className="w-full py-3 bg-[#B30D12] hover:bg-[#940B0F] text-white font-bold text-xs rounded-xl transition-all shadow-sm hover:shadow"
                 >
@@ -311,9 +387,9 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
                   Auction Inspection Documentation
                 </span>
-                
+
                 {/* 1. Inspection sheet (Japanese) */}
-                <button 
+                <button
                   onClick={() => handleDownloadSheet("Japanese")}
                   className="w-full py-2.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all flex items-center justify-between border border-slate-200 shadow-2xs hover:shadow-xs group cursor-pointer"
                 >
@@ -325,7 +401,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 </button>
 
                 {/* 2. Inspection sheet (English – AI translated) */}
-                <button 
+                <button
                   onClick={() => handleDownloadSheet("English – AI translated")}
                   className="w-full py-2.5 px-3 bg-gradient-to-r from-red-50 to-rose-50 hover:from-red-100 hover:to-rose-100 text-[#B30D12] font-bold text-xs rounded-xl transition-all flex items-center justify-between border border-red-200/80 shadow-2xs hover:shadow-xs group cursor-pointer"
                 >
@@ -341,7 +417,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
         </div>
 
         {/* AI Valuation & Opportunity Intelligence Card */}
-        <div className="bg-gradient-to-r from-red-50/40 via-slate-50 to-[#1B2A4A]/5 rounded-2xl border border-red-100 p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+        <div className="bg-gradient-to-r from-red-50/40 via-red-100 to-red-50/40 rounded-2xl border border-red-100 p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
           <div className="flex items-start gap-4">
             <div className="w-10 h-10 rounded-xl bg-[#B30D12] text-white flex items-center justify-center shrink-0 shadow-sm">
               <Sparkles size={20} />
@@ -373,7 +449,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
 
         {/* Interactive Calculator & Price-vs-KM Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
+
           {/* Interactive Landed Cost & Bid Simulator */}
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-7 space-y-6">
             <div className="flex items-center justify-between">
@@ -396,14 +472,17 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <span className="text-slate-700">FOB Auction Price (JPY)</span>
                   <span className="font-mono text-slate-900">¥{fobJpy.toLocaleString('en-US')}</span>
                 </div>
-                <input 
-                  type="range" 
-                  min={800000} 
-                  max={2500000} 
+                <input
+                  type="range"
+                  min={800000}
+                  max={2500000}
                   step={20000}
                   value={fobJpy}
                   onChange={(e) => setFobJpy(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-[#B30D12]"
+                  style={{
+                    background: `linear-gradient(to right, #B30D12 0%, #B30D12 ${fobPercent}%, #e2e8f0 ${fobPercent}%, #e2e8f0 100%)`
+                  }}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-[#B30D12]"
                 />
               </div>
 
@@ -412,14 +491,17 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <span className="text-slate-700">Target Dealer Margin (NZD)</span>
                   <span className="text-emerald-700 font-bold">NZ${targetMargin.toLocaleString('en-US')}</span>
                 </div>
-                <input 
-                  type="range" 
-                  min={1500} 
-                  max={8000} 
+                <input
+                  type="range"
+                  min={1500}
+                  max={8000}
                   step={250}
                   value={targetMargin}
                   onChange={(e) => setTargetMargin(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-emerald-600"
+                  style={{
+                    background: `linear-gradient(to right, #059669 0%, #059669 ${marginPercent}%, #e2e8f0 ${marginPercent}%, #e2e8f0 100%)`
+                  }}
+                  className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-emerald-600"
                 />
               </div>
             </div>
@@ -458,57 +540,274 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
 
           {/* Price vs KM NZ Market Scatter Chart */}
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] p-6 sm:p-7 space-y-4">
-            <div>
-              <h3 className="text-base font-black text-slate-900">Price vs Kilometres (NZ Yard Comp)</h3>
-              <p className="text-xs text-slate-500 font-medium">This vehicle plotted against 40+ recent NZ listings.</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 className="text-base font-black text-slate-900">Price vs Kilometres (NZ Yard Comp)</h3>
+                <p className="text-xs text-slate-500 font-medium">This vehicle plotted against active NZ yard listings & depreciation curve.</p>
+              </div>
+              <div className="flex items-center gap-1.5 self-start sm:self-auto">
+                <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border flex items-center gap-1 shadow-2xs ${currentSpread > 0
+                  ? "bg-emerald-50 text-emerald-700 border-emerald-200/80"
+                  : "bg-amber-50 text-amber-700 border-amber-200/80"
+                  }`}>
+                  <TrendingUp size={12} />
+                  <span>Arbitrage: {currentSpread > 0 ? `+NZ$${currentSpread.toLocaleString('en-US')}` : `-NZ$${Math.abs(currentSpread).toLocaleString('en-US')}`}</span>
+                </span>
+              </div>
             </div>
 
-            {/* SVG Scatter Chart */}
-            <div className="h-56 w-full relative mt-4 pt-4 border-l border-b border-slate-300">
-              {/* Y Axis Labels (Price) */}
-              <span className="absolute -left-10 top-0 text-[10px] font-bold text-slate-400">NZ$28k</span>
-              <span className="absolute -left-10 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400">NZ$22k</span>
-              <span className="absolute -left-10 bottom-0 text-[10px] font-bold text-slate-400">NZ$16k</span>
+            {/* SVG Scatter Chart Container */}
+            <div className="relative w-full bg-slate-50/50 rounded-xl p-3 border border-slate-100">
+              <svg
+                viewBox={`0 0 ${chartW} ${chartH}`}
+                className="w-full h-auto max-h-[290px] overflow-visible select-none"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                {/* Horizontal Gridlines & Y-Axis Labels */}
+                {yTicks.map((price, idx) => {
+                  const y = getChartY(price);
+                  return (
+                    <g key={`y-tick-${idx}`}>
+                      <line
+                        x1={padLeft}
+                        y1={y}
+                        x2={padLeft + plotW}
+                        y2={y}
+                        stroke="#E2E8F0"
+                        strokeWidth="1"
+                        strokeDasharray={idx === 0 ? "none" : "3 3"}
+                      />
+                      <text
+                        x={padLeft - 10}
+                        y={y + 3.5}
+                        textAnchor="end"
+                        fontSize="10"
+                        fontWeight="600"
+                        fill="#64748B"
+                      >
+                        NZ${Math.round(price / 1000)}k
+                      </text>
+                    </g>
+                  );
+                })}
 
-              {/* X Axis Labels (KM) */}
-              <span className="absolute -bottom-5 left-0 text-[10px] font-bold text-slate-400">30k km</span>
-              <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold text-slate-400">60k km</span>
-              <span className="absolute -bottom-5 right-0 text-[10px] font-bold text-slate-400">90k km</span>
+                {/* Vertical Gridlines & X-Axis Labels */}
+                {xTicks.map((km, idx) => {
+                  const x = getChartX(km);
+                  return (
+                    <g key={`x-tick-${idx}`}>
+                      <line
+                        x1={x}
+                        y1={padTop}
+                        x2={x}
+                        y2={padTop + plotH}
+                        stroke="#E2E8F0"
+                        strokeWidth="1"
+                        strokeDasharray="3 3"
+                      />
+                      <text
+                        x={x}
+                        y={padTop + plotH + 18}
+                        textAnchor="middle"
+                        fontSize="10"
+                        fontWeight="600"
+                        fill="#64748B"
+                      >
+                        {Math.round(km / 1000)}k km
+                      </text>
+                    </g>
+                  );
+                })}
 
-              {/* Regression Trend Line */}
-              <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none">
-                <line x1="5%" y1="20%" x2="95%" y2="80%" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="4" />
+                {/* Axes Lines */}
+                <line
+                  x1={padLeft}
+                  y1={padTop}
+                  x2={padLeft}
+                  y2={padTop + plotH}
+                  stroke="#CBD5E1"
+                  strokeWidth="1.5"
+                />
+                <line
+                  x1={padLeft}
+                  y1={padTop + plotH}
+                  x2={padLeft + plotW}
+                  y2={padTop + plotH}
+                  stroke="#CBD5E1"
+                  strokeWidth="1.5"
+                />
+
+                {/* Market Depreciation Regression Line */}
+                <line
+                  x1={regP1.x}
+                  y1={regP1.y}
+                  x2={regP2.x}
+                  y2={regP2.y}
+                  stroke="#94A3B8"
+                  strokeWidth="2.5"
+                  strokeDasharray="5 4"
+                />
+
+                {/* Arbitrage Spread Connector to Regression Line */}
+                {currentSpread > 0 && (
+                  <g>
+                    <line
+                      x1={thisLotX}
+                      y1={thisLotRetailY}
+                      x2={thisLotX}
+                      y2={thisLotY}
+                      stroke="#059669"
+                      strokeWidth="1.5"
+                      strokeDasharray="2 2"
+                    />
+                    <circle
+                      cx={thisLotX}
+                      cy={thisLotRetailY}
+                      r="3.5"
+                      fill="#94A3B8"
+                    />
+                  </g>
+                )}
+
+                {/* NZ Comparable Yard Listings Dots */}
+                {compListings.map((comp, idx) => {
+                  const cx = getChartX(comp.km);
+                  const cy = getChartY(comp.price);
+                  const isHovered = activeTooltip?.title === comp.source;
+
+                  return (
+                    <g
+                      key={`comp-${idx}`}
+                      className="cursor-pointer transition-transform"
+                      onMouseEnter={() => setActiveTooltip({
+                        title: comp.source,
+                        subtitle: comp.dealer,
+                        price: comp.price,
+                        km: comp.km,
+                        isThisLot: false,
+                        x: cx,
+                        y: cy
+                      })}
+                      onMouseLeave={() => setActiveTooltip(null)}
+                    >
+                      {isHovered && (
+                        <circle cx={cx} cy={cy} r="10" fill="#3B82F6" opacity="0.2" />
+                      )}
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={isHovered ? "6" : "4.5"}
+                        fill={isHovered ? "#2563EB" : "#64748B"}
+                        stroke="#FFFFFF"
+                        strokeWidth="1.5"
+                        className="transition-all duration-150"
+                      />
+                    </g>
+                  );
+                })}
+
+                {/* Target Vehicle Point ("This Lot" Landed Cost) */}
+                <g
+                  className="cursor-pointer"
+                  onMouseEnter={() => setActiveTooltip({
+                    title: `This Lot: ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+                    subtitle: `Auckland Landed Cost (${vehicle.auctionHouse})`,
+                    price: totalLandedCost,
+                    km: vehicleKm,
+                    isThisLot: true,
+                    x: thisLotX,
+                    y: thisLotY
+                  })}
+                  onMouseLeave={() => setActiveTooltip(null)}
+                >
+                  <circle cx={thisLotX} cy={thisLotY} r="12" fill="#10B981" opacity="0.35" className="animate-ping origin-center" />
+                  <circle cx={thisLotX} cy={thisLotY} r="9" fill="#059669" stroke="#ECFDF5" strokeWidth="2.5" className="shadow-md" />
+                  <text
+                    x={thisLotX}
+                    y={thisLotY + 3.5}
+                    textAnchor="middle"
+                    fill="#FFFFFF"
+                    fontSize="9"
+                    fontWeight="bold"
+                  >
+                    ★
+                  </text>
+
+                  {/* Static Callout Pill */}
+                  <g transform={`translate(${Math.min(chartW - 130, Math.max(padLeft + 10, thisLotX - 60))}, ${thisLotY - 26})`}>
+                    <rect width="120" height="20" rx="5" fill="#065F46" />
+                    <text x="60" y="13.5" textAnchor="middle" fill="#FFFFFF" fontSize="9.5" fontWeight="bold">
+                      This Lot: NZ${totalLandedCost.toLocaleString('en-US')}
+                    </text>
+                  </g>
+                </g>
+
+                {/* Interactive Tooltip Card Overlay (inside SVG) */}
+                {activeTooltip && (
+                  <g transform={`translate(${Math.min(chartW - 160, Math.max(padLeft + 10, activeTooltip.x - 75))}, ${Math.max(10, activeTooltip.y - 54)})`} pointerEvents="none">
+                    <rect
+                      width="150"
+                      height="46"
+                      rx="7"
+                      fill="#0F172A"
+                      opacity="0.95"
+                      className="shadow-xl"
+                    />
+                    <text x="8" y="15" fill="#94A3B8" fontSize="8.5" fontWeight="bold">
+                      {activeTooltip.title.length > 25 ? activeTooltip.title.slice(0, 23) + '...' : activeTooltip.title}
+                    </text>
+                    <text x="8" y="28" fill="#FFFFFF" fontSize="11" fontWeight="extrabold">
+                      NZ${activeTooltip.price.toLocaleString('en-US')}
+                    </text>
+                    <text x="142" y="28" textAnchor="end" fill="#CBD5E1" fontSize="9.5" fontWeight="600">
+                      {activeTooltip.km.toLocaleString('en-US')} km
+                    </text>
+                    <text x="8" y="40" fill={activeTooltip.isThisLot ? "#34D399" : "#94A3B8"} fontSize="8" fontWeight="medium">
+                      {activeTooltip.isThisLot ? `★ +NZ$${currentSpread.toLocaleString('en-US')} vs market comp` : activeTooltip.subtitle || 'Active NZ dealer comp'}
+                    </text>
+                  </g>
+                )}
               </svg>
-
-              {/* NZ Comparable Dots */}
-              <div className="absolute top-[25%] left-[30%] w-2.5 h-2.5 rounded-full bg-slate-400" title="Trade Me: NZ$26,000 (42k km)" />
-              <div className="absolute top-[35%] left-[45%] w-2.5 h-2.5 rounded-full bg-slate-400" title="Turners: NZ$24,500 (55k km)" />
-              <div className="absolute top-[42%] left-[60%] w-2.5 h-2.5 rounded-full bg-slate-400" title="Trade Me: NZ$23,990 (61k km)" />
-              <div className="absolute top-[60%] left-[80%] w-2.5 h-2.5 rounded-full bg-slate-400" title="AutoTrader: NZ$21,500 (78k km)" />
-
-              {/* Target Vehicle Spot - Glowing Arbitrage Point */}
-              <div className="absolute top-[68%] left-[55%] -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-                <span className="animate-ping absolute inline-flex h-6 w-6 rounded-full bg-emerald-400 opacity-60"></span>
-                <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md font-bold text-[10px] z-10">
-                  ★
-                </div>
-              </div>
             </div>
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-6 pt-4 text-xs">
-              <div className="flex items-center gap-1.5 text-slate-600">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-1 text-xs">
+              <div className="flex items-center gap-1.5 text-slate-600 font-medium">
                 <span className="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
                 <span>Active NZ Yard Listings</span>
               </div>
+              <div className="flex items-center gap-1.5 text-slate-600 font-medium">
+                <span className="w-5 h-0.5 border-t-2 border-dashed border-slate-400"></span>
+                <span>Market Depreciation Curve</span>
+              </div>
               <div className="flex items-center gap-1.5 text-emerald-700 font-bold">
-                <span className="w-3 h-3 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[8px]">★</span>
+                <span className="w-3.5 h-3.5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[9px]">★</span>
                 <span>This Lot (Landed: NZ${totalLandedCost.toLocaleString('en-US')})</span>
               </div>
             </div>
 
-            <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-100 text-xs text-emerald-800 font-medium">
-              ★ <strong>Best Value vs NZ Market:</strong> Positioned NZ$4,000 below market regression line for 58k km.
+            {/* Callout Banner */}
+            <div className={`p-3.5 rounded-xl border text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 shadow-2xs ${currentSpread > 0
+              ? "bg-emerald-50/90 border-emerald-200 text-emerald-900"
+              : "bg-amber-50/90 border-amber-200 text-amber-900"
+              }`}>
+              <div className="flex items-center gap-2">
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${currentSpread > 0 ? "bg-emerald-600 text-white" : "bg-amber-600 text-white"
+                  }`}>
+                  ★
+                </span>
+                <div>
+                  <strong>{currentSpread > 0 ? "Best Value vs NZ Market:" : "Market Price Alignment:"}</strong>{" "}
+                  {currentSpread > 0
+                    ? `Positioned NZ$${currentSpread.toLocaleString('en-US')} below market retail regression for ${Math.round(vehicleKm / 1000)}k km.`
+                    : `Landed cost is within NZ$${Math.abs(currentSpread).toLocaleString('en-US')} of market comps.`}
+                </div>
+              </div>
+              {currentSpread > 0 && (
+                <span className="self-start sm:self-auto font-bold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md text-[11px] shrink-0">
+                  Target Margin: NZ${targetMargin.toLocaleString('en-US')}
+                </span>
+              )}
             </div>
           </div>
 

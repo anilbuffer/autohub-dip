@@ -11,7 +11,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "AutoHub Dealer Intelligence Platform (DIP)",
-  description: "Next-generation automotive dealer intelligence, Japanese vehicle auction sourcing, landed cost calculation, and margin arbitrage platform.",
+  description: "Next-generation automotive dealer intelligence, Japanese vehicle auction sourcing, landed cost calculation, and margin sourcing intelligence platform.",
 };
 
 export default function RootLayout({

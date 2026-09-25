@@ -17,7 +17,8 @@ import {
   DollarSign,
   Car as CarIcon,
   Flame,
-  RotateCcw
+  RotateCcw,
+  Info
 } from "lucide-react";
 import { VEHICLES } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
@@ -88,7 +89,7 @@ export default function VehiclesPage() {
               Auction Vehicles Catalog
             </h1>
             <p className="text-slate-500 text-sm font-medium mt-0.5">
-              Filter by buying profile, review landed margin spreads, and lock in maximum bids before auction lanes close.
+              Filter by buying profile, review landed margin spreads, and check market-based bid guides before auction lanes close.
             </p>
           </div>
 
@@ -374,7 +375,7 @@ export default function VehiclesPage() {
                     <th className="px-5 py-3.5">FOB (JPY)</th>
                     <th className="px-5 py-3.5">Landed (NZD)</th>
                     <th className="px-5 py-3.5">Est. Retail</th>
-                    <th className="px-5 py-3.5">Max Bid</th>
+                    <th className="px-5 py-3.5">Market Bid Guide</th>
                     <th className="px-5 py-3.5">AI Score</th>
                     <th className="px-5 py-3.5 text-right">Action</th>
                   </tr>
@@ -437,6 +438,14 @@ export default function VehiclesPage() {
             </div>
           </div>
         )}
+
+        {/* Small Disclaimer */}
+        <div className="flex items-center justify-center gap-2 p-3 bg-white/70 border border-slate-200/70 rounded-xl text-center shadow-[0_1px_2px_rgba(15,23,42,0.02)]">
+          <Info size={13} className="text-slate-400 shrink-0" />
+          <span className="text-[11px] text-slate-500 font-medium">
+            Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
+          </span>
+        </div>
 
       </div>
     </AppLayout>

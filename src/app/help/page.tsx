@@ -13,7 +13,8 @@ import {
   ChevronDown, 
   ExternalLink,
   Award,
-  Sparkles
+  Sparkles,
+  Info
 } from "lucide-react";
 
 export default function HelpPage() {
@@ -21,8 +22,8 @@ export default function HelpPage() {
 
   const faqs = [
     {
-      q: "How does AutoHub DIP calculate Recommended Maximum Bids?",
-      a: "Our engine starts from the estimated NZ retail market value (derived from real-time Trade Me, Turners, and AutoTrader listings), then subtracts your target dealer margin (e.g. NZ$3,500), ocean freight, NZ entry compliance, bio-security, MAF fees, and 15% GST. The remainder is converted at the live bank FX rate to give the exact maximum FOB ceiling in Japanese Yen."
+      q: "How does AutoHub DIP calculate the NZ Market Indicator / Market-Based Bid Guide?",
+      a: "Our engine starts from the estimated NZ retail market value (derived from real-time Trade Me, Turners, and AutoTrader listings), then subtracts your target dealer margin (e.g. NZ$3,500), ocean freight, NZ entry compliance, bio-security, MAF fees, and 15% GST. The remainder is converted at the live bank FX rate to give an indicative market-based bid guide in Japanese Yen. Indicative figures based on current NZ market data. Final bid decisions rest with the dealer."
     },
     {
       q: "What do the Japanese Auction Grades (4.5, 4.0, 3.5, R) signify?",
@@ -136,7 +137,7 @@ export default function HelpPage() {
                 Grade 3.5 / R
               </span>
               <p className="font-bold text-slate-800 pt-1">Budget / Reconditioning</p>
-              <p className="text-slate-500">Visible scratches or cosmetic repairs. AutoHub DIP discounts max bids accordingly.</p>
+              <p className="text-slate-500">Visible scratches or cosmetic repairs. AutoHub DIP adjusts market bid guides accordingly.</p>
             </div>
           </div>
         </div>
@@ -166,6 +167,14 @@ export default function HelpPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Small Disclaimer */}
+        <div className="flex items-center justify-center gap-2 p-3 bg-white/70 border border-slate-200/70 rounded-xl text-center shadow-[0_1px_2px_rgba(15,23,42,0.02)]">
+          <Info size={13} className="text-slate-400 shrink-0" />
+          <span className="text-[11px] text-slate-500 font-medium">
+            Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
+          </span>
         </div>
 
       </div>

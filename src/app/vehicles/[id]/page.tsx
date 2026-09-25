@@ -127,12 +127,12 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             </button>
 
             <div className="text-right">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Recommended Max Bid</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">NZ Market Indicator</span>
               <span className="text-2xl font-black text-[#B30D12] block">
                 NZ${maxBidNzd.toLocaleString('en-US')}
               </span>
               <span className="text-[11px] text-slate-400 font-mono">
-                ~¥{maxBidJpy.toLocaleString('en-US')} FOB limit
+                ~¥{maxBidJpy.toLocaleString('en-US')} FOB guide
               </span>
             </div>
           </div>
@@ -212,8 +212,11 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <span className="font-bold text-emerald-600">+NZ${targetMargin.toLocaleString('en-US')}</span>
                 </div>
                 <div className="flex justify-between pt-2 border-t border-slate-200 font-bold">
-                  <span className="text-slate-700">Recommended Max Bid</span>
+                  <span className="text-slate-700">Market-Based Bid Guide</span>
                   <span className="text-[#B30D12] font-black">NZ${maxBidNzd.toLocaleString('en-US')}</span>
+                </div>
+                <div className="text-[10px] text-slate-400 italic pt-1 text-center">
+                  Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
                 </div>
               </div>
             </div>
@@ -239,7 +242,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   onClick={() => setBidPlaced(true)}
                   className="w-full py-3 bg-[#B30D12] hover:bg-[#940B0F] text-white font-bold text-xs rounded-xl transition-all shadow-sm hover:shadow"
                 >
-                  Lock In Maximum Auto-Bid
+                  Submit Auto-Bid Guide
                 </button>
               )}
 
@@ -262,7 +265,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             <div className="space-y-2 flex-1">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h3 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
-                  AI Appraisal & Arbitrage Rationale
+                  AI Appraisal & Margin Potential Rationale
                 </h3>
                 <span className="text-xs font-bold text-slate-600 bg-white px-2.5 py-0.5 rounded-full border border-slate-200 shadow-2xs">
                   {vehicle.aiAnalysis.confidence}% Statistical Confidence
@@ -360,8 +363,11 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 <span className="text-sm">NZ${totalLandedCost.toLocaleString('en-US')}</span>
               </div>
               <div className="flex justify-between font-extrabold text-[#B30D12] pt-1 text-sm">
-                <span>Max Allowable Bid for Target Margin</span>
+                <span>Market-Based Bid Guide (Target Margin)</span>
                 <span>NZ${maxBidNzd.toLocaleString('en-US')}</span>
+              </div>
+              <div className="text-[10px] text-slate-400 italic pt-1.5 text-center border-t border-slate-100">
+                Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
               </div>
             </div>
           </div>
@@ -418,7 +424,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             </div>
 
             <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-100 text-xs text-emerald-800 font-medium">
-              ★ <strong>Arbitrage Opportunity:</strong> Positioned NZ$4,000 below market regression line for 58k km.
+              ★ <strong>Best Value vs NZ Market:</strong> Positioned NZ$4,000 below market regression line for 58k km.
             </div>
           </div>
 
@@ -468,6 +474,14 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Small Disclaimer Bar */}
+        <div className="flex items-center justify-center gap-2 p-3 bg-white/70 border border-slate-200/70 rounded-xl text-center shadow-[0_1px_2px_rgba(15,23,42,0.02)]">
+          <Info size={13} className="text-slate-400 shrink-0" />
+          <span className="text-[11px] text-slate-500 font-medium">
+            Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
+          </span>
         </div>
 
       </div>

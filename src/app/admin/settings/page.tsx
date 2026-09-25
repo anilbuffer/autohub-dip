@@ -222,7 +222,7 @@ export default function AdminSettings() {
                 </div>
                 <div>
                   <span className="text-slate-400 text-[10px] block">Spread Delta:</span>
-                  <span className="font-black text-emerald-700">Healthy Arbitrage</span>
+                  <span className="font-black text-emerald-700">Strong Margin Potential</span>
                 </div>
               </div>
             </div>

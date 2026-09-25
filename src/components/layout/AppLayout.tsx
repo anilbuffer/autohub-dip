@@ -59,47 +59,48 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       {/* Sidebar - Sleek Deep Navy */}
       <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-[270px] bg-[#0B1322] text-slate-300 flex flex-col justify-between shrink-0 border-r border-[#1B2A4A]/60 transition-transform duration-300 ease-in-out
+        fixed md:static inset-y-0 left-0 z-50 w-[264px] bg-[#0b152e] text-slate-300 flex flex-col justify-between shrink-0 border-r border-[#1B2A4A]/50 transition-transform duration-300 ease-in-out
         ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         <div>
           {/* Brand Logo & Header */}
-          <div className="h-[76px] flex items-center justify-between px-5 border-b border-[#1B2A4A]/70 bg-[#080E1A]">
-            <Link href="/" className="flex items-center gap-3 group" title="AutoHub Dealer Intelligence Platform (DIP)">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-[#1B2A4A] flex items-center justify-center shadow-lg shadow-blue-950/40 group-hover:scale-105 transition-transform border border-blue-400/30">
-                <span className="text-white font-black text-sm tracking-wider">AH</span>
+          <div className="h-[70px] flex items-center justify-between px-4 sm:px-5 border-b border-[#1B2A4A]/60 bg-[#060E22]">
+            <Link href="/" className="flex items-center gap-2.5 group" title="AutoHub Dealer Intelligence Platform (DIP)">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#1B2A4A] flex items-center justify-center shadow-md shadow-red-950/50 group-hover:scale-105 transition-transform border border-red-400/30 shrink-0">
+                <span className="text-white font-black text-xs tracking-wider">AH</span>
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[15px] font-black text-white tracking-wider leading-none">AUTOHUB</span>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded font-black bg-blue-500/20 text-blue-300 border border-blue-500/40">DIP</span>
+                  <span className="text-[14px] font-black text-white tracking-wide leading-none">AUTOHUB</span>
+                  <span className="text-[8.5px] px-1.5 py-0.2 rounded font-extrabold bg-[#B30D12]/25 text-red-300 border border-[#B30D12]/40">DIP</span>
                 </div>
-                <span className="block text-[9px] font-semibold text-slate-400 tracking-wider mt-1">DEALER INTELLIGENCE PLATFORM</span>
+                <span className="block text-[8.5px] font-semibold text-slate-400 tracking-[0.08em] mt-0.5">DEALER INTELLIGENCE</span>
               </div>
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
               className="md:hidden text-slate-400 hover:text-white p-1"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
-          {/* Live JPY/NZD Rate Pill */}
-          <div className="px-4 py-2 mx-3 mt-3 flex items-center justify-between bg-[#0E182A] rounded-lg border border-[#1B2A4A]/60 text-[11px]">
+          {/* Live JPY/NZD Rate Chip */}
+          <div className="px-3.5 py-2 mx-3 mt-3 flex items-center justify-between bg-[#0D1627] rounded-xl border border-[#1E2E4E]/80 shadow-2xs text-[11px]">
             <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-              <TrendingUp size={12} className="text-emerald-400" />
-              <span>¥ / NZ$:</span>
-              <span className="font-bold text-white">{syncState.fxRateJpyNzd}</span>
+              <TrendingUp size={12} className="text-emerald-400 shrink-0" />
+              <span className="text-slate-400">¥ / NZ$:</span>
+              <span className="font-mono font-bold text-white text-xs">{syncState.fxRateJpyNzd}</span>
             </div>
-            <span className="text-[10px] text-emerald-400 font-semibold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/50">
-              Live Feed
+            <span className="text-[9.5px] text-emerald-400 font-bold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/60 flex items-center gap-1">
+              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+              Live
             </span>
           </div>
 
           {/* Navigation Links */}
-          <nav className="mt-4 px-3 space-y-1">
-            <div className="px-3 pb-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+          <nav className="mt-4 px-3 space-y-3">
+            <div className="px-3 pb-1.5 text-[10px] font-bold text-slate-400/80 uppercase tracking-wider">
               Dealer Operations
             </div>
             {navItems.map((item) => {
@@ -110,17 +111,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all ${isActive
-                    ? 'bg-gradient-to-r from-[#B30D12]/25 to-[#B30D12]/5 text-white border-l-4 border-[#B30D12] font-bold shadow-sm'
-                    : 'text-slate-400 hover:bg-[#111C30] hover:text-slate-100'
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${isActive
+                    ? 'bg-gradient-to-r from-[#B30D12]/20 via-[#B30D12]/10 to-transparent text-white border-l-2 border-[#B30D12] font-medium shadow-2xs'
+                    : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
                     }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon size={18} className={isActive ? 'text-[#e56168]' : 'text-slate-400'} />
+                  <div className="flex items-center gap-2.5">
+                    <Icon size={16} className={isActive ? 'text-[#e56168]' : 'text-slate-400'} />
                     <span>{item.label}</span>
                   </div>
                   {item.badge && (
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#B30D12]/20 text-red-300 border border-[#B30D12]/30">
+                    <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-[#B30D12]/25 text-red-300 border border-[#B30D12]/40">
                       {item.badge}
                     </span>
                   )}
@@ -131,24 +132,25 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* User / Dealership Footer */}
-        <div className="p-3 m-3 bg-[#080E1A] rounded-xl border border-[#1B2A4A] flex items-center justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-sm shrink-0 border border-[#2B406B]">
+        <div className="p-2.5 m-3 bg-[#0D1627] rounded-xl border border-[#1E2E4E]/80 shadow-2xs flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1B2A4A] to-[#0E1A30] text-slate-200 flex items-center justify-center font-bold text-xs shrink-0 border border-[#2B406B]/60 shadow-2xs">
               DM
             </div>
             <div className="min-w-0">
-              <div className="text-[13px] font-bold text-white truncate">David Miller</div>
-              <div className="text-[11px] text-slate-400 truncate flex items-center gap-1">
-                <Building2 size={11} /> Auckland Auto
+              <div className="text-xs font-bold text-white truncate">David Miller</div>
+              <div className="text-[10px] text-slate-400 truncate flex items-center gap-1 mt-0.5">
+                <Building2 size={10} className="shrink-0" />
+                <span className="truncate">Auckland Auto Group</span>
               </div>
             </div>
           </div>
           <Link
             href="/login"
             title="Switch User / Logout"
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-[#1B2A4A] rounded-lg transition-colors"
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
           >
-            <LogOut size={14} />
+            <LogOut size={13} />
           </Link>
         </div>
       </aside>
@@ -272,20 +274,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {!chatOpen && (
           <button
             onClick={() => setChatOpen(true)}
-            className="fixed bottom-6 right-6 z-30 flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shadow-2xl border border-white/20 hover:scale-105 hover:shadow-blue-950/40 transition-all duration-200 group"
+            className="fixed bottom-6 right-6 z-30 flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shadow-2xl border border-white/15 hover:scale-105 hover:shadow-red-950/40 hover:border-[#B30D12]/40 transition-all duration-200 group"
             title="Open AutoHub DIP Assistant"
           >
-            <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 to-[#1B2A4A] flex items-center justify-center font-black text-xs text-white shadow-md group-hover:rotate-6 transition-transform border border-blue-400/30">
-              <Sparkles size={16} className="text-blue-200" />
+            <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-[#B30D12] to-[#8B090E] flex items-center justify-center font-black text-xs text-white shadow-md shadow-[#B30D12]/40 group-hover:rotate-6 transition-transform border border-red-400/40">
+              <Sparkles size={16} className="text-white" />
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-[#0B1322] animate-pulse"></span>
             </div>
             <div className="text-left">
               <div className="text-xs font-black tracking-wide flex items-center gap-1.5">
                 AutoHub DIP Assistant
-                <span className="text-[9px] px-1.5 py-0.2 rounded bg-white/20 text-emerald-300 font-bold">Online</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#B30D12]/30 text-red-200 border border-[#B30D12]/50 font-bold">Online</span>
               </div>
               <div className="text-[10px] text-slate-300">
-                Landed cost · Sheet codes · Max bid
+                Landed cost · Sheet codes · Bid guide
               </div>
             </div>
           </button>

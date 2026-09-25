@@ -128,10 +128,10 @@ export default function DealerChatAssistant({
       text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I monitor **140+ Japanese auction houses** (USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
       timestamp: "Just now",
       suggestedPrompts: [
-        "💎 Top Arbitrage Picks Today",
+        "💎 Best Value vs NZ Market",
+        "What does the market data show for this car?",
         "🧮 Calculate Landed Cost",
         "📋 Explain Sheet Codes (W2, A1, U2)",
-        "🎯 Auckland Demand & TradeMe Comps",
         "🚢 Yokohama Shipping Schedule"
       ]
     }
@@ -232,7 +232,7 @@ export default function DealerChatAssistant({
         type: "vehicles",
         vehiclesData: [aqua],
         suggestedPrompts: [
-          "Recommended Max Bid for Aqua",
+          "What does the market data show for Aqua?",
           "Explain Grade 4.5 USS Sheet",
           "Compare Aqua vs Honda Fit"
         ]
@@ -251,7 +251,7 @@ export default function DealerChatAssistant({
         suggestedPrompts: [
           "Calculate Landed Cost at ¥1.25M",
           "Next Shipping Vessel from Yokohama",
-          "Top Arbitrage Picks Today"
+          "Best Value vs NZ Market"
         ]
       };
     }
@@ -266,27 +266,27 @@ export default function DealerChatAssistant({
         type: "vehicles",
         vehiclesData: [chr],
         suggestedPrompts: [
-          "Recommended Max Bid for C-HR",
+          "What does the market data show for C-HR?",
           "Calculate Landed Cost",
           "Shipping Schedule to Auckland"
         ]
       };
     }
 
-    // Top arbitrage / recommendations / deals
-    if (q.includes("arbitrage") || q.includes("top") || q.includes("recommend") || q.includes("best") || q.includes("deal") || q.includes("picks") || q.includes("priority")) {
+    // Top value / margin potential / deals
+    if (q.includes("arbitrage") || q.includes("value") || q.includes("margin potential") || q.includes("top") || q.includes("recommend") || q.includes("best") || q.includes("deal") || q.includes("picks") || q.includes("priority")) {
       const topVehicles = VEHICLES.filter((v) => v.status === "Priority").slice(0, 3);
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🏆 Top High-Arbitrage Auction Picks Today\nHere are the **top 3 vehicles** in tomorrow's Tokyo and Nagoya sessions matching Auckland Auto Group's criteria with over **NZ$3,500 gross margin spread**:`,
+        text: `### 🏆 Best Value vs NZ Market (Strong Margin Potential)\nHere are the **top 3 vehicles** in tomorrow's Tokyo and Nagoya sessions matching Auckland Auto Group's criteria with over **NZ$3,500 gross margin spread**:\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: topVehicles,
         suggestedPrompts: [
           "🧮 Interactive Landed Cost Calculator",
           "📋 Japanese Auction Sheet Codes",
-          "⚡ Maximum Bid Recommendations"
+          "⚡ Market-Based Bid Guide"
         ]
       };
     }
@@ -324,7 +324,7 @@ export default function DealerChatAssistant({
         suggestedPrompts: [
           "What is the GST calculation formula?",
           "How does JPY fluctuation affect margin?",
-          "Top Arbitrage Picks Today"
+          "Best Value vs NZ Market"
         ]
       };
     }
@@ -356,7 +356,7 @@ export default function DealerChatAssistant({
         suggestedPrompts: [
           "How long does bio-security wash take?",
           "Calculate Landed Cost with Freight",
-          "Top Arbitrage Picks Today"
+          "Best Value vs NZ Market"
         ]
       };
     }
@@ -370,7 +370,7 @@ export default function DealerChatAssistant({
         timestamp: "Just now",
         suggestedPrompts: [
           "Calculate Landed Cost for Aqua",
-          "Top Arbitrage Picks Today",
+          "Best Value vs NZ Market",
           "Japanese Sheet Inspection Codes"
         ]
       };
@@ -381,27 +381,27 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 📈 Auckland Metro Demand & Trade Me Comps\n\n**Market Velocity Highlights:**\n- **Sub-NZ$25k Hybrids:** 78% of Trade Me Motors listings sell within **18 calendar days** in the Auckland region.\n- **Toyota Aqua 2018–2020:** Active Trade Me listings: 142 units. Median listed price: **NZ$24,200**. Inventory turnover: **14 days**.\n- **Honda Fit e:HEV 2020+:** Active Trade Me listings: 48 units. Median listed price: **NZ$22,900**. High buyer interest due to modern Apple CarPlay interior.\n- **Recommended Strategy:** Target auction bids yielding at least **NZ$3,500 gross margin** to absorb 60 days of floor plan financing and dealer preparation.`,
+        text: `### 📈 Auckland Metro Demand & Trade Me Comps\n\n**Market Velocity Highlights:**\n- **Sub-NZ$25k Hybrids:** 78% of Trade Me Motors listings sell within **18 calendar days** in the Auckland region.\n- **Toyota Aqua 2018–2020:** Active Trade Me listings: 142 units. Median listed price: **NZ$24,200**. Inventory turnover: **14 days**.\n- **Honda Fit e:HEV 2020+:** Active Trade Me listings: 48 units. Median listed price: **NZ$22,900**. High buyer interest due to modern Apple CarPlay interior.\n- **Market-Based Strategy:** Target auction bids yielding at least **NZ$3,500 gross margin** to absorb 60 days of floor plan financing and dealer preparation.`,
         timestamp: "Just now",
         suggestedPrompts: [
-          "Show Top Arbitrage Picks",
+          "Show Best Value Vehicles",
           "🧮 Calculate Landed Cost",
-          "Recommend Max Bid for Aqua"
+          "What does the market data show for Aqua?"
         ]
       };
     }
 
-    // Max Bid Strategy
-    if (q.includes("max bid") || q.includes("strategy") || q.includes("how much to bid") || q.includes("target")) {
+    // Market-Based Bid Guide / Max Bid Strategy
+    if (q.includes("market data") || q.includes("recommended bid") || q.includes("bid guide") || q.includes("max bid") || q.includes("strategy") || q.includes("how much to bid") || q.includes("target")) {
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🎯 AutoHub DIP Max Auction Bid Recommendation Formula\n\nTo lock in your required **NZ$3,500 dealer gross margin**, calculate backward from expected retail:\n\n$$\\text{Max Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Max Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable spread. Recommend placing bid up to ¥1,480,000.**`,
+        text: `### 🎯 AutoHub DIP Market-Based Bid Guide Formula\n\nTo target your required **NZ$3,500 dealer gross margin**, calculate backward from expected retail:\n\n$$\\text{Max Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Max Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable spread. Market data indicates bid guide up to ¥1,480,000 to preserve target margin.**\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Open Landed Cost Calculator",
           "Inspect Toyota Aqua Sheet",
-          "Top Arbitrage Picks Today"
+          "Best Value vs NZ Market"
         ]
       };
     }
@@ -410,13 +410,13 @@ export default function DealerChatAssistant({
     return {
       id: `bot-${Date.now()}`,
       sender: "bot",
-      text: `### 🤖 AutoHub DIP Auction Intelligence Analysis\n\nRegarding your inquiry: *"**${query}**"*\n\nBased on live data across **USS Tokyo, Yokohama & CAA Chubu** at current FX benchmark **¥${fx} / NZD**:\n\n- **Inventory Status:** 32 priority lots match Auckland Auto Group's criteria (Toyota, Honda, Mazda, Lexus).\n- **Landed Cost Index:** Freight benchmark is steady at NZ$${syncState.freightPerUnitNzd}, Compliance at NZ$${syncState.compliancePerUnitNzd}.\n- **Arbitrage Opportunity:** Median spread between Japan FOB + landed costs and NZ Trade Me retail is **+NZ$3,850**.\n\nWould you like me to calculate a specific landed cost, decode auction sheet markings, or pull up top vehicle matches?`,
+      text: `### 🤖 AutoHub DIP Auction Intelligence Analysis\n\nRegarding your inquiry: *"**${query}**"*\n\nBased on live data across **USS Tokyo, Yokohama & CAA Chubu** at current FX benchmark **¥${fx} / NZD**:\n\n- **Inventory Status:** 32 priority lots match Auckland Auto Group's criteria (Toyota, Honda, Mazda, Lexus).\n- **Landed Cost Index:** Freight benchmark is steady at NZ$${syncState.freightPerUnitNzd}, Compliance at NZ$${syncState.compliancePerUnitNzd}.\n- **Strong Margin Potential:** Median spread between Japan FOB + landed costs and NZ Trade Me retail is **+NZ$3,850**.\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*\n\nWould you like me to calculate a specific landed cost, decode auction sheet markings, or pull up top vehicle matches?`,
       timestamp: "Just now",
       suggestedPrompts: [
-        "💎 Top Arbitrage Picks Today",
+        "💎 Best Value vs NZ Market",
+        "What does the market data show for this car?",
         "🧮 Interactive Landed Cost Calculator",
-        "📋 Japanese Sheet Defect Codes",
-        "🚢 Yokohama Shipping Schedule"
+        "📋 Japanese Sheet Defect Codes"
       ]
     };
   };
@@ -476,8 +476,8 @@ export default function DealerChatAssistant({
         <div className="p-4 bg-gradient-to-r from-[#0B1322] via-[#101C33] to-[#1B2A4A] text-white shrink-0 border-b border-[#1B2A4A]/80 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-[#1B2A4A] flex items-center justify-center font-bold text-white shadow-md shadow-blue-900/40 shrink-0 border border-blue-400/30">
-                <Sparkles size={16} className="text-blue-200" />
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#0B1322] flex items-center justify-center font-bold text-white shadow-md shadow-[#B30D12]/40 shrink-0 border border-red-400/30">
+                <Sparkles size={16} className="text-white" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
@@ -542,10 +542,10 @@ export default function DealerChatAssistant({
               </span>
             </div>
             <button
-              onClick={() => handleSendMessage(`Analyze landed margin and auction sheet for ${activeVehicle.year} ${activeVehicle.model}`)}
+              onClick={() => handleSendMessage(`What does the market data show for ${activeVehicle.year} ${activeVehicle.model}?`)}
               className="text-[#e56168] hover:text-white font-bold text-[10px] shrink-0 ml-2 underline"
             >
-              Ask about this car
+              What does the market data show?
             </button>
           </div>
         )}
@@ -562,7 +562,7 @@ export default function DealerChatAssistant({
             <div className="flex items-center gap-1.5 mb-1 px-1 text-[11px] text-slate-400 font-medium">
               {msg.sender === "bot" ? (
                 <>
-                  <span className="w-4 h-4 rounded bg-gradient-to-br from-blue-600 to-[#1B2A4A] text-white flex items-center justify-center text-[8px] font-black">AH</span>
+                  <span className="w-4 h-4 rounded bg-gradient-to-br from-[#B30D12] to-[#8B090E] text-white flex items-center justify-center text-[8px] font-black">AH</span>
                   <span className="font-bold text-slate-700">AutoHub DIP Assistant</span>
                 </>
               ) : (
@@ -665,13 +665,13 @@ export default function DealerChatAssistant({
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex items-center gap-2 text-slate-500 text-xs py-2 px-1">
-            <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-blue-600 to-[#1B2A4A] text-white flex items-center justify-center text-[9px] font-black">
+            <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-[#B30D12] to-[#8B090E] text-white flex items-center justify-center text-[9px] font-black">
               AH
             </div>
             <div className="flex items-center gap-1.5 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-2xs">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.2s]"></span>
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-bounce [animation-delay:0.4s]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce [animation-delay:0.2s]"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] animate-bounce [animation-delay:0.4s]"></span>
               <span className="text-[11px] font-medium text-slate-500 ml-1">AutoHub DIP analyzing Japanese auction data...</span>
             </div>
           </div>
@@ -686,10 +686,16 @@ export default function DealerChatAssistant({
           <Sparkles size={11} className="text-[#B30D12]" /> Prompts:
         </span>
         <button
-          onClick={() => handleSendMessage("Top Arbitrage Picks Today")}
+          onClick={() => handleSendMessage("Best Value vs NZ Market")}
           className="shrink-0 px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold transition-colors"
         >
-          💎 Top Deals
+          💎 Best Value
+        </button>
+        <button
+          onClick={() => handleSendMessage("What does the market data show for this car?")}
+          className="shrink-0 px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold transition-colors"
+        >
+          📊 Bid Guide
         </button>
         <button
           onClick={() => handleSendMessage("Calculate Landed Cost for Toyota Aqua")}
@@ -838,19 +844,24 @@ function InteractiveCalcWidget({
       </div>
 
       {/* Target Retail & Margin Calculation */}
-      <div className="p-2 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center justify-between text-xs">
-        <div>
-          <span className="text-[10px] font-bold text-emerald-800 uppercase block">At NZ$25k Retail:</span>
-          <span className="font-bold text-emerald-900 text-sm">
-            +NZ${estMargin.toLocaleString()} Margin
-          </span>
+      <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-xs space-y-1.5">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-[10px] font-bold text-emerald-800 uppercase block">At NZ$25k Retail:</span>
+            <span className="font-bold text-emerald-900 text-sm">
+              +NZ${estMargin.toLocaleString()} Margin
+            </span>
+          </div>
+          <div className="text-right">
+            <span className="text-[10px] font-semibold text-emerald-700 block">Market-Based Bid Guide</span>
+            <span className="font-mono font-bold text-emerald-800">
+              NZ${maxRecommendedBid.toLocaleString()}
+            </span>
+          </div>
         </div>
-        <div className="text-right">
-          <span className="text-[10px] font-semibold text-emerald-700 block">Max Recommended Bid</span>
-          <span className="font-mono font-bold text-emerald-800">
-            NZ${maxRecommendedBid.toLocaleString()}
-          </span>
-        </div>
+        <p className="text-[9.5px] text-emerald-800/80 italic pt-1 border-t border-emerald-200/60 text-center">
+          Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
+        </p>
       </div>
     </div>
   );

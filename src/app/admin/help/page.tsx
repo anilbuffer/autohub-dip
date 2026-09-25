@@ -23,7 +23,7 @@ export default function AdminHelpPage() {
       content: "AutoHub DIP pulls Japanese auction inventory via automated worker scrapers running against USS Tokyo, USS Yokohama, CAA Chubu, and HAA Kobe. Ingestion cycles execute at 02:00, 06:00, and 11:00 JST. If a scraper health check drops below 98%, the system alerts the on-duty broker on Telegram."
     },
     {
-      title: "Dealer Arbitrage & Scoring Algorithm",
+      title: "Dealer Margin Potential & Scoring Algorithm",
       content: "The proprietary Opportunity Score (1-100) measures: (1) Gross profit margin spread vs target, (2) Historical NZ yard turnaround days for this exact make/badge, (3) Auction grade integrity (Grade 4.5/A receives a +12 score weight), (4) Distance from average market price regression line."
     },
     {

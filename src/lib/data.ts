@@ -201,7 +201,7 @@ export const VEHICLES: Vehicle[] = [
       summary: "High-demand compact crossover. Desirable two-tone roof package with genuine LED headlights and leather-trimmed cabin. Highly liquid inventory.",
       highlights: [
         "Estimated retail turnaround under 16 days across North Island yards",
-        "NZ$4,100 gross arbitrage margin above target benchmark",
+        "NZ$4,100 gross margin potential above target benchmark",
         "Grade 4.5 condition sheet with spotless undercarriage report"
       ],
       confidence: 95,

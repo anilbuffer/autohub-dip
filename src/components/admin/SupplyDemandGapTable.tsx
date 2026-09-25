@@ -134,7 +134,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
               <span className="px-2 py-0.5 rounded font-black text-[10px] uppercase tracking-wider bg-[#B30D12] text-white">
                 Opportunity Alert
               </span>
-              <span className="text-xs text-slate-500 font-semibold">Immediate Sourcing Arbitrage</span>
+              <span className="text-xs text-slate-500 font-semibold">Immediate Sourcing Opportunity</span>
             </div>
             <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
               5 models would sell immediately if listed at auction
@@ -162,7 +162,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
             Supply vs Demand Gap Analysis
           </h4>
           <p className="text-xs text-slate-500 font-medium mt-0.5">
-            Real-time arbitrage opportunity matrix identifying where AutoHub is missing auction sales opportunities.
+            Real-time supply & margin opportunity matrix identifying where AutoHub is missing auction sales opportunities.
           </p>
         </div>
 
@@ -275,7 +275,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
                 </div>
               </th>
 
-              <th className="py-3 px-5 text-right">AI Recommendation</th>
+              <th className="py-3 px-5 text-right">Sourcing Action</th>
             </tr>
           </thead>
 

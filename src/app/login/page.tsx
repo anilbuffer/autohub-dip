@@ -82,7 +82,7 @@ export default function LoginPage() {
           </div>
 
           <h1 className="text-4xl font-black text-white tracking-tight leading-tight">
-            Institutional Japanese vehicle sourcing & landed margin arbitrage.
+            Institutional Japanese vehicle sourcing & landed margin intelligence.
           </h1>
 
           <p className="text-sm text-slate-300 font-medium leading-relaxed">
@@ -109,7 +109,7 @@ export default function LoginPage() {
         {/* Bottom Testimonial */}
         <div className="relative z-10 p-4 rounded-xl bg-[#0E182A]/80 border border-[#1B2A4A] backdrop-blur-md">
           <p className="text-xs text-slate-300 italic">
-            &ldquo;AutoHub DIP turned our import bidding from guesswork into precision arbitrage. We secured 18 Grade 4.5 hybrids last month with guaranteed margin.&rdquo;
+            &ldquo;AutoHub DIP turned our import bidding from guesswork into precision margin sourcing. We secured 18 Grade 4.5 hybrids last month with strong margin potential.&rdquo;
           </p>
           <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#1B2A4A]/80 text-[11px]">
             <span className="font-bold text-white">David Miller</span>

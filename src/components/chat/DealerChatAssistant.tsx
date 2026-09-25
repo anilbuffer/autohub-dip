@@ -125,13 +125,13 @@ export default function DealerChatAssistant({
     {
       id: "msg-welcome-1",
       sender: "bot",
-      text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I analyze **Japanese auction pipeline lots** (including USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
+      text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I analyze **Japanese auction pipeline lots** (including USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\n**Headline Example Query:**\n> *"I have $200k, prefer Toyota, 3 years old or newer. What fits?"*\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
       timestamp: "Just now",
       suggestedPrompts: [
+        "I have $200k, prefer Toyota, 3 years old or newer. What fits?",
         "💎 Best Value vs NZ Market",
         "What does the market data show for this car?",
         "🧮 Calculate Landed Cost",
-        "📋 Explain Sheet Codes (W2, A1, U2)",
         "🚢 Yokohama Shipping Schedule"
       ]
     }
@@ -216,6 +216,55 @@ export default function DealerChatAssistant({
   const generateBotReply = (query: string): ChatMessage => {
     const q = query.toLowerCase().trim();
     const fx = syncState.fxRateJpyNzd;
+
+    // -----------------------------------------------------------------
+    // 1. Budget-based Headline Query: "I have $200k, prefer Toyota, 3 years old or newer. What fits?"
+    // -----------------------------------------------------------------
+    if (
+      q.includes("200k") ||
+      q.includes("200,000") ||
+      q.includes("200 000") ||
+      (q.includes("toyota") && (q.includes("3 year") || q.includes("3-year") || q.includes("newer") || q.includes("fits") || q.includes("what fits"))) ||
+      (q.includes("budget") && q.includes("toyota")) ||
+      (q.includes("prefer toyota") && (q.includes("200") || q.includes("newer") || q.includes("fits")))
+    ) {
+      // Filter 73-lot Heiwa database for Toyota vehicles 3 years old or newer (2021+)
+      const toyotaMatches = VEHICLES.filter((v) => {
+        const isToyota = v.make.toLowerCase() === "toyota";
+        const isNewer = v.year >= 2021;
+        return isToyota && isNewer;
+      }).sort((a, b) => b.score - a.score);
+
+      // Package lots within the $200,000 NZD capital allocation
+      const packageSelection: Vehicle[] = [];
+      let runningLandedCost = 0;
+      for (const vehicle of toyotaMatches) {
+        if (runningLandedCost + vehicle.landedNzd <= 200000) {
+          packageSelection.push(vehicle);
+          runningLandedCost += vehicle.landedNzd;
+        }
+      }
+
+      const finalSelection = packageSelection.length > 0 ? packageSelection : toyotaMatches.slice(0, 5);
+      const totalLanded = finalSelection.reduce((acc, v) => acc + v.landedNzd, 0);
+      const totalMargin = finalSelection.reduce((acc, v) => acc + v.targetMarginNzd, 0);
+      const buffer = Math.max(0, 200000 - totalLanded);
+
+      return {
+        id: `bot-${Date.now()}`,
+        sender: "bot",
+        text: `### 🎯 NZ$200,000 Portfolio Strategy: Late-Model Toyotas (≤ 3 Years Old)\n\nBased on your **NZ$200,000 capital budget**, we filtered the live Japanese Heiwa auction pipeline for **Toyota vehicles 2021 or newer (≤ 3 years old)** with verified auction condition.\n\n**Portfolio Sourcing Breakdown:**\n- **Target Allocation:** NZ$200,000.00\n- **Selected Package:** **${finalSelection.length} late-model Toyota lots** (Corolla Cross, C-HR, Corolla Touring, Aqua Z, Harrier)\n- **Combined Landed Cost:** **NZ$${totalLanded.toLocaleString()}** (Includes CIF ocean freight, port compliance, and 15% GST)\n- **Operating Buffer Remaining:** **NZ$${buffer.toLocaleString()}** (retained for floor plan buffer & dealer preparation)\n- **Projected Total Gross Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${totalMargin.toLocaleString()} (${Math.round((totalMargin / totalLanded) * 100)}% ROI)</span>\n- **Est. days to land in NZ (indicative):** **18–22 days** via direct Ro-Ro vessels from Yokohama/Nagoya to Ports of Auckland.\n\nHere are the matching vehicle cards fitting your criteria:`,
+        timestamp: "Just now",
+        type: "vehicles",
+        vehiclesData: finalSelection,
+        suggestedPrompts: [
+          "Lock In Auto-Bids for Toyota Package",
+          "Calculate Landed Cost for Corolla Cross",
+          "Explain Sheet Codes for Lot #" + (finalSelection[0]?.lotNumber || "1172820"),
+          "Yokohama Shipping Schedule"
+        ]
+      };
+    }
 
     // Check if query is about a specific car in the database
     if (q.includes("aqua") || (activeVehicle && activeVehicle.model.toLowerCase().includes("aqua") && (q.includes("this") || q.includes("bid") || q.includes("margin") || q.includes("cost")))) {
@@ -551,6 +600,30 @@ export default function DealerChatAssistant({
         )}
       </div>
 
+      {/* Featured Headline Prompt Example */}
+      <div className="px-3.5 py-2.5 bg-gradient-to-r from-red-50/90 via-white to-slate-50 border-b border-red-100 flex items-center justify-between gap-2 shrink-0 shadow-2xs">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-5 h-5 rounded-md bg-[#B30D12] text-white flex items-center justify-center shrink-0 shadow-2xs">
+            <Sparkles size={11} />
+          </div>
+          <div className="min-w-0">
+            <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#B30D12] block">
+              Headline Query Example
+            </span>
+            <p className="text-[11px] font-semibold text-slate-800 truncate">
+              &ldquo;I have $200k, prefer Toyota, 3 years old or newer. What fits?&rdquo;
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={() => handleSendMessage("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}
+          className="px-2.5 py-1 rounded-lg bg-[#B30D12] hover:bg-[#940B0F] text-white font-bold text-[11px] shrink-0 transition-all shadow-2xs hover:shadow flex items-center gap-1 cursor-pointer active:scale-95"
+        >
+          <span>Try Query</span>
+          <ArrowRight size={11} />
+        </button>
+      </div>
+
       {/* Chat Messages Scroll View */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#F8FAFC]">
         {messages.map((msg) => (
@@ -685,6 +758,12 @@ export default function DealerChatAssistant({
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0 flex items-center gap-1">
           <Sparkles size={11} className="text-[#B30D12]" /> Prompts:
         </span>
+        <button
+          onClick={() => handleSendMessage("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}
+          className="shrink-0 px-2.5 py-1 rounded-lg bg-red-50 hover:bg-red-100 text-[#B30D12] border border-red-200/80 text-[11px] font-bold transition-colors flex items-center gap-1 shadow-2xs cursor-pointer"
+        >
+          <span>💼 $200k Toyota (≤3y)</span>
+        </button>
         <button
           onClick={() => handleSendMessage("Best Value vs NZ Market")}
           className="shrink-0 px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold transition-colors"

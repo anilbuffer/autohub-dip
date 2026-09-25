@@ -199,11 +199,12 @@ export default function Dashboard() {
 
             <div className="flex items-center gap-2.5 shrink-0">
               <button
-                onClick={() => triggerAutoHubCopilot("Best Value vs NZ Market")}
-                className="px-3.5 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-sm font-semibold transition-all shadow-[0_2px_8px_-1px_rgba(15,23,42,0.15)] hover:shadow-[0_4px_12px_-2px_rgba(15,23,42,0.25)] flex items-center gap-1.5 active:scale-[0.99]"
+                onClick={() => triggerAutoHubCopilot("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}
+                className="px-3.5 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-sm font-semibold transition-all shadow-[0_2px_8px_-1px_rgba(15,23,42,0.15)] hover:shadow-[0_4px_12px_-2px_rgba(15,23,42,0.25)] flex items-center gap-1.5 active:scale-[0.99] cursor-pointer"
+                title="Try budget allocation query"
               >
                 <Sparkles size={13} className="text-white" />
-                <span>Ask AI Assistant</span>
+                <span>Ask AI Copilot</span>
               </button>
               <Link
                 href="/vehicles"
@@ -417,7 +418,7 @@ export default function Dashboard() {
                   </div>
 
                   {/* Actions Row */}
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-4">
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
                     <button
                       onClick={() =>
                         triggerAutoHubCopilot(

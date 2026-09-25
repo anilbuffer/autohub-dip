@@ -7,6 +7,8 @@ import {
   ArrowUpDown, 
   ChevronUp, 
   ChevronDown, 
+  ChevronLeft,
+  ChevronRight,
   Sparkles, 
   AlertCircle, 
   Clock, 
@@ -25,11 +27,32 @@ interface SupplyDemandGapTableProps {
 
 type SortField = 'unmetGap' | 'demandUnits' | 'currentStockUnits' | 'coveragePct' | 'avgDaysToSell' | 'avgDealerMarginNzd';
 
+function getPaginationPages(currentPage: number, totalPages: number) {
+  if (totalPages <= 6) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 3) {
+    return [1, 2, 3, 4, '...', totalPages];
+  }
+  if (currentPage >= totalPages - 2) {
+    return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+}
+
 export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapTableProps) {
   const [filterTag, setFilterTag] = useState<'All' | 'Source more' | 'Balanced' | 'Oversupplied'>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<SortField>('unmetGap');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+
+  // Pagination matching Dealer panel design system
+  const ITEMS_PER_PAGE = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [filterTag, searchQuery, sortField, sortDirection]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -71,6 +94,15 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
 
     return items;
   }, [filterTag, searchQuery, sortField, sortDirection]);
+
+  const totalPages = Math.ceil(processedItems.length / ITEMS_PER_PAGE) || 1;
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+  const paginatedItems = useMemo(() => {
+    return processedItems.slice(
+      (validCurrentPage - 1) * ITEMS_PER_PAGE,
+      validCurrentPage * ITEMS_PER_PAGE
+    );
+  }, [processedItems, validCurrentPage]);
 
   // Coverage progress bar color helper
   const getCoverageBadge = (pct: number) => {
@@ -281,7 +313,7 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
           </thead>
 
           <tbody className="divide-y divide-slate-100 text-xs font-medium">
-            {processedItems.map((item) => {
+            {paginatedItems.map((item) => {
               const coverage = getCoverageBadge(item.coveragePct);
 
               return (
@@ -393,14 +425,50 @@ export default function SupplyDemandGapTable({ onSelectModel }: SupplyDemandGapT
         </table>
       </div>
 
-      {/* Table Footer info */}
-      <div className="p-4 bg-slate-50/60 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500">
-        <span>
-          Showing <strong>{processedItems.length}</strong> prioritized Japanese auction model profiles.
+      {/* Table Footer with Dealer-panel Pagination */}
+      <div className="p-4 bg-slate-50/80 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+        <span className="text-slate-500 font-medium">
+          Showing <strong className="text-slate-900 font-bold">{processedItems.length > 0 ? ((validCurrentPage - 1) * ITEMS_PER_PAGE) + 1 : 0}–{Math.min(validCurrentPage * ITEMS_PER_PAGE, processedItems.length)}</strong> of <strong className="text-slate-900 font-bold">{processedItems.length}</strong> prioritized Japanese auction model profiles
         </span>
-        <span className="text-[11px] text-slate-400">
-          * Sorted by largest unmet dealer gap first to maximize auction buying conversion.
-        </span>
+
+        {totalPages > 1 && (
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={validCurrentPage === 1}
+              className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-1 cursor-pointer"
+            >
+              <ChevronLeft size={13} />
+              <span>Prev</span>
+            </button>
+
+            {getPaginationPages(validCurrentPage, totalPages).map((p, idx) => (
+              typeof p === "number" ? (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentPage(p)}
+                  className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${validCurrentPage === p
+                    ? "bg-[#B30D12] text-white shadow-2xs"
+                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
+                    }`}
+                >
+                  {p}
+                </button>
+              ) : (
+                <span key={idx} className="px-1 text-slate-400 font-bold text-xs">...</span>
+              )
+            ))}
+
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={validCurrentPage === totalPages}
+              className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-1 cursor-pointer"
+            >
+              <span>Next</span>
+              <ChevronRight size={13} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

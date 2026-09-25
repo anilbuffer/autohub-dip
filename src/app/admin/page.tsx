@@ -98,14 +98,14 @@ export default function DemandIntelligencePage() {
         {/* Floating Action Toast Notification */}
         {toastMessage && (
           <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-200">
-            <div className="bg-[#0B1322] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700 flex items-center gap-3 text-xs font-semibold">
-              <div className="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+            <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-bold">
+              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-300">
                 <CheckCircle2 size={14} />
               </div>
               <span>{toastMessage}</span>
               <button 
                 onClick={() => setToastMessage(null)}
-                className="text-slate-400 hover:text-white ml-2 p-1"
+                className="text-emerald-700 hover:text-emerald-900 ml-2 p-1 cursor-pointer"
               >
                 <X size={14} />
               </button>
@@ -114,55 +114,65 @@ export default function DemandIntelligencePage() {
         )}
 
         {/* 1. Header & Filters Section */}
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+        <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.03)] p-5 sm:p-6 transition-all">
+          {/* Subtle Brand Crimson Top Accent Line */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-400/20" />
+
+          {/* Ambient Background Glow */}
+          <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-gradient-to-br from-rose-500/[0.04] to-transparent blur-3xl pointer-events-none" />
+
+          <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-5 border-b border-slate-100">
             <div>
               {/* Badge & Info Tooltip Trigger */}
-              <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="px-3 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-blue-600/10 text-blue-700 border border-blue-600/20 shadow-2xs">
-                  AutoHub Dealer Intelligence Platform (DIP)
+              <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100/90 border border-slate-200/80 text-[11px] font-semibold text-slate-700 shadow-2xs">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B30D12] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B30D12]"></span>
+                  </span>
+                  AutoHub Demand Intelligence Platform (DIP)
                 </span>
                 
                 {/* Where the data comes from info button */}
                 <button
                   onClick={() => setIsDataSourceModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 border border-slate-200 transition-colors cursor-pointer group"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 hover:bg-red-100 text-[11px] font-semibold text-red-600 hover:text-red-900 transition-colors cursor-pointer border border-red-200/80 shadow-2xs group"
                   title="Where does this data come from?"
                 >
-                  <Info size={12} className="text-blue-600 group-hover:scale-110 transition-transform" />
-                  <span>Data Sources & Telemetry</span>
+                  <Info size={11} className="text-[#B30D12] group-hover:scale-110 transition-transform" />
+                  <span>Data Sources &amp; Telemetry</span>
                 </button>
               </div>
 
               {/* Page Title & Subtitle */}
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight">
-                Demand Intelligence
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                Demand Intelligence &amp; Sourcing Matrix
               </h1>
-              <p className="text-slate-600 text-sm sm:text-base font-medium mt-1 max-w-3xl">
-                What NZ dealers are looking for, and what AutoHub should source next.
+              <p className="text-slate-500 text-xs sm:text-sm font-normal mt-1 leading-relaxed max-w-3xl">
+                What NZ dealers are actively looking for, and what AutoHub Japan should procure next at auction.
               </p>
             </div>
 
             {/* Live FX & Currency Context */}
             <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <div className="px-4 py-2.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+              <div className="px-3.5 py-2 bg-slate-50 rounded-xl border border-slate-200 text-xs shadow-2xs">
                 <span className="text-slate-400 font-bold block text-[10px] uppercase tracking-wider">
                   GLOBAL FX SETTING
                 </span>
-                <span className="font-black text-slate-900 text-sm flex items-center gap-1 font-mono">
+                <span className="font-bold text-slate-900 text-sm flex items-center gap-1.5 font-mono">
                   1 NZD = {syncState.fxRateJpyNzd} JPY
-                  <span className="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
                     Live Feed
                   </span>
                 </span>
               </div>
 
-              <div className="px-4 py-2.5 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+              <div className="px-3.5 py-2 bg-slate-50 rounded-xl border border-slate-200 text-xs shadow-2xs">
                 <span className="text-slate-400 font-bold block text-[10px] uppercase tracking-wider">
                   PRE-AUCTION BATCH
                 </span>
-                <span className="font-black text-blue-900 text-sm flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                <span className="font-bold text-slate-900 text-sm flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#B30D12] animate-pulse"></span>
                   USS Tokyo Dispatch #39
                 </span>
               </div>
@@ -170,19 +180,19 @@ export default function DemandIntelligencePage() {
           </div>
 
           {/* Filters Bar: Time Range, NZ Region, Vehicle Segment */}
-          <div className="pt-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               
               {/* Time Range Filter */}
-              <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-2xl border border-slate-200 text-xs font-bold">
+              <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
                 <span className="text-slate-400 pl-2 text-[10px] font-bold uppercase tracking-wider hidden sm:inline">
                   Time:
                 </span>
                 <button
                   onClick={() => setTimeRange('7d')}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                     timeRange === '7d' 
-                      ? 'bg-white text-slate-900 shadow-2xs font-black' 
+                      ? 'bg-white text-slate-900 shadow-2xs font-bold' 
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
@@ -190,9 +200,9 @@ export default function DemandIntelligencePage() {
                 </button>
                 <button
                   onClick={() => setTimeRange('30d')}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                     timeRange === '30d' 
-                      ? 'bg-white text-slate-900 shadow-2xs font-black' 
+                      ? 'bg-white text-slate-900 shadow-2xs font-bold' 
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
@@ -200,9 +210,9 @@ export default function DemandIntelligencePage() {
                 </button>
                 <button
                   onClick={() => setTimeRange('90d')}
-                  className={`px-3 py-1.5 rounded-xl transition-all ${
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                     timeRange === '90d' 
-                      ? 'bg-white text-slate-900 shadow-2xs font-black' 
+                      ? 'bg-white text-slate-900 shadow-2xs font-bold' 
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
@@ -210,7 +220,7 @@ export default function DemandIntelligencePage() {
                 </button>
               </div>
 
-              {/* NZ Region Dropdown / Selector */}
+              {/* NZ Region Dropdown */}
               <div className="flex items-center gap-1.5 text-xs font-bold">
                 <span className="text-slate-400 text-[11px] font-bold uppercase tracking-wider hidden lg:inline">
                   Region:
@@ -218,7 +228,7 @@ export default function DemandIntelligencePage() {
                 <select
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
-                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:bg-white focus:border-[#1B2A4A] outline-none cursor-pointer"
+                  className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:bg-white focus:border-[#B30D12] focus:ring-2 focus:ring-[#B30D12]/20 outline-none cursor-pointer"
                 >
                   {regionsList.map(r => (
                     <option key={r} value={r}>Region: {r}</option>
@@ -226,7 +236,7 @@ export default function DemandIntelligencePage() {
                 </select>
               </div>
 
-              {/* Vehicle Segment Dropdown / Selector */}
+              {/* Vehicle Segment Dropdown */}
               <div className="flex items-center gap-1.5 text-xs font-bold">
                 <span className="text-slate-400 text-[11px] font-bold uppercase tracking-wider hidden lg:inline">
                   Segment:
@@ -234,7 +244,7 @@ export default function DemandIntelligencePage() {
                 <select
                   value={selectedSegment}
                   onChange={(e) => setSelectedSegment(e.target.value)}
-                  className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:bg-white focus:border-[#1B2A4A] outline-none cursor-pointer"
+                  className="px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:bg-white focus:border-[#B30D12] focus:ring-2 focus:ring-[#B30D12]/20 outline-none cursor-pointer"
                 >
                   {segmentsList.map(s => (
                     <option key={s} value={s}>Segment: {s}</option>
@@ -252,7 +262,7 @@ export default function DemandIntelligencePage() {
                   setSelectedSegment('All');
                   setTimeRange('30d');
                 }}
-                className="text-xs font-bold text-[#B30D12] hover:underline self-end md:self-center"
+                className="text-xs font-bold text-[#B30D12] hover:text-[#940B0F] self-end md:self-center cursor-pointer"
               >
                 Reset Filters
               </button>
@@ -260,98 +270,106 @@ export default function DemandIntelligencePage() {
           </div>
         </div>
 
-        {/* 2. KPI Cards (4 in a row) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+        {/* 2. KPI Cards matching Dealer panel */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Card 1: Active Dealers */}
-          <div className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover-lift">
+          <div className="bg-white p-4 sm:p-4.5 rounded-xl border border-slate-200/80 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_6px_16px_-3px_rgba(15,23,42,0.08),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/80 transition-all duration-200 flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                 Active Dealers
               </span>
-              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-xs border border-blue-100">
-                <Users size={16} />
+              <div className="w-7 h-7 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold shadow-2xs">
+                <Users size={14} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                {kpiData.activeDealers}
-              </span>
-              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-0.5">
-                <TrendingUp size={11} /> {kpiData.dealersTrend}
-              </span>
+            <div className="mt-2.5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {kpiData.activeDealers}
+                </span>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60 shadow-2xs flex items-center gap-0.5">
+                  <TrendingUp size={10} /> {kpiData.dealersTrend}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1 font-medium">
+                Active telemetry &amp; buying criteria
+              </p>
             </div>
-            <p className="text-xs text-slate-500 mt-2 font-medium">
-              Dealerships with active telemetry & buying criteria
-            </p>
           </div>
 
           {/* Card 2: Active Wish Lists */}
-          <div className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover-lift">
+          <div className="bg-white p-4 sm:p-4.5 rounded-xl border border-slate-200/80 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_6px_16px_-3px_rgba(15,23,42,0.08),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/80 transition-all duration-200 flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                 Active Wish Lists
               </span>
-              <div className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-xs border border-rose-100">
-                <Heart size={16} />
+              <div className="w-7 h-7 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold shadow-2xs">
+                <Heart size={14} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                {kpiData.activeWishLists}
-              </span>
-              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-0.5">
-                <TrendingUp size={11} /> {kpiData.wishListsTrend}
-              </span>
+            <div className="mt-2.5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {kpiData.activeWishLists}
+                </span>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60 shadow-2xs flex items-center gap-0.5">
+                  <TrendingUp size={10} /> {kpiData.wishListsTrend}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1 font-medium">
+                Avg 2.2 vehicle profiles per yard
+              </p>
             </div>
-            <p className="text-xs text-slate-500 mt-2 font-medium">
-              Avg 2.2 target vehicle profiles per dealership
-            </p>
           </div>
 
           {/* Card 3: Dealer Searches This Month */}
-          <div className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover-lift">
+          <div className="bg-white p-4 sm:p-4.5 rounded-xl border border-slate-200/80 shadow-[0_2px_10px_-2px_rgba(15,23,42,0.05),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_6px_16px_-3px_rgba(15,23,42,0.08),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/80 transition-all duration-200 flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
-                Dealer Searches This Month
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                Dealer Searches
               </span>
-              <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-xs border border-purple-100">
-                <Search size={16} />
+              <div className="w-7 h-7 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold shadow-2xs">
+                <Search size={14} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                {kpiData.searches.toLocaleString('en-US')}
-              </span>
-              <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-0.5">
-                <TrendingUp size={11} /> {kpiData.searchesTrend}
-              </span>
+            <div className="mt-2.5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {kpiData.searches.toLocaleString('en-US')}
+                </span>
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60 shadow-2xs flex items-center gap-0.5">
+                  <TrendingUp size={10} /> {kpiData.searchesTrend}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 mt-1 font-medium">
+                Natural queries &amp; filters logged
+              </p>
             </div>
-            <p className="text-xs text-slate-500 mt-2 font-medium">
-              Natural language queries & vehicle filters logged
-            </p>
           </div>
 
           {/* Card 4: Unmet Demand */}
-          <div className="bg-gradient-to-br from-white to-red-50/40 p-5 sm:p-6 rounded-3xl border border-red-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover-lift">
+          <div className="bg-white p-4 sm:p-4.5 rounded-xl border border-red-200/90 shadow-[0_2px_10px_-2px_rgba(179,13,18,0.06),0_1px_3px_rgba(179,13,18,0.03)] hover:shadow-[0_6px_16px_-3px_rgba(179,13,18,0.1)] hover:border-red-300 transition-all duration-200 flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-black text-[#B30D12] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-[#B30D12] uppercase tracking-wider">
                 Unmet Demand
               </span>
-              <div className="w-8 h-8 rounded-xl bg-red-100 text-[#B30D12] flex items-center justify-center font-bold text-xs">
-                <AlertTriangle size={16} />
+              <div className="w-7 h-7 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold shadow-2xs">
+                <AlertTriangle size={14} />
               </div>
             </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-black text-[#B30D12] tracking-tight">
-                {kpiData.unmetDemand.toLocaleString('en-US')}
-              </span>
-              <span className="text-xs font-bold text-[#B30D12] bg-red-100/80 px-2 py-0.5 rounded-full border border-red-200 flex items-center gap-0.5">
-                <TrendingUp size={11} /> {kpiData.unmetTrend}
-              </span>
+            <div className="mt-2.5">
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-extrabold text-[#B30D12] tracking-tight">
+                  {kpiData.unmetDemand.toLocaleString('en-US')}
+                </span>
+                <span className="text-[10px] font-bold text-[#B30D12] bg-red-100/80 px-1.5 py-0.5 rounded border border-red-200 flex items-center gap-0.5">
+                  <TrendingUp size={10} /> {kpiData.unmetTrend}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-600 mt-1 font-medium">
+                Lots wanted but missing in auction stock
+              </p>
             </div>
-            <p className="text-xs text-slate-600 mt-2 font-medium">
-              Vehicles wanted but not currently in auction stock
-            </p>
           </div>
         </div>
 
@@ -359,11 +377,10 @@ export default function DemandIntelligencePage() {
         <AiWeeklyBriefCard onNotifyToast={showToast} />
 
         {/* 7. Supply vs Demand Gap (Table, The Most Important Section) */}
-        {/* Placed prominently near the top as per design notes: "The AI Weekly Brief and the supply vs demand gap table should be the first things the eye lands on" */}
         <SupplyDemandGapTable />
 
         {/* 4. Most-Wanted Models & 5. Demand Trend (Two Columns) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Section 4: Most-Wanted Models (Horizontal Bar Chart) */}
           <MostWantedChart segmentFilter={selectedSegment} />
 
@@ -389,16 +406,11 @@ export default function DemandIntelligencePage() {
           onClose={() => setIsDataSourceModalOpen(false)}
         />
 
-        {/* Footer Note */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="font-medium text-slate-600">
-              Sample data for demonstration purposes
-            </span>
-          </div>
-          <span className="text-[11px] text-slate-400">
-            AutoHub Dealer Intelligence Platform (DIP) · Developed for AutoHub NZ Sourcing Board
+        {/* Small Disclaimer */}
+        <div className="flex items-center justify-center gap-2 p-3 bg-white/70 border border-slate-200/70 rounded-xl text-center shadow-[0_1px_2px_rgba(15,23,42,0.02)]">
+          <Info size={13} className="text-slate-400 shrink-0" />
+          <span className="text-[11px] text-slate-500 font-medium">
+            Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
           </span>
         </div>
 

@@ -22,7 +22,7 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
       {/* Dealer Role Button */}
       <Link
         href="/"
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all select-none ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all select-none cursor-pointer ${
           !isAdmin
             ? 'bg-white text-slate-900 shadow-xs border border-slate-200/80'
             : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
@@ -31,31 +31,31 @@ export default function RoleSwitcher({ variant = 'light' }: RoleSwitcherProps) {
       >
         <Building2 
           size={14} 
-          className={!isAdmin ? 'text-emerald-600' : 'text-slate-400'} 
+          className={!isAdmin ? 'text-[#B30D12]' : 'text-slate-400'} 
         />
         <span>Dealer</span>
         {!isAdmin && (
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 hidden md:inline-block"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] hidden md:inline-block"></span>
         )}
       </Link>
 
       {/* Autohub Admin Role Button */}
       <Link
         href="/admin"
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all select-none ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all select-none cursor-pointer ${
           isAdmin
-            ? 'bg-[#1B2A4A] text-white shadow-xs'
+            ? 'bg-white text-slate-900 shadow-xs border border-slate-200/80'
             : 'text-slate-500 hover:text-slate-800 hover:bg-slate-200/60'
         }`}
         title="Switch to AutoHub DIP Admin Command Center"
       >
         <ShieldCheck 
           size={14} 
-          className={isAdmin ? 'text-blue-300' : 'text-slate-400'} 
+          className={isAdmin ? 'text-[#B30D12]' : 'text-slate-400'} 
         />
         <span>AutoHub Admin</span>
         {isAdmin && (
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-400 hidden md:inline-block"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#B30D12] hidden md:inline-block"></span>
         )}
       </Link>
     </div>

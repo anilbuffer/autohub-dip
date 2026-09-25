@@ -49,16 +49,16 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
         onClick={(e) => e.stopPropagation()}
       >
         {/* Accent top banner */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#B30D12] via-blue-900 to-indigo-600"></div>
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-400/20"></div>
 
         {/* Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center border border-blue-100 shrink-0">
-              <Database size={20} />
+            <div className="w-9 h-9 rounded-xl bg-red-50 text-[#B30D12] flex items-center justify-center border border-red-100 shrink-0 font-bold">
+              <Database size={18} />
             </div>
             <div>
-              <h3 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <h3 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-2">
                 Demand Intelligence Pipeline
               </h3>
               <p className="text-xs text-slate-500 font-medium">
@@ -68,7 +68,7 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
           </div>
           <button 
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -106,11 +106,11 @@ export default function DataSourceModal({ isOpen, onClose }: DataSourceModalProp
         <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
             <CheckCircle2 size={13} className="text-emerald-500 shrink-0" />
-            <span>Synced in real-time with AutoHub procurement & auction intelligence engine.</span>
+            <span>Synced in real-time with AutoHub procurement &amp; auction intelligence engine.</span>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[#1B2A4A] hover:bg-[#0B1322] text-white rounded-xl font-bold text-xs transition-colors self-end sm:self-auto"
+            className="px-4 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-xl font-bold text-xs transition-colors self-end sm:self-auto shadow-xs cursor-pointer"
           >
             Understood
           </button>

@@ -112,10 +112,12 @@ export default function DealerChatAssistant({
   const [isExpanded, setIsExpanded] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  // Active Vehicle Context from URL (e.g. /vehicles/1)
+  // Active Vehicle Context from URL (e.g. /vehicles/1 or /admin/vehicles/1)
   const activeVehicleId = pathname?.startsWith("/vehicles/") 
     ? parseInt(pathname.replace("/vehicles/", "")) 
-    : null;
+    : pathname?.startsWith("/admin/vehicles/")
+      ? parseInt(pathname.replace("/admin/vehicles/", ""))
+      : null;
   const activeVehicle = activeVehicleId 
     ? VEHICLES.find((v) => v.id === activeVehicleId) 
     : null;

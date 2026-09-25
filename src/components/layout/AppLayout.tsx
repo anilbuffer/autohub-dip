@@ -258,7 +258,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="flex-1 flex min-h-0 overflow-hidden relative">
           {/* Scrollable Page Canvas - Always full width, never squeezed */}
           <main className="flex-1 overflow-y-auto bg-[#F6F8FB] p-4 sm:p-7 lg:p-9 min-w-0">
-            <div className="max-w-[1520px] mx-auto">
+            <div className="max-w-full mx-auto">
               {children}
             </div>
           </main>

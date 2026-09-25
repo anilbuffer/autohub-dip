@@ -2,18 +2,18 @@
 
 import React, { useState, useEffect } from "react";
 import AppLayout from "@/components/layout/AppLayout";
-import { 
-  Building2, 
-  Settings2, 
-  CheckCircle2, 
-  SlidersHorizontal, 
-  Bell, 
-  ShieldCheck, 
-  Save, 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
+import {
+  Building2,
+  Settings2,
+  CheckCircle2,
+  SlidersHorizontal,
+  Bell,
+  ShieldCheck,
+  Save,
+  User,
+  Mail,
+  Phone,
+  MapPin,
   Sparkles,
   Zap,
   Car
@@ -74,15 +74,15 @@ export default function ProfilePage() {
 
   const availableMakes = ["Toyota", "Honda", "Mazda", "Nissan", "Lexus", "Subaru", "Suzuki"];
   const availableModels = [
-    "Aqua", 
-    "C-HR", 
-    "Prius", 
-    "Vezel", 
-    "Fit", 
-    "CX-5", 
-    "Note", 
-    "Axela", 
-    "NX300h", 
+    "Aqua",
+    "C-HR",
+    "Prius",
+    "Vezel",
+    "Fit",
+    "CX-5",
+    "Note",
+    "Axela",
+    "NX300h",
     "Swift",
     "Corolla Fielder",
     "RAV4"
@@ -91,8 +91,8 @@ export default function ProfilePage() {
 
   return (
     <AppLayout>
-      <div className="space-y-8 pb-16 max-w-5xl mx-auto">
-        
+      <div className="space-y-8 pb-16 max-w-7xl mx-auto">
+
         {/* Profile Header */}
         <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -153,7 +153,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="p-6 space-y-6">
-            
+
             {/* Target Models Selector */}
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -169,11 +169,10 @@ export default function ProfilePage() {
                     <button
                       key={model}
                       onClick={() => toggleModel(model)}
-                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
-                        isSelected 
-                          ? 'bg-[#B30D12] text-white border-[#B30D12] shadow-xs' 
+                      className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${isSelected
+                          ? 'bg-[#B30D12] text-white border-[#B30D12] shadow-xs'
                           : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-                      }`}
+                        }`}
                     >
                       {model} {isSelected && '✓'}
                     </button>
@@ -196,11 +195,10 @@ export default function ProfilePage() {
                     <button
                       key={make}
                       onClick={() => toggleMake(make)}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
-                        isSelected 
-                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-xs' 
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${isSelected
+                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-xs'
                           : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-                      }`}
+                        }`}
                     >
                       {make} {isSelected && '✓'}
                     </button>
@@ -223,11 +221,10 @@ export default function ProfilePage() {
                     <button
                       key={fuel}
                       onClick={() => toggleFuel(fuel)}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
-                        isSelected 
-                          ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs' 
+                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${isSelected
+                          ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
                           : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
-                      }`}
+                        }`}
                     >
                       {fuel} {isSelected && '✓'}
                     </button>
@@ -248,7 +245,7 @@ export default function ProfilePage() {
                     {(maxKm).toLocaleString('en-US')} km
                   </span>
                 </div>
-                <input 
+                <input
                   type="range"
                   min={40000}
                   max={120000}
@@ -274,7 +271,7 @@ export default function ProfilePage() {
                     +NZ${(targetMargin).toLocaleString('en-US')}
                   </span>
                 </div>
-                <input 
+                <input
                   type="range"
                   min={2000}
                   max={6000}
@@ -304,7 +301,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <button 
+                <button
                   onClick={() => setAutoAlerts(!autoAlerts)}
                   className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${autoAlerts ? 'bg-emerald-600' : 'bg-slate-300'}`}
                 >

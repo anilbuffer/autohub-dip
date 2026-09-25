@@ -3,17 +3,17 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  Car, 
-  Users, 
-  Settings, 
-  HelpCircle, 
-  Bell, 
-  Search, 
-  Menu, 
+import {
+  LayoutDashboard,
+  Car,
+  Users,
+  Settings,
+  HelpCircle,
+  Bell,
+  Search,
+  Menu,
   X,
-  ChevronRight, 
+  ChevronRight,
   TrendingUp,
   Sliders,
   Database,
@@ -32,7 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  
+
   const { state: syncState } = useSyncStore();
 
   const getBreadcrumbs = () => {
@@ -67,7 +67,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="flex h-screen bg-[#F6F8FB] text-slate-800 font-sans antialiased overflow-hidden">
       {/* Mobile Backdrop */}
       {mobileMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-[#0B1322]/70 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
@@ -93,7 +93,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className="block text-[9px] font-semibold text-slate-400 tracking-wider mt-1">DEALER INTELLIGENCE PLATFORM</span>
               </div>
             </Link>
-            <button 
+            <button
               onClick={() => setMobileMenuOpen(false)}
               className="md:hidden text-slate-400 hover:text-white p-1"
             >
@@ -108,7 +108,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <span>Auction Feeds:</span>
               <span className="font-bold text-white">4 Online</span>
             </div>
-            <button 
+            <button
               onClick={handleRefreshFeeds}
               title="Sync Feeds"
               className="text-slate-400 hover:text-white transition-colors"
@@ -130,11 +130,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all ${
-                    isActive
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-semibold transition-all ${isActive
                       ? 'bg-gradient-to-r from-[#B30D12]/25 to-[#B30D12]/5 text-white border-l-4 border-[#B30D12] font-bold shadow-sm'
                       : 'text-slate-400 hover:bg-[#111C30] hover:text-slate-100'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-3">
                     <Icon size={18} className={isActive ? 'text-[#e56168]' : 'text-slate-400'} />
@@ -162,8 +161,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-[11px] text-slate-400 truncate">Super Admin Role</div>
             </div>
           </div>
-          <Link 
-            href="/login" 
+          <Link
+            href="/login"
             title="Switch User / Logout"
             className="p-1.5 text-slate-400 hover:text-white hover:bg-[#1B2A4A] rounded-lg transition-colors"
           >
@@ -177,7 +176,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Header Bar */}
         <header className="h-[72px] bg-white border-b border-slate-200/90 px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20">
           <div className="flex items-center gap-3 min-w-0">
-            <button 
+            <button
               onClick={() => setMobileMenuOpen(true)}
               className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100"
             >
@@ -198,7 +197,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <div className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2 mt-0.5">
                 {pathname === '/admin' ? 'Demand Intelligence' : 'Command Center'}
                 <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-slate-800 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
-                  <Shield size={11} className="text-blue-600" /> 
+                  <Shield size={11} className="text-blue-600" />
                   {pathname === '/admin' ? 'AutoHub DIP Sourcing Intelligence' : 'AutoHub Super Admin'}
                 </span>
               </div>
@@ -210,9 +209,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             {/* Quick Search */}
             <div className="relative hidden xl:flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <input 
-                type="text" 
-                placeholder="Search models, dealers, VINs..." 
+              <input
+                type="text"
+                placeholder="Search models, dealers, VINs..."
                 className="pl-9 pr-12 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#1B2A4A] focus:ring-2 focus:ring-[#1B2A4A]/20 outline-none transition-all w-[240px] text-xs placeholder:text-slate-400 font-medium"
               />
               <span className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-400 rounded px-1.5 py-0.5 text-[10px] font-bold shadow-2xs">
@@ -242,7 +241,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Scrollable Page Canvas */}
         <main className="flex-1 overflow-y-auto bg-[#F6F8FB] p-4 sm:p-7 lg:p-9">
-          <div className="max-w-[1520px] mx-auto">
+          <div className="max-w-full mx-auto">
             {children}
           </div>
         </main>

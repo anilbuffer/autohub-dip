@@ -292,35 +292,47 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* 2. The "Best matches for you" list (Cards with Soft Shadows) */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-200">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-                Best matches for you
-              </h2>
-              <span className="px-2 py-0.5 bg-red-50 text-[#B30D12] text-[11px] font-bold rounded-md border border-red-100 shadow-2xs">
-                {bestMatches.length} Priority Lots
-              </span>
+        {/* 2. The "Best matches for you" Section - Unified Card Container */}
+        <section className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] overflow-hidden">
+          {/* Card Header */}
+          <div className="px-4 py-3.5 sm:px-6 sm:py-4.5 border-b border-slate-100 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center shrink-0 shadow-2xs">
+                <Sparkles size={16} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                    Best matches for you
+                  </h2>
+                  <span className="px-2 py-0.5 bg-red-50 text-[#B30D12] text-[11px] font-bold rounded-md border border-red-100 shadow-2xs">
+                    {bestMatches.length} Priority Lots
+                  </span>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
+                  Japanese auction lots prioritized for highest dealer gross margin &amp; criteria match
+                </p>
+              </div>
             </div>
 
             <Link
               href="/vehicles?status=Priority"
-              className="text-xs font-bold text-[#B30D12] hover:text-[#8B090E] flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-[#B30D12] hover:text-[#8B090E] bg-red-50/80 hover:bg-red-100/80 border border-red-200/80 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all shadow-2xs self-start sm:self-auto shrink-0"
             >
               <span>View All Priority</span>
               <ArrowRight size={12} />
             </Link>
           </div>
 
-          <div className="space-y-6">
+          {/* Card Body - Priority Vehicles List */}
+          <div className="p-4 sm:p-5 sm:p-6 bg-slate-50 space-y-4">
             {paginatedBestMatches.map((vehicle) => (
               <div
                 key={vehicle.id}
-                className="bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_8px_20px_-4px_rgba(15,23,42,0.1),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/90 transition-all duration-200 overflow-hidden flex flex-col sm:flex-row group"
+                className="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_4px_rgba(15,23,42,0.04)] hover:shadow-[0_6px_18px_-3px_rgba(15,23,42,0.08)] hover:border-slate-300/90 transition-all duration-200 overflow-hidden flex flex-col sm:flex-row group"
               >
                 {/* Vehicle Thumbnail with Compact Overlay */}
-                <div className="w-full sm:w-[220px] md:w-[280px] h-[150px] sm:h-auto min-h-[150px] relative shrink-0 overflow-hidden bg-slate-100">
+                <div className="w-full sm:w-[220px] md:w-[280px] h-[160px] sm:h-auto min-h-[160px] relative shrink-0 overflow-hidden bg-slate-100">
                   <img
                     src={vehicle.image}
                     alt={`${vehicle.make} ${vehicle.model}`}
@@ -350,7 +362,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Main Vehicle Information & Pricing */}
-                <div className="p-4 sm:p-6 flex-1 flex flex-col justify-between gap-3">
+                <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between gap-3">
                   <div>
                     {/* Header Row */}
                     <div className="flex items-start justify-between gap-4">
@@ -376,12 +388,12 @@ export default function Dashboard() {
                     </div>
 
                     {/* AI Summary Note */}
-                    <div className="bg-slate-100 rounded-lg px-3 py-1.5 border-l-2 border-[#B30D12] text-[11px] text-slate-600 leading-relaxed font-medium mt-4">
+                    <div className="bg-slate-100/90 rounded-lg px-3 py-1.5 border-l-2 border-[#B30D12] text-[11px] text-slate-600 leading-relaxed font-medium mt-3.5">
                       {vehicle.aiAnalysis.summary}
                     </div>
 
                     {/* Financial Figures Strip */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs mt-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-2.5 bg-slate-50 rounded-lg border border-slate-200/80 text-xs mt-3.5">
                       <div>
                         <span className="text-[9px] font-bold text-slate-400 uppercase block">
                           Est. Landed (NZD)
@@ -418,25 +430,25 @@ export default function Dashboard() {
                   </div>
 
                   {/* Actions Row */}
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+                  <div className="pt-3.5 border-t border-slate-100 flex items-center justify-between gap-4">
                     <button
                       onClick={() =>
                         triggerAutoHubCopilot(
                           `Analyze landed margin, sheet condition, and bidding strategy for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`
                         )
                       }
-                      className="inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold bg-red-50 text-[#B30D12] rounded-lg border border-red-200"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-semibold bg-red-50 hover:bg-red-100/80 text-[#B30D12] rounded-lg border border-red-200/90 transition-all cursor-pointer"
                     >
-                      <Sparkles size={12} className="text-[#B30D12]" />
+                      <Sparkles size={13} className="text-[#B30D12]" />
                       <span>Ask AI About This Lot</span>
                     </button>
 
                     <Link
                       href={`/vehicles/${vehicle.id}`}
-                      className="px-4 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white text-sm font-bold rounded-lg transition-all shadow-xs hover:shadow flex items-center gap-1"
+                      className="px-4 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs sm:text-sm font-bold rounded-lg transition-all shadow-xs hover:shadow flex items-center gap-1.5"
                     >
                       <span>Calculate & Bid</span>
-                      <ArrowRight size={12} />
+                      <ArrowRight size={13} />
                     </Link>
                   </div>
                 </div>
@@ -444,18 +456,18 @@ export default function Dashboard() {
             ))}
           </div>
 
-          {/* Best Matches Pagination Controls */}
-          {totalBestPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1.5 bg-white p-2.5 rounded-xl border border-slate-200/60">
-              <span className="text-[12px] font-semibold text-slate-500">
-                Showing <strong className="text-slate-900 font-bold">{((bestPage - 1) * BEST_PER_PAGE) + 1}–{Math.min(bestPage * BEST_PER_PAGE, bestMatches.length)}</strong> of <strong className="text-slate-900 font-bold">{bestMatches.length}</strong> priority lots
-              </span>
+          {/* Card Footer - Integrated Pagination */}
+          <div className="px-4 py-3 sm:px-6 sm:py-3.5 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-[12px] font-semibold text-slate-500">
+              Showing <strong className="text-slate-900 font-bold">{((bestPage - 1) * BEST_PER_PAGE) + 1}–{Math.min(bestPage * BEST_PER_PAGE, bestMatches.length)}</strong> of <strong className="text-slate-900 font-bold">{bestMatches.length}</strong> priority lots
+            </span>
 
+            {totalBestPages > 1 && (
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setBestPage(Math.max(1, bestPage - 1))}
                   disabled={bestPage === 1}
-                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5 cursor-pointer"
                 >
                   <ChevronLeft size={13} />
                   <span>Prev</span>
@@ -466,7 +478,7 @@ export default function Dashboard() {
                     <button
                       key={idx}
                       onClick={() => setBestPage(p)}
-                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${bestPage === p
+                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${bestPage === p
                         ? "bg-[#B30D12] text-white shadow-2xs"
                         : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
                         }`}
@@ -481,138 +493,152 @@ export default function Dashboard() {
                 <button
                   onClick={() => setBestPage(Math.min(totalBestPages, bestPage + 1))}
                   disabled={bestPage === totalBestPages}
-                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5 cursor-pointer"
                 >
                   <span>Next</span>
                   <ChevronRight size={13} />
                 </button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </section>
 
-        {/* 3. The "Other qualifying vehicles" list (Cards with Soft Shadows) */}
-        <section className="space-y-3.5">
-          <div className="flex items-center justify-between pb-1.5 border-b border-slate-200">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-                Other qualifying vehicles
-              </h2>
-              <span className="px-2 py-0.5 bg-red-50 text-[#B30D12] text-[11px] font-bold rounded-md border border-red-100 shadow-2xs">
-                {otherVehicles.length} Qualifying Lots
-              </span>
+        {/* 3. The "Other qualifying vehicles" Section - Unified Card Container */}
+        <section className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] overflow-hidden">
+          {/* Card Header */}
+          <div className="px-4 py-3.5 sm:px-6 sm:py-4.5 border-b border-slate-100 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center shrink-0 shadow-2xs">
+                <Car size={16} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
+                    Other qualifying vehicles
+                  </h2>
+                  <span className="px-2 py-0.5 bg-red-50 text-[#B30D12] text-[11px] font-bold rounded-md border border-red-100 shadow-2xs">
+                    {otherVehicles.length} Qualifying Lots
+                  </span>
+                </div>
+                <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
+                  Japanese auction lots meeting target budget, condition grades, and mileage criteria
+                </p>
+              </div>
             </div>
 
             <Link
               href="/vehicles"
-              className="text-xs font-bold text-slate-600 hover:text-[#B30D12] flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-[#B30D12] hover:text-[#8B090E] bg-red-50/80 hover:bg-red-100/80 border border-red-200/80 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all shadow-2xs self-start sm:self-auto shrink-0"
             >
               <span>Explore All ({otherVehicles.length})</span>
               <ArrowRight size={12} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {paginatedOtherVehicles.map((vehicle) => (
-              <div
-                key={vehicle.id}
-                className="bg-white rounded-xl border border-slate-200/80 shadow-[0_2px_12px_-3px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.02)] hover:shadow-[0_8px_20px_-4px_rgba(15,23,42,0.1),0_2px_6px_rgba(15,23,42,0.03)] hover:border-slate-300/90 transition-all duration-200 p-3.5 sm:p-4 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-24 h-24 rounded-lg overflow-hidden bg-slate-100 shrink-0 relative">
-                      <img
-                        src={vehicle.image}
-                        alt={`${vehicle.make} ${vehicle.model}`}
-                        className="w-full h-full object-cover"
-                      />
-                      <span className="absolute bottom-0.5 left-0.5 px-1 py-0.2 bg-black/75 text-[10px] font-bold text-white rounded">
-                        Gr {vehicle.grade}
-                      </span>
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-[12px] font-medium text-slate-500">
-                          {vehicle.auctionHouse} #{vehicle.lotNumber}
-                        </span>
-                        <span className={`px-3 py-1.5 rounded-lg text-base font-bold shadow-2xs ${vehicle.status === "Consider"
-                          ? "bg-amber-50 text-amber-700 border border-amber-200/60"
-                          : "bg-slate-100 text-slate-600 border border-slate-200/50"
-                          }`}>
-                          Score {vehicle.score}
+          {/* Card Body - 2 Column Grid */}
+          <div className="p-4 sm:p-5 sm:p-6 bg-slate-50">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              {paginatedOtherVehicles.map((vehicle) => (
+                <div
+                  key={vehicle.id}
+                  className="bg-white rounded-xl border border-slate-200/80 shadow-[0_1px_4px_rgba(15,23,42,0.04)] hover:shadow-[0_6px_18px_-3px_rgba(15,23,42,0.08)] hover:border-slate-300/90 transition-all duration-200 p-3.5 sm:p-4 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-24 h-24 rounded-lg overflow-hidden bg-slate-100 shrink-0 relative">
+                        <img
+                          src={vehicle.image}
+                          alt={`${vehicle.make} ${vehicle.model}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <span className="absolute bottom-0.5 left-0.5 px-1 py-0.2 bg-black/75 text-[10px] font-bold text-white rounded">
+                          Gr {vehicle.grade}
                         </span>
                       </div>
 
-                      <h4 className="text-sm font-bold text-slate-900 mt-0.5 truncate group-hover:text-[#B30D12] transition-colors">
-                        {vehicle.year} {vehicle.make} {vehicle.model}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 truncate mt-0.5">
-                        {vehicle.badge} • {(vehicle.km).toLocaleString("en-US")} km
-                      </p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className="text-[12px] font-medium text-slate-500">
+                            {vehicle.auctionHouse} #{vehicle.lotNumber}
+                          </span>
+                          <span className={`px-2.5 py-1 rounded-lg text-sm font-bold shadow-2xs ${vehicle.status === "Consider"
+                            ? "bg-amber-50 text-amber-700 border border-amber-200/60"
+                            : "bg-slate-100 text-slate-600 border border-slate-200/50"
+                            }`}>
+                            Score {vehicle.score}
+                          </span>
+                        </div>
+
+                        <h4 className="text-sm font-bold text-slate-900 mt-0.5 truncate group-hover:text-[#B30D12] transition-colors">
+                          {vehicle.year} {vehicle.make} {vehicle.model}
+                        </h4>
+                        <p className="text-[11px] text-slate-500 truncate mt-0.5 font-medium">
+                          {vehicle.badge} • {(vehicle.km).toLocaleString("en-US")} km
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Compact Financial Strip */}
+                    <div className="grid grid-cols-3 gap-1.5 mt-3 p-2 bg-slate-50 rounded-lg border border-slate-200/70 text-[11px] text-center">
+                      <div>
+                        <span className="text-[9px] text-slate-400 font-bold uppercase block">Landed NZD</span>
+                        <span className="font-bold text-slate-900 block mt-0.5">
+                          NZ${(vehicle.landedNzd).toLocaleString("en-US")}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] text-slate-400 font-bold uppercase block">Bid Guide</span>
+                        <span className="font-bold text-slate-900 block mt-0.5">
+                          NZ${(vehicle.maxBidNzd).toLocaleString("en-US")}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] text-slate-400 font-bold uppercase block">Margin</span>
+                        <span className="font-bold text-emerald-700 block mt-0.5">
+                          +NZ${(vehicle.targetMarginNzd).toLocaleString("en-US")}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Compact Financial Strip */}
-                  <div className="grid grid-cols-3 gap-1.5 mt-3 p-2 bg-slate-50/80 rounded-lg border border-slate-200/50 text-[11px] text-center">
-                    <div>
-                      <span className="text-[9px] text-slate-400 font-bold uppercase block">Landed NZD</span>
-                      <span className="font-bold text-slate-900 block mt-0.5">
-                        NZ${(vehicle.landedNzd).toLocaleString("en-US")}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-slate-400 font-bold uppercase block">Bid Guide</span>
-                      <span className="font-bold text-slate-900 block mt-0.5">
-                        NZ${(vehicle.maxBidNzd).toLocaleString("en-US")}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-slate-400 font-bold uppercase block">Margin</span>
-                      <span className="font-bold text-emerald-700 block mt-0.5">
-                        +NZ${(vehicle.targetMarginNzd).toLocaleString("en-US")}
-                      </span>
-                    </div>
+                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <button
+                      onClick={() =>
+                        triggerAutoHubCopilot(
+                          `Inspect condition sheet and estimate margin for ${vehicle.year} ${vehicle.make} ${vehicle.model}`
+                        )
+                      }
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-red-50 hover:bg-red-100/80 text-[#B30D12] rounded-lg border border-red-200 transition-all cursor-pointer"
+                    >
+                      <Sparkles size={12} className="text-[#B30D12]" />
+                      <span>Quick Scan</span>
+                    </button>
+
+                    <Link
+                      href={`/vehicles/${vehicle.id}`}
+                      className="font-bold px-3 py-1.5 text-xs sm:text-sm bg-emerald-50 hover:bg-emerald-100/80 text-emerald-700 border border-emerald-200 rounded-lg flex items-center gap-1 transition-all"
+                    >
+                      <span>Inspect Lot</span>
+                      <ArrowRight size={11} />
+                    </Link>
                   </div>
                 </div>
-
-                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
-                  <button
-                    onClick={() =>
-                      triggerAutoHubCopilot(
-                        `Inspect condition sheet and estimate margin for ${vehicle.year} ${vehicle.make} ${vehicle.model}`
-                      )
-                    }
-                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold bg-red-50 text-[#B30D12] rounded-lg border border-red-200"
-                  >
-                    <Sparkles size={12} className="text-[#B30D12]" />
-                    <span>Quick Scan</span>
-                  </button>
-
-                  <Link
-                    href={`/vehicles/${vehicle.id}`}
-                    className="font-bold px-3 py-1.5 text-sm bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg flex items-center gap-1 transition-colors"
-                  >
-                    <span>Inspect Lot</span>
-                    <ArrowRight size={11} />
-                  </Link>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          {/* Other Vehicles Pagination Controls */}
-          {totalOtherPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 bg-white p-2.5 rounded-xl border border-slate-200/60">
-              <span className="text-[12px] font-semibold text-slate-500">
-                Showing <strong className="text-slate-900 font-bold">{((otherPage - 1) * OTHER_PER_PAGE) + 1}–{Math.min(otherPage * OTHER_PER_PAGE, otherVehicles.length)}</strong> of <strong className="text-slate-900 font-bold">{otherVehicles.length}</strong> qualifying lots (Page {otherPage} of {totalOtherPages})
-              </span>
+          {/* Card Footer - Seamless Integrated Pagination */}
+          <div className="px-4 py-3 sm:px-6 sm:py-3.5 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span className="text-[12px] font-semibold text-slate-500">
+              Showing <strong className="text-slate-900 font-bold">{((otherPage - 1) * OTHER_PER_PAGE) + 1}–{Math.min(otherPage * OTHER_PER_PAGE, otherVehicles.length)}</strong> of <strong className="text-slate-900 font-bold">{otherVehicles.length}</strong> qualifying lots (Page {otherPage} of {totalOtherPages})
+            </span>
 
+            {totalOtherPages > 1 && (
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={() => setOtherPage(Math.max(1, otherPage - 1))}
                   disabled={otherPage === 1}
-                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5 cursor-pointer"
                 >
                   <ChevronLeft size={13} />
                   <span>Prev</span>
@@ -623,7 +649,7 @@ export default function Dashboard() {
                     <button
                       key={idx}
                       onClick={() => setOtherPage(p)}
-                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all ${otherPage === p
+                      className={`min-w-[28px] h-7 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${otherPage === p
                         ? "bg-[#B30D12] text-white shadow-2xs"
                         : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
                         }`}
@@ -638,22 +664,23 @@ export default function Dashboard() {
                 <button
                   onClick={() => setOtherPage(Math.min(totalOtherPages, otherPage + 1))}
                   disabled={otherPage === totalOtherPages}
-                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5"
+                  className="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-0.5 cursor-pointer"
                 >
                   <span>Next</span>
                   <ChevronRight size={13} />
                 </button>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
-          <div className="text-center pt-1">
+          {/* Integrated Catalog Link Footer Strip */}
+          <div className="py-2.5 px-4 bg-slate-50 border-t border-slate-100 flex items-center justify-center text-center">
             <Link
               href="/vehicles"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-[#B30D12] bg-white hover:bg-slate-50 px-4 py-2 rounded-lg border border-slate-200/90 shadow-[0_1px_3px_rgba(15,23,42,0.04)] hover:shadow-[0_3px_8px_-1px_rgba(15,23,42,0.08)] transition-all"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#B30D12] hover:text-[#B30D12] transition-colors"
             >
               <span>Explore all {VEHICLES.length} qualified vehicles in full live catalog</span>
-              <ArrowRight size={12} className="text-slate-400" />
+              <ArrowRight size={12} className="text-[#B30D12]" />
             </Link>
           </div>
         </section>

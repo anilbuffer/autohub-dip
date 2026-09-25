@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import AppLayout from "@/components/layout/AppLayout";
 import Link from "next/link";
 import { 
   ArrowRight, 
   Search, 
   ChevronDown, 
+  ChevronLeft,
+  ChevronRight,
   Sparkles, 
   Clock, 
   LayoutGrid, 
@@ -24,6 +26,19 @@ import { VEHICLES } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
 import { Bookmark, BookmarkCheck } from "lucide-react";
 
+function getPaginationPages(currentPage: number, totalPages: number) {
+  if (totalPages <= 6) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  if (currentPage <= 3) {
+    return [1, 2, 3, 4, '...', totalPages];
+  }
+  if (currentPage >= totalPages - 2) {
+    return [1, '...', totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+  }
+  return [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+}
+
 export default function VehiclesPage() {
   const { state: syncState, toggleShortlistVehicle } = useSyncStore();
 
@@ -32,7 +47,16 @@ export default function VehiclesPage() {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [selectedFuel, setSelectedFuel] = useState("All");
   const [sortBy, setSortBy] = useState<"score" | "priceAsc" | "yearDesc" | "kmAsc">("score");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+
+  // Pagination (10 entries max per page)
+  const ITEMS_PER_PAGE = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Auto-reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedMake, selectedStatus, selectedFuel, sortBy]);
 
   const makes = useMemo(() => ["All", ...Array.from(new Set(VEHICLES.map((v) => v.make))).filter(Boolean).sort()], []);
   const fuels = useMemo(() => ["All", ...Array.from(new Set(VEHICLES.map((v) => v.fuel))).filter(Boolean).sort()], []);
@@ -67,12 +91,81 @@ export default function VehiclesPage() {
     });
   }, [searchTerm, selectedMake, selectedStatus, selectedFuel, sortBy, syncState.fxRateJpyNzd, syncState.freightPerUnitNzd, syncState.compliancePerUnitNzd]);
 
+  const totalPages = Math.ceil(filteredVehicles.length / ITEMS_PER_PAGE) || 1;
+  const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
+
+  const paginatedVehicles = useMemo(() => {
+    const startIndex = (validCurrentPage - 1) * ITEMS_PER_PAGE;
+    return filteredVehicles.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredVehicles, validCurrentPage]);
+
   const resetFilters = () => {
     setSearchTerm("");
     setSelectedMake("All");
     setSelectedStatus("All");
     setSelectedFuel("All");
     setSortBy("score");
+    setCurrentPage(1);
+  };
+
+  const renderPagination = (containerClass: string) => {
+    if (totalPages <= 1) return null;
+    return (
+      <div className={`flex flex-col sm:flex-row items-center justify-between gap-3 ${containerClass}`}>
+        <span className="text-xs font-semibold text-slate-500">
+          Showing <strong className="text-slate-900 font-bold">{((validCurrentPage - 1) * ITEMS_PER_PAGE) + 1}–{Math.min(validCurrentPage * ITEMS_PER_PAGE, filteredVehicles.length)}</strong> of <strong className="text-slate-900 font-bold">{filteredVehicles.length}</strong> vehicles (Page <strong className="text-slate-900 font-bold">{validCurrentPage}</strong> of <strong className="text-slate-900 font-bold">{totalPages}</strong>)
+        </span>
+
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => {
+              setCurrentPage((prev) => Math.max(1, prev - 1));
+              window.scrollTo({ top: 220, behavior: 'smooth' });
+            }}
+            disabled={validCurrentPage === 1}
+            className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-1 cursor-pointer"
+            title="Previous Page"
+          >
+            <ChevronLeft size={14} />
+            <span>Prev</span>
+          </button>
+
+          {getPaginationPages(validCurrentPage, totalPages).map((p, idx) => (
+            typeof p === "number" ? (
+              <button
+                key={idx}
+                onClick={() => {
+                  setCurrentPage(p);
+                  window.scrollTo({ top: 220, behavior: 'smooth' });
+                }}
+                className={`min-w-[32px] h-8 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  validCurrentPage === p
+                    ? "bg-[#1B2A4A] text-white shadow-2xs"
+                    : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs"
+                }`}
+              >
+                {p}
+              </button>
+            ) : (
+              <span key={idx} className="px-1 text-slate-400 font-bold text-xs">...</span>
+            )
+          ))}
+
+          <button
+            onClick={() => {
+              setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+              window.scrollTo({ top: 220, behavior: 'smooth' });
+            }}
+            disabled={validCurrentPage === totalPages}
+            className="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none text-xs font-bold transition-all shadow-2xs flex items-center gap-1 cursor-pointer"
+            title="Next Page"
+          >
+            <span>Next</span>
+            <ChevronRight size={14} />
+          </button>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -219,15 +312,38 @@ export default function VehiclesPage() {
             </div>
 
             <div className="text-xs font-bold text-slate-500">
-              Showing <span className="text-slate-900 font-extrabold">{filteredVehicles.length}</span> matching auction lots
+              {filteredVehicles.length > 0 ? (
+                <>
+                  Showing <span className="text-slate-900 font-extrabold">{((validCurrentPage - 1) * ITEMS_PER_PAGE) + 1}–{Math.min(validCurrentPage * ITEMS_PER_PAGE, filteredVehicles.length)}</span> of <span className="text-slate-900 font-extrabold">{filteredVehicles.length}</span> matching auction lots
+                </>
+              ) : (
+                <>Showing <span className="text-slate-900 font-extrabold">0</span> matching auction lots</>
+              )}
             </div>
           </div>
         </div>
 
         {/* Vehicle Results Grid View */}
-        {viewMode === "grid" ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredVehicles.map((vehicle) => (
+        {filteredVehicles.length === 0 ? (
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-12 text-center shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+            <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-slate-400">
+              <CarIcon size={24} />
+            </div>
+            <h3 className="text-base font-bold text-slate-900 mb-1">No auction vehicles found</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto mb-4 font-medium">
+              No vehicles match your active search and filter criteria. Try adjusting or resetting your filters.
+            </p>
+            <button 
+              onClick={resetFilters}
+              className="px-4 py-2 bg-[#1B2A4A] text-white text-xs font-bold rounded-xl hover:bg-[#0B1322] transition-colors cursor-pointer"
+            >
+              Reset All Filters
+            </button>
+          </div>
+        ) : viewMode === "grid" ? (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedVehicles.map((vehicle) => (
               <div 
                 key={vehicle.id} 
                 className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col hover-lift group"
@@ -368,6 +484,8 @@ export default function VehiclesPage() {
               </div>
             ))}
           </div>
+          {renderPagination("bg-white p-4 sm:px-6 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)]")}
+        </div>
         ) : (
           /* Vehicle Results List/Table View */
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] overflow-hidden">
@@ -387,7 +505,7 @@ export default function VehiclesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-medium">
-                  {filteredVehicles.map((v) => (
+                  {paginatedVehicles.map((v) => (
                     <tr key={v.id} className="hover:bg-slate-50/60 transition-colors">
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
@@ -442,6 +560,7 @@ export default function VehiclesPage() {
                 </tbody>
               </table>
             </div>
+            {renderPagination("px-5 py-3.5 bg-slate-50/80 border-t border-slate-200")}
           </div>
         )}
 

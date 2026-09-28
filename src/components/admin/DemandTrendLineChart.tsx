@@ -41,24 +41,18 @@ export default function DemandTrendLineChart() {
   };
 
   return (
-    <div className="relative rounded-2xl bg-gradient-to-br from-white via-white to-red-50/20 border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-4.5 overflow-hidden">
+    <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
       {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-300" />
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
         <div>
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <span className="text-[10px] font-black uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.2 rounded-full border border-blue-100">
-              Demand Telemetry
-            </span>
-            <span className="text-[11px] text-slate-400 font-medium">12-Week Rolling Trend</span>
-          </div>
-          <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
-            Top 5 Models Demand Trajectory
+          <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+            Demand trend
           </h3>
-          <p className="text-[11px] text-slate-500 font-medium leading-normal">
-            Weekly request count trend over the past quarter (hover to view precise values).
+          <p className="text-[11px] text-slate-500 font-medium leading-normal mt-0.5">
+            Weekly demand over the last 12 weeks for the top 5 models (hover shows exact values).
           </p>
         </div>
 

@@ -140,27 +140,27 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
           </div>
         </div>
 
-        {/* KPI 4: Turn Velocity of Shortage Models */}
+        {/* KPI 4: Est. days to land in NZ (indicative) */}
         <div className="bg-gradient-to-br from-white via-white to-red-50/20 p-3.5 rounded-xl border border-slate-200/90 hover:border-red-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              Avg Yard Turn Velocity
+              Est. days to land in NZ (indicative)
             </span>
-            <div className="w-6 h-6 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center justify-center font-bold">
+            <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-800 border border-blue-200 flex items-center justify-center font-bold">
               <Clock size={13} />
             </div>
           </div>
           <div className="mt-2">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-black text-emerald-800 tracking-tight">
-                {UNMET_DEMAND_METRICS.avgTurnDaysForShortageModels} Days
+              <span className="text-2xl font-black text-slate-900 tracking-tight">
+                18–22 Days
               </span>
-              <span className="text-[9px] font-bold text-emerald-800 bg-emerald-50 px-1 py-0.2 rounded border border-emerald-200">
-                Fast Turn
+              <span className="text-[9px] font-bold text-blue-800 bg-blue-50 px-1 py-0.2 rounded border border-blue-200">
+                Direct Ro-Ro
               </span>
             </div>
             <p className="text-[10px] text-slate-500 font-medium mt-0.5 truncate">
-              Sells immediately on compliance release
+              Yokohama/Nagoya &rarr; Ports of Auckland
             </p>
           </div>
         </div>

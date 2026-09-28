@@ -18,30 +18,24 @@ export default function DemandByRegionChart({
   const maxUnits = Math.max(...DEMAND_BY_REGION.map(r => r.units));
 
   return (
-    <div className="relative rounded-2xl bg-gradient-to-br from-white via-white to-red-50/20 border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-4.5 overflow-hidden">
+    <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
       {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-300" />
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
         <div>
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <span className="text-[10px] font-black uppercase tracking-wider text-purple-700 bg-purple-50 px-2 py-0.2 rounded-full border border-purple-100">
-              Regional Geography
-            </span>
-            <span className="text-[11px] text-slate-400 font-medium">New Zealand Metro &amp; Regional Breakdown</span>
-          </div>
-          <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
-            Vehicle Demand by NZ Region
+          <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+            Demand by region
           </h3>
-          <p className="text-[11px] text-slate-500 font-medium leading-normal">
-            Concentration of unmet vehicle demand across major New Zealand dealership clusters.
+          <p className="text-[11px] text-slate-500 font-medium leading-normal mt-0.5">
+            Demand by NZ region, with breakdown by segment on hover.
           </p>
         </div>
 
-        <div className="flex items-center gap-1 text-[11px] text-slate-600 font-bold bg-white px-2.5 py-1 rounded-lg border border-red-100 shadow-2xs self-start sm:self-center shrink-0">
-          <MapPin size={12} className="text-[#B30D12]" />
-          <span>5 Key Territories</span>
+        <div className="flex items-center gap-1.5 text-xs text-slate-700 font-bold bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200 self-start sm:self-center shrink-0">
+          <MapPin size={13} className="text-[#B30D12]" />
+          <span>5 Key NZ Regions</span>
         </div>
       </div>
 

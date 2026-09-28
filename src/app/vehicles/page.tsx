@@ -187,7 +187,7 @@ export default function VehiclesPage() {
               Auction Vehicles Catalog
             </h1>
             <p className="text-slate-500 text-sm font-medium mt-0.5">
-              Filter by buying profile, review landed margin spreads, and check market-based bid guides before auction lanes close.
+              Filter by buying profile, review landed margin spreads, and check NZ market indicators before auction lanes close.
             </p>
           </div>
 
@@ -492,7 +492,7 @@ export default function VehiclesPage() {
                     <th className="px-5 py-3.5">FOB (JPY)</th>
                     <th className="px-5 py-3.5">Landed (NZD)</th>
                     <th className="px-5 py-3.5">Est. Retail</th>
-                    <th className="px-5 py-3.5">Market Bid Guide</th>
+                    <th className="px-5 py-3.5">NZ Market Indicator</th>
                     <th className="px-5 py-3.5">AI Score</th>
                     <th className="px-5 py-3.5 text-right">Action</th>
                   </tr>
@@ -544,7 +544,7 @@ export default function VehiclesPage() {
                           href={`/vehicles/${v.id}`}
                           className="px-3 py-1.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-xs font-bold inline-flex items-center gap-1"
                         >
-                          Bid <ArrowRight size={12} />
+                          Inspect <ArrowRight size={12} />
                         </Link>
                       </td>
                     </tr>

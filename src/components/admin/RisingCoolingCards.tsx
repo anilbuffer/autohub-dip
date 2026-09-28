@@ -45,24 +45,21 @@ export default function RisingCoolingCards() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-4.5">
       
-      {/* Rising Demand Card (Compact) */}
-      <div className="relative rounded-2xl bg-gradient-to-br from-white via-white to-emerald-50/20 border border-slate-200/90 p-4 sm:p-4.5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-200" />
+      {/* Rising Demand Card */}
+      <div className="relative rounded-2xl bg-white border border-slate-200/90 p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-emerald-500" />
 
         <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200 shrink-0">
-              <Flame size={15} />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200 shrink-0">
+              <TrendingUp size={16} />
             </div>
             <div>
-              <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5 leading-snug">
-                Surging Demand Models
-                <span className="text-[9px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded-full">
-                  High Urgency
-                </span>
+              <h4 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5 leading-snug">
+                Rising demand
               </h4>
               <p className="text-[11px] text-slate-500 font-medium">
-                Biggest request spikes across dealer wish lists this month.
+                Models with the biggest demand increase
               </p>
             </div>
           </div>
@@ -73,7 +70,7 @@ export default function RisingCoolingCards() {
           {RISING_MODELS.map((item, idx) => (
             <div 
               key={idx}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-emerald-50/40 hover:border-emerald-200 transition-all flex items-center justify-between gap-2.5"
+              className="p-2 sm:p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-emerald-50/30 hover:border-emerald-200 transition-all flex items-center justify-between gap-2.5"
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
@@ -98,35 +95,32 @@ export default function RisingCoolingCards() {
         </div>
       </div>
 
-      {/* Cooling Demand Card (Compact) */}
-      <div className="relative rounded-2xl bg-gradient-to-br from-white via-white to-red-50/20 border border-slate-200/90 p-4 sm:p-4.5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-rose-500 via-[#E23B40] to-rose-200" />
+      {/* Cooling Demand Card */}
+      <div className="relative rounded-2xl bg-white border border-slate-200/90 p-4 sm:p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-slate-400" />
 
         <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-200 shrink-0">
-              <Snowflake size={15} />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-slate-50 text-slate-600 flex items-center justify-center border border-slate-200 shrink-0">
+              <TrendingDown size={16} />
             </div>
             <div>
-              <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5 leading-snug">
-                Cooling Demand Models
-                <span className="text-[9px] font-black uppercase tracking-wider text-rose-700 bg-rose-100 px-1.5 py-0.2 rounded-full">
-                  Trim Bids
-                </span>
+              <h4 className="text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5 leading-snug">
+                Cooling demand
               </h4>
               <p className="text-[11px] text-slate-500 font-medium">
-                Models slowing in inquiry volume; avoid aggressive auction stock.
+                Models with falling demand
               </p>
             </div>
           </div>
-          <ArrowDownRight size={16} className="text-rose-500 hidden sm:block" />
+          <ArrowDownRight size={16} className="text-slate-400 hidden sm:block" />
         </div>
 
         <div className="space-y-2">
           {COOLING_MODELS.map((item, idx) => (
             <div 
               key={idx}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-rose-50/40 hover:border-rose-200 transition-all flex items-center justify-between gap-2.5"
+              className="p-2 sm:p-2.5 rounded-xl bg-slate-50/70 border border-slate-100 hover:bg-slate-100/60 hover:border-slate-300 transition-all flex items-center justify-between gap-2.5"
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">

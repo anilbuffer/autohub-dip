@@ -835,12 +835,12 @@ export const DEMAND_BY_REGION: RegionDemand[] = [
 // AI Weekly Brief Text
 export const AI_WEEKLY_BRIEF = {
   en: {
-    title: 'AI Weekly Brief for AutoHub Sourcing',
-    subtitle: 'Generated from 4,860 dealer search queries, 318 active wish lists, and NZ retail sales demand telemetry.',
-    badge: 'AutoHub DIP Autonomous Sourcing Intelligence',
+    title: 'AI Weekly Brief for Heiwa Sourcing',
+    subtitle: 'What NZ dealers are looking for, and what Heiwa should source next',
+    badge: 'Autonomous Sourcing Intelligence',
     confidenceText: 'Data confidence: High',
     timestamp: 'Today at 07:00 JST / 11:00 NZST (Pre-Auction USS Tokyo Dispatch)',
-    body: 'Demand for hybrid SUVs is rising sharply among NZ dealers. Vezel searches are up 40% this month and C-HR remains the most-requested model. Current AutoHub stock covers only 35% of C-HR demand. Sourcing an additional 60–80 C-HR and Vezel units for the next two auctions is recommended.',
+    body: 'Demand for hybrid SUVs is rising sharply among NZ dealers. Vezel searches are up 40% this month and C-HR remains the most-requested model. Current Heiwa stock covers only 35% of C-HR demand. Sourcing an additional 60–80 C-HR and Vezel units for the next two auctions is recommended.',
     targets: [
       { model: 'Toyota C-HR', recommendation: '+40–50 units', priority: 'Critical', house: 'USS Tokyo / Yokohama' },
       { model: 'Honda Vezel', recommendation: '+25–35 units', priority: 'High', house: 'USS Tokyo / Nagoya' },
@@ -848,12 +848,12 @@ export const AI_WEEKLY_BRIEF = {
     ]
   },
   jp: {
-    title: 'AutoHub仕入れ向けAI週次ブリーフ',
-    subtitle: 'NZディーラーの4,860件の検索データ、318件の希望リスト、およびNZ国内販売速度から自動生成された調達推奨レポート。',
-    badge: 'AutoHub DIP 自律調達インテリジェンス',
+    title: 'Heiwa調達向けAI週次ブリーフ',
+    subtitle: 'NZディーラーの需要動向と次回オークションでのHeiwa推奨調達枠',
+    badge: 'AI自律仕入れインテリジェンス',
     confidenceText: 'データ信頼度: 高',
     timestamp: '本日 07:00 JST / 11:00 NZST 更新（USS東京オークション直前ブリーフィング）',
-    body: 'NZディーラー間においてハイブリッドSUVの需要が急増しています。今月ヴェゼルの検索数は40%増加し、C-HRは依然として最も要望の多いモデルです。現在のAutoHubの在庫はC-HR需要の35%しかカバーできていません。次回2回のオークションに向けて、C-HRおよびヴェゼルをさらに60〜80台仕入れることを強く推奨します。',
+    body: 'NZディーラー間でハイブリッドSUVの需要が急増しています。今月ヴェゼルの検索数は40%増加し、C-HRは最もリクエストの多いモデルとなっています。現在のHeiwaの在庫はC-HR需要の35%しかカバーできていません。次回2回のオークションに向けて、C-HRおよびヴェゼルをさらに60〜80台仕入れることを推奨します。',
     targets: [
       { model: 'トヨタ C-HR', recommendation: '+40〜50台 追加仕入れ', priority: '最重要', house: 'USS東京 / 横浜' },
       { model: 'ホンダ ヴェゼル', recommendation: '+25〜35台 追加仕入れ', priority: '高優先', house: 'USS東京 / 名古屋' },

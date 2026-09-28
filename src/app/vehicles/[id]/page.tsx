@@ -26,6 +26,7 @@ import {
 import { VEHICLES, GLOBAL_SETTINGS } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
 import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
+import WrittenConfirmationPoModal from "@/components/dealer/WrittenConfirmationPoModal";
 
 export default function VehicleDetail({ params }: { params: { id: string } }) {
   const vehicleId = parseInt(params?.id) || 1;
@@ -38,6 +39,9 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
   const [targetMargin, setTargetMargin] = useState(vehicle.targetMarginNzd);
   const [bidPlaced, setBidPlaced] = useState(false);
   const [activePhoto, setActivePhoto] = useState(vehicle.image);
+  const [isPoModalOpen, setIsPoModalOpen] = useState(false);
+  const [compFilter, setCompFilter] = useState<string>("All");
+  const [showTransitTooltip, setShowTransitTooltip] = useState(false);
   const [downloadToast, setDownloadToast] = useState<{
     visible: boolean;
     title: string;
@@ -228,8 +232,8 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
         <div className="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
-                <Sparkles size={12} /> {vehicle.status.toUpperCase()} BUY (Score {vehicle.score}/100)
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                <Sparkles size={12} className="text-emerald-600" /> {vehicle.status.toUpperCase()} BUY • Data confidence: High
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700">
                 Grade {vehicle.grade} / {vehicle.interiorGrade}
@@ -247,10 +251,18 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-wrap">
             <button
-              onClick={() => triggerAutoHubCopilot(`Analyze landed margin, sheet condition, and bidding strategy for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`)}
-              className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#0B1322] to-[#1B2A4A] text-white hover:bg-slate-800 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+              onClick={() => setIsPoModalOpen(true)}
+              className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+              title="Generate Written Export Confirmation / PO for Heiwa Auto Japan"
+            >
+              <FileText size={14} className="text-amber-400" /> Written PO Form
+            </button>
+
+            <button
+              onClick={() => triggerAutoHubCopilot(`Analyze landed margin, sheet condition, and indicative market analysis for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`)}
+              className="px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-[#0B1322] to-[#1B2A4A] text-white hover:bg-slate-800 text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
               title="Open AutoHub DIP Assistant for this vehicle"
             >
               <Sparkles size={14} className="text-blue-300" /> Ask AI Assistant
@@ -337,18 +349,34 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <span className="font-bold text-slate-900">NZ${vehicle.estRetailNzd.toLocaleString('en-US')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Target Profit Margin</span>
+                  <span className="text-slate-500">Estimated Dealer Margin</span>
                   <span className="font-bold text-emerald-600">+NZ${targetMargin.toLocaleString('en-US')}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Est. days to land in NZ (indicative)</span>
-                  <span className="font-bold text-slate-800 flex items-center gap-1">
-                    <Ship size={12} className="text-blue-600" />
-                    18–22 days
-                  </span>
+                <div className="relative">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500 flex items-center gap-1">
+                      <span>Est. days to land in NZ (indicative)</span>
+                      <button
+                        onClick={() => setShowTransitTooltip(!showTransitTooltip)}
+                        className="text-slate-400 hover:text-slate-600 cursor-pointer"
+                        title="Delivery variations context"
+                      >
+                        <Info size={11} />
+                      </button>
+                    </span>
+                    <span className="font-bold text-slate-800 flex items-center gap-1">
+                      <Ship size={12} className="text-blue-600" />
+                      18–22 days
+                    </span>
+                  </div>
+                  {showTransitTooltip && (
+                    <div className="mt-2 p-2 bg-slate-900 text-white text-[10.5px] rounded-lg shadow-lg border border-slate-700 leading-relaxed">
+                      <strong>Historical delivery variations:</strong> Ro-Ro sailings from Yokohama/Nagoya to Ports of Auckland average 18–22 days port-to-port. Historical delivery variance: ±3–5 days depending on maritime weather, shipping line scheduling, and Auckland biosecurity/MAF queue slots.
+                    </div>
+                  )}
                 </div>
                 <div className="flex justify-between pt-2 border-t border-slate-200 font-bold">
-                  <span className="text-slate-700">Market-Based Bid Guide</span>
+                  <span className="text-slate-700">NZ Market Indicator</span>
                   <span className="text-[#B30D12] font-black">NZ${maxBidNzd.toLocaleString('en-US')}</span>
                 </div>
                 <div className="text-[10px] text-slate-400 italic pt-1 text-center">
@@ -361,26 +389,35 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
               {bidPlaced ? (
                 <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-center animate-in fade-in duration-200 space-y-2">
                   <p className="text-xs font-black text-emerald-800 flex items-center justify-center gap-1.5">
-                    <CheckCircle2 size={16} className="text-emerald-600" /> Auto-Bid Registered!
+                    <CheckCircle2 size={16} className="text-emerald-600" /> Proxy Bid Interest Registered!
                   </p>
                   <p className="text-[11px] text-emerald-700">
-                    Broker proxy bid placed up to <strong>NZ${maxBidNzd.toLocaleString('en-US')}</strong> on USS Tokyo.
+                    Indicative dealer proxy bid noted up to <strong>NZ${maxBidNzd.toLocaleString('en-US')}</strong> for Japanese auction lane submission.
                   </p>
                   <button
                     onClick={() => setBidPlaced(false)}
-                    className="text-[11px] font-bold text-slate-600 hover:text-slate-900 underline"
+                    className="text-[11px] font-bold text-slate-600 hover:text-slate-900 underline cursor-pointer"
                   >
-                    Cancel / Modify Bid
+                    Modify Bid Interest
                   </button>
                 </div>
               ) : (
                 <button
                   onClick={() => setBidPlaced(true)}
-                  className="w-full py-3 bg-[#B30D12] hover:bg-[#940B0F] text-white font-bold text-xs rounded-xl transition-all shadow-sm hover:shadow"
+                  className="w-full py-3 bg-[#B30D12] hover:bg-[#940B0F] text-white font-bold text-xs rounded-xl transition-all shadow-sm hover:shadow cursor-pointer"
                 >
-                  Submit Auto-Bid Guide
+                  Register Proxy Bid Interest
                 </button>
               )}
+
+              {/* Generate Written PO Button */}
+              <button
+                onClick={() => setIsPoModalOpen(true)}
+                className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs cursor-pointer active:scale-[0.98]"
+              >
+                <FileText size={14} className="text-amber-400" />
+                <span>Issue Written Confirmation / PO</span>
+              </button>
 
               {/* Inspection Sheet Download Buttons */}
               <div className="pt-2 space-y-2">
@@ -458,7 +495,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <Calculator size={16} />
                 </div>
                 <div>
-                  <h3 className="text-base font-black text-slate-900">Bid Simulator & Landed Engine</h3>
+                  <h3 className="text-base font-black text-slate-900">Landed Cost Simulator &amp; Margin Engine</h3>
                   <p className="text-xs text-slate-400 font-medium">Tweak FOB or target margin to test sensitivities.</p>
                 </div>
               </div>
@@ -529,7 +566,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 <span className="text-sm">NZ${totalLandedCost.toLocaleString('en-US')}</span>
               </div>
               <div className="flex justify-between font-extrabold text-[#B30D12] pt-1 text-sm">
-                <span>Market-Based Bid Guide (Target Margin)</span>
+                <span>NZ Market Indicator (Estimated Margin)</span>
                 <span>NZ${maxBidNzd.toLocaleString('en-US')}</span>
               </div>
               <div className="text-[10px] text-slate-400 italic pt-1.5 text-center border-t border-slate-100">
@@ -551,7 +588,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   : "bg-amber-50 text-amber-700 border-amber-200/80"
                   }`}>
                   <TrendingUp size={12} />
-                  <span>Arbitrage: {currentSpread > 0 ? `+NZ$${currentSpread.toLocaleString('en-US')}` : `-NZ$${Math.abs(currentSpread).toLocaleString('en-US')}`}</span>
+                  <span>Market Spread: {currentSpread > 0 ? `+NZ$${currentSpread.toLocaleString('en-US')}` : `-NZ$${Math.abs(currentSpread).toLocaleString('en-US')}`}</span>
                 </span>
               </div>
             </div>
@@ -648,7 +685,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   strokeDasharray="5 4"
                 />
 
-                {/* Arbitrage Spread Connector to Regression Line */}
+                {/* Market Spread Connector to Regression Line */}
                 {currentSpread > 0 && (
                   <g>
                     <line
@@ -914,24 +951,84 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
               <span className="text-[10px] font-bold text-[#B30D12] uppercase tracking-wider block">jpy fob (Auction)</span>
               <span className="font-mono font-black text-slate-900 text-sm mt-1 block">¥{(vehicle.fobJpy).toLocaleString('en-US')}</span>
             </div>
-            <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100">
-              <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Est. days to land in NZ (indicative)</span>
+            <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 relative group">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">Estimated Transit / Indicative</span>
+                <Info size={12} className="text-blue-500 cursor-pointer" />
+              </div>
               <span className="font-bold text-slate-900 text-sm mt-1 flex items-center gap-1.5">
-                <Ship size={14} className="text-blue-600" />
+                <Ship size={14} className="text-blue-600 shrink-0" />
                 18–22 days (Direct Ro-Ro)
               </span>
+              <p className="text-[10px] text-slate-500 mt-1">
+                Port-to-port baseline · Historical variance: ±3–5 days
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Live NZ Market Evidence Table */}
+        {/* Live NZ Market Evidence Table with Prominent Trade Me, AutoTrader & Facebook Marketplace */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] overflow-hidden">
-          <div className="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+          <div className="p-5 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h3 className="text-base font-black text-slate-900">Live NZ Market Evidence</h3>
-              <p className="text-xs text-slate-500 font-medium">Similar active listings scraped from major NZ classifieds.</p>
+              <div className="flex items-center gap-2">
+                <h3 className="text-base font-black text-slate-900">Live NZ Market Evidence</h3>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-extrabold text-[10px] border border-emerald-200">
+                  Scraped Daily
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 font-medium mt-0.5">
+                Multi-platform comparable pricing scraped from <strong>Trade Me Motors</strong>, <strong>AutoTrader NZ</strong>, and <strong>Facebook Marketplace</strong>.
+              </p>
             </div>
-            <span className="text-xs font-bold text-slate-500">{vehicle.nzComparables.length} Verified Comparables</span>
+            
+            {/* Platform Filter Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto self-start sm:self-auto">
+              {["All", "Trade Me Motors", "Facebook Marketplace", "AutoTrader NZ"].map((plat) => (
+                <button
+                  key={plat}
+                  onClick={() => setCompFilter(plat)}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                    compFilter === plat
+                      ? "bg-[#0B1322] text-white shadow-2xs"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                  }`}
+                >
+                  {plat === "All" ? `All Sources (${vehicle.nzComparables.length})` : plat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Platform Summary Metric Strips */}
+          <div className="grid grid-cols-3 gap-px bg-slate-200/80 border-b border-slate-200 text-xs text-center">
+            <div className="p-3 bg-white">
+              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">
+                Trade Me Motors
+              </span>
+              <span className="font-extrabold text-slate-900 font-mono">
+                NZ${(vehicle.nzComparables.find(c => c.source.includes("Trade Me"))?.price || vehicle.estRetailNzd).toLocaleString()}
+              </span>
+              <span className="text-[10.5px] text-slate-400 block">Classified Benchmark</span>
+            </div>
+            <div className="p-3 bg-white">
+              <span className="text-[10px] font-bold text-blue-700 uppercase tracking-wider block">
+                Facebook Marketplace
+              </span>
+              <span className="font-extrabold text-slate-900 font-mono">
+                NZ${(vehicle.nzComparables.find(c => c.source.includes("Facebook"))?.price || Math.round(vehicle.estRetailNzd * 0.97)).toLocaleString()}
+              </span>
+              <span className="text-[10.5px] text-slate-400 block">Social / Dealer Direct</span>
+            </div>
+            <div className="p-3 bg-white">
+              <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider block">
+                AutoTrader NZ
+              </span>
+              <span className="font-extrabold text-slate-900 font-mono">
+                NZ${(vehicle.nzComparables.find(c => c.source.includes("AutoTrader"))?.price || Math.round(vehicle.estRetailNzd * 1.02)).toLocaleString()}
+              </span>
+              <span className="text-[10.5px] text-slate-400 block">Verified Dealer Yards</span>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
@@ -942,29 +1039,47 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                   <th className="px-5 py-3.5">Year</th>
                   <th className="px-5 py-3.5">Mileage</th>
                   <th className="px-5 py-3.5">Advertised Price</th>
-                  <th className="px-5 py-3.5">Trade Me Days Listed</th>
-                  <th className="px-5 py-3.5 text-right">Spread vs Landed Cost</th>
+                  <th className="px-5 py-3.5">Classifieds Days Listed</th>
+                  <th className="px-5 py-3.5 text-right">Market Spread vs Landed Cost</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-medium">
-                {vehicle.nzComparables.map((comp, idx) => {
-                  const spread = comp.price - totalLandedCost;
-                  return (
-                    <tr key={idx} className="hover:bg-slate-50/50">
-                      <td className="px-5 py-3.5 font-bold text-slate-900 flex items-center gap-1.5">
-                        <ExternalLink size={12} className="text-slate-400" />
-                        {comp.source}
-                      </td>
-                      <td className="px-5 py-3.5 text-slate-700">{comp.year}</td>
-                      <td className="px-5 py-3.5 text-slate-700 font-mono">{(comp.km).toLocaleString('en-US')} km</td>
-                      <td className="px-5 py-3.5 font-bold text-slate-900">NZ${(comp.price).toLocaleString('en-US')}</td>
-                      <td className="px-5 py-3.5 text-slate-500">{comp.daysListed} days</td>
-                      <td className="px-5 py-3.5 text-right font-extrabold text-emerald-600">
-                        +NZ${spread.toLocaleString('en-US')}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {vehicle.nzComparables
+                  .filter((comp) => compFilter === "All" || comp.source.toLowerCase().includes(compFilter.toLowerCase().replace(" motors", "").replace(" nz", "")))
+                  .map((comp, idx) => {
+                    const spread = comp.price - totalLandedCost;
+                    const isTradeMe = comp.source.toLowerCase().includes("trade me");
+                    const isFacebook = comp.source.toLowerCase().includes("facebook");
+                    const isAutoTrader = comp.source.toLowerCase().includes("autotrader");
+
+                    return (
+                      <tr key={idx} className="hover:bg-slate-50/50">
+                        <td className="px-5 py-3.5 font-bold text-slate-900">
+                          <span
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border ${
+                              isTradeMe
+                                ? "bg-amber-500/10 text-amber-900 border-amber-300"
+                                : isFacebook
+                                ? "bg-blue-500/10 text-blue-900 border-blue-300"
+                                : isAutoTrader
+                                ? "bg-red-500/10 text-red-900 border-red-300"
+                                : "bg-slate-100 text-slate-800 border-slate-200"
+                            }`}
+                          >
+                            <ExternalLink size={11} className="opacity-70" />
+                            {comp.source}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5 text-slate-700">{comp.year}</td>
+                        <td className="px-5 py-3.5 text-slate-700 font-mono">{(comp.km).toLocaleString('en-US')} km</td>
+                        <td className="px-5 py-3.5 font-bold text-slate-900 font-mono">NZ${(comp.price).toLocaleString('en-US')}</td>
+                        <td className="px-5 py-3.5 text-slate-500">{comp.daysListed} days</td>
+                        <td className="px-5 py-3.5 text-right font-extrabold text-emerald-600 font-mono">
+                          +NZ${spread.toLocaleString('en-US')}
+                        </td>
+                      </tr>
+                    );
+                  })}
               </tbody>
             </table>
           </div>
@@ -977,6 +1092,17 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
             Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.
           </span>
         </div>
+
+        {/* Written Confirmation / PO Modal for this vehicle */}
+        <WrittenConfirmationPoModal
+          isOpen={isPoModalOpen}
+          onClose={() => setIsPoModalOpen(false)}
+          vehicles={[vehicle]}
+          syncState={syncState}
+          onConfirmed={(poNum) => {
+            alert(`Purchase Order ${poNum} successfully registered with Heiwa Japan for Lot #${vehicle.lotNumber}!`);
+          }}
+        />
 
       </div>
     </AppLayout>

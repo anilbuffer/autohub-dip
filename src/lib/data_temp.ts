@@ -1,4 +1,4 @@
-// Real Japanese Heiwa CSV Inventory Dataset
+﻿// Real Japanese Heiwa CSV Inventory Dataset
 // Preserves all original CSV columns alongside mapped NZ landed pricing and AI scoring metrics.
 
 export interface Vehicle {
@@ -72,7 +72,7 @@ export interface Vehicle {
   };
 }
 
-const RAW_VEHICLES: Vehicle[] = [
+export const VEHICLES: Vehicle[] = [
   {
     // CSV Fields
     stockid: "n15856",
@@ -5184,64 +5184,6 @@ const RAW_VEHICLES: Vehicle[] = [
     }
   }
 ];
-
-export function getVehicleImage(make: string, model: string): string {
-  const m = (model || "").toLowerCase();
-  const mk = (make || "").toLowerCase();
-
-  if (mk === "nissan") {
-    if (m.includes("x-trail") || m.includes("xtrail")) return "/vehicles/nissan_xtrail.jpg";
-    if (m.includes("caravan") || m.includes("nv350") || m.includes("nv200")) return "/vehicles/toyota_hiace.jpg";
-    return "/vehicles/nissan_note.jpg";
-  }
-  if (mk === "subaru") {
-    if (m.includes("forester")) return "/vehicles/subaru_forester.jpg";
-    return "/vehicles/subaru_levorg.jpg";
-  }
-  if (mk === "suzuki") {
-    return "/vehicles/suzuki_swift.jpg";
-  }
-  if (mk === "lexus") {
-    return "/vehicles/lexus_rx.jpg";
-  }
-  if (mk === "bmw") {
-    return "/vehicles/bmw_3series.jpg";
-  }
-  if (mk === "tesla") {
-    return "/vehicles/tesla_model3.jpg";
-  }
-  if (mk === "mazda") {
-    if (m.includes("3") || m.includes("mazda3") || m.includes("axela")) return "/vehicles/mazda3.jpg";
-    return "/vehicles/mazda_demio.jpg";
-  }
-  if (mk === "honda") {
-    if (m.includes("cr-v") || m.includes("crv")) return "/vehicles/honda_crv.jpg";
-    return "/vehicles/honda_accord.jpg";
-  }
-  if (mk === "toyota") {
-    if (m.includes("aqua")) return "/vehicles/toyota_aqua.jpg";
-    if (m.includes("prius")) return "/vehicles/toyota_prius.jpg";
-    if (m.includes("c-hr") || m.includes("chr")) return "/vehicles/toyota_chr.jpg";
-    if (m.includes("harrier")) return "/vehicles/toyota_harrier.jpg";
-    if (m.includes("rav4")) return "/vehicles/toyota_rav4.jpg";
-    if (m.includes("sienta") || m.includes("wish") || m.includes("porte")) return "/vehicles/toyota_sienta.jpg";
-    if (m.includes("corolla cross")) return "/vehicles/toyota_corolla_cross.jpg";
-    if (m.includes("touring") || m.includes("sports") || m.includes("avensis")) return "/vehicles/toyota_corolla_touring.jpg";
-    if (m.includes("hiace")) return "/vehicles/toyota_hiace.jpg";
-    if (m.includes("alphard") || m.includes("vellfire")) return "/vehicles/toyota_alphard.jpg";
-  }
-  return "/vehicles/toyota_aqua.jpg";
-}
-
-export const VEHICLES: Vehicle[] = RAW_VEHICLES.map((v) => {
-  const img = getVehicleImage(v.make, v.model);
-  return {
-    ...v,
-    image: img,
-    gallery: [img, img]
-  };
-});
-
 
 export interface Dealer {
   id: number;

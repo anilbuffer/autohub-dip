@@ -37,6 +37,7 @@ import {
 } from "lucide-react";
 import { VEHICLES, GLOBAL_SETTINGS, Vehicle } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
+import WrittenConfirmationPoModal from "@/components/dealer/WrittenConfirmationPoModal";
 
 // Web Audio API soft sound generator
 function playChime(type: "send" | "receive" = "receive") {
@@ -77,8 +78,16 @@ export interface ChatMessage {
   sender: "bot" | "user";
   text: string;
   timestamp: string;
-  type?: "text" | "calculator" | "vehicles" | "sheet_glossary" | "shipping";
+  type?: "text" | "calculator" | "vehicles" | "sheet_glossary" | "shipping" | "portfolio";
   vehiclesData?: Vehicle[];
+  portfolioData?: {
+    budget: number;
+    preferredMake: string;
+    totalLanded: number;
+    totalMargin: number;
+    buffer: number;
+    allocatedVehicles: Vehicle[];
+  };
   calcParams?: {
     fobJpy: number;
     fxRate: number;
@@ -127,7 +136,7 @@ export default function DealerChatAssistant({
     {
       id: "msg-welcome-1",
       sender: "bot",
-      text: `**Kia Ora & Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I analyze **Japanese auction pipeline lots** (including USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\n**Headline Example Query:**\n> *"I have $200k, prefer Toyota, 3 years old or newer. What fits?"*\n\nHow can I help Auckland Auto Group optimize your bidding strategy today?`,
+      text: `**Kia Ora &amp; Konnichiwa David!** 👋\n\nI am your **AutoHub DIP assistant**. I analyze **Japanese auction pipeline lots** (including USS Tokyo, USS Yokohama, CAA, TAA) and calculate real-time NZ landed costs with live **¥${syncState.fxRateJpyNzd} / NZD** foreign exchange.\n\n**Headline Example Query:**\n> *"I have $200k, prefer Toyota, 3 years old or newer. What fits?"*\n\nData confidence: High · Indicative figures based on current NZ market data. How can I help Auckland Auto Group optimize your sourcing portfolio today?`,
       timestamp: "Just now",
       suggestedPrompts: [
         "I have $200k, prefer Toyota, 3 years old or newer. What fits?",
@@ -153,6 +162,8 @@ export default function DealerChatAssistant({
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isPoModalOpen, setIsPoModalOpen] = useState(false);
+  const [poVehicles, setPoVehicles] = useState<Vehicle[]>([]);
 
   // Custom event listener to receive prompts from anywhere in the app
   useEffect(() => {
@@ -220,50 +231,139 @@ export default function DealerChatAssistant({
     const fx = syncState.fxRateJpyNzd;
 
     // -----------------------------------------------------------------
-    // 1. Budget-based Headline Query: "I have $200k, prefer Toyota, 3 years old or newer. What fits?"
+    // 1. Natural-Language Budget & Portfolio Solver
+    // Supports queries like: "my budget is $200k, I prefer Toyota", "$150k budget Honda", etc.
     // -----------------------------------------------------------------
-    if (
-      q.includes("200k") ||
-      q.includes("200,000") ||
-      q.includes("200 000") ||
-      (q.includes("toyota") && (q.includes("3 year") || q.includes("3-year") || q.includes("newer") || q.includes("fits") || q.includes("what fits"))) ||
-      (q.includes("budget") && q.includes("toyota")) ||
-      (q.includes("prefer toyota") && (q.includes("200") || q.includes("newer") || q.includes("fits")))
-    ) {
-      // Filter 73-lot Heiwa database for Toyota vehicles 3 years old or newer (2021+)
-      const toyotaMatches = VEHICLES.filter((v) => {
-        const isToyota = v.make.toLowerCase() === "toyota";
-        const isNewer = v.year >= 2021;
-        return isToyota && isNewer;
-      }).sort((a, b) => b.score - a.score);
+    const isBudgetOrPortfolioQuery =
+      q.includes("budget") ||
+      q.includes("portfolio") ||
+      q.includes("what fits") ||
+      q.includes("fits") ||
+      q.includes("package") ||
+      q.includes("allocate") ||
+      /\$\s*\d+/.test(q) ||
+      /\d+\s*k\b/i.test(q) ||
+      (/\d{5,6}/.test(q) && (q.includes("toyota") || q.includes("honda") || q.includes("nissan") || q.includes("mazda")));
 
-      // Package lots within the $200,000 NZD capital allocation
-      const packageSelection: Vehicle[] = [];
-      let runningLandedCost = 0;
-      for (const vehicle of toyotaMatches) {
-        if (runningLandedCost + vehicle.landedNzd <= 200000) {
-          packageSelection.push(vehicle);
-          runningLandedCost += vehicle.landedNzd;
+    if (
+      isBudgetOrPortfolioQuery ||
+      q.includes("prefer toyota") ||
+      q.includes("prefer honda") ||
+      q.includes("prefer nissan") ||
+      q.includes("200k") ||
+      q.includes("150k") ||
+      q.includes("100k") ||
+      q.includes("250k")
+    ) {
+      // Extract numeric budget
+      let parsedBudget = 200000;
+      const kMatch = q.match(/(?:\$)?\s*(\d+(?:\.\d+)?)\s*k\b/i);
+      const fullNumMatch = q.match(/(?:\$)?\s*(\d{1,3}(?:,\d{3})+|\d{5,7})\b/);
+      if (kMatch && kMatch[1]) {
+        parsedBudget = Math.round(parseFloat(kMatch[1]) * 1000);
+      } else if (fullNumMatch && fullNumMatch[1]) {
+        parsedBudget = Math.round(parseFloat(fullNumMatch[1].replace(/,/g, "")));
+      }
+
+      // Extract preferred make
+      let preferredMake = "Toyota";
+      if (q.includes("honda")) preferredMake = "Honda";
+      else if (q.includes("nissan")) preferredMake = "Nissan";
+      else if (q.includes("mazda")) preferredMake = "Mazda";
+      else if (q.includes("subaru")) preferredMake = "Subaru";
+      else if (q.includes("lexus")) preferredMake = "Lexus";
+
+      const onlyRecent = q.includes("3 year") || q.includes("newer") || q.includes("recent") || q.includes("late");
+
+      // Filter stock from 73 Heiwa stock units
+      const matchingMakeStock = VEHICLES.filter((v) => {
+        const matchesMake = v.make.toLowerCase() === preferredMake.toLowerCase();
+        const matchesYear = onlyRecent ? v.year >= 2021 : true;
+        return matchesMake && matchesYear;
+      });
+      const stockPool = matchingMakeStock.length > 0 ? matchingMakeStock : VEHICLES;
+
+      const allocated: Vehicle[] = [];
+      let currentLandedSum = 0;
+
+      // Sort by newest year first, then score
+      const candidateList = [...stockPool].sort((a, b) => {
+        if (b.year !== a.year) return b.year - a.year;
+        return b.score - a.score;
+      });
+
+      for (const v of candidateList) {
+        if (currentLandedSum + v.landedNzd <= parsedBudget) {
+          allocated.push(v);
+          currentLandedSum += v.landedNzd;
         }
       }
 
-      const finalSelection = packageSelection.length > 0 ? packageSelection : toyotaMatches.slice(0, 5);
+      const finalSelection = allocated.length > 0 ? allocated : stockPool.slice(0, 5);
       const totalLanded = finalSelection.reduce((acc, v) => acc + v.landedNzd, 0);
       const totalMargin = finalSelection.reduce((acc, v) => acc + v.targetMarginNzd, 0);
-      const buffer = Math.max(0, 200000 - totalLanded);
+      const buffer = Math.max(0, parsedBudget - totalLanded);
+      const roiPercent = totalLanded > 0 ? Math.round((totalMargin / totalLanded) * 100) : 0;
+      const modelNames = Array.from(new Set(finalSelection.map((v) => `${v.year} ${v.model}`))).join(", ");
+      const headlineTag = onlyRecent ? " (3 Years Old or Newer · 2021–2025 Lots)" : "";
 
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🎯 NZ$200,000 Portfolio Strategy: Late-Model Toyotas (≤ 3 Years Old)\n\nBased on your **NZ$200,000 capital budget**, we filtered the live Japanese Heiwa auction pipeline for **Toyota vehicles 2021 or newer (≤ 3 years old)** with verified auction condition.\n\n**Portfolio Sourcing Breakdown:**\n- **Target Allocation:** NZ$200,000.00\n- **Selected Package:** **${finalSelection.length} late-model Toyota lots** (Corolla Cross, C-HR, Corolla Touring, Aqua Z, Harrier)\n- **Combined Landed Cost:** **NZ$${totalLanded.toLocaleString()}** (Includes CIF ocean freight, port compliance, and 15% GST)\n- **Operating Buffer Remaining:** **NZ$${buffer.toLocaleString()}** (retained for floor plan buffer & dealer preparation)\n- **Projected Total Gross Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${totalMargin.toLocaleString()} (${Math.round((totalMargin / totalLanded) * 100)}% ROI)</span>\n- **Est. days to land in NZ (indicative):** **18–22 days** via direct Ro-Ro vessels from Yokohama/Nagoya to Ports of Auckland.\n\nHere are the matching vehicle cards fitting your criteria:`,
+        text: `### 🎯 Curated Stock Allocation: NZ$${parsedBudget.toLocaleString()} (${preferredMake} Package${headlineTag})\n\nBased on your query: *"I have $200k, prefer Toyota, 3 years old or newer. What fits?"*\n\nHere is an optimized allocation of **${finalSelection.length} matching late-model Toyota lots** from live Japanese Heiwa auction stock that fit within your **NZ$${parsedBudget.toLocaleString()}** budget:\n\n**Portfolio Financial Breakdown:**\n- **Target Capital:** NZ$${parsedBudget.toLocaleString()}\n- **Allocated Units:** **${finalSelection.length} Units** (${modelNames})\n- **Combined Landed Cost:** **NZ$${totalLanded.toLocaleString()}** (All-inclusive CIF ocean freight, port compliance, MAF & 15% GST)\n- **Operating Reserve Buffer:** **NZ$${buffer.toLocaleString()}** (Retained for dealer preparation & yard floor plan)\n- **Projected Estimated Margin:** <span class="text-emerald-700 font-extrabold">+NZ$${totalMargin.toLocaleString()} (${roiPercent}% Projected Return)</span>\n- **Est. days to land in NZ (indicative):** **18–22 calendar days** via direct Ro-Ro vessels from Yokohama/Nagoya to Ports of Auckland.\n- **Data confidence:** High (verified Japanese Heiwa CSV auction lot records).\n\nBelow are your **matching vehicle cards** with full landed cost and margin breakdowns:`,
         timestamp: "Just now",
         type: "vehicles",
+        portfolioData: {
+          budget: parsedBudget,
+          preferredMake,
+          totalLanded,
+          totalMargin,
+          buffer,
+          allocatedVehicles: finalSelection
+        },
         vehiclesData: finalSelection,
         suggestedPrompts: [
-          "Lock In Auto-Bids for Toyota Package",
-          "Calculate Landed Cost for Corolla Cross",
-          "Explain Sheet Codes for Lot #" + (finalSelection[0]?.lotNumber || "1172820"),
-          "Yokohama Shipping Schedule"
+          "Generate Written Confirmation / PO for this Package",
+          "Explain Japanese Auction Sheet Codes",
+          "What does the market data show for Aqua?",
+          "Direct Ro-Ro Shipping Schedule"
+        ]
+      };
+    }
+
+    // -----------------------------------------------------------------
+    // Written Confirmation / PO Intent
+    // -----------------------------------------------------------------
+    if (
+      q.includes("written confirmation") ||
+      q.includes("po") ||
+      q.includes("purchase order") ||
+      q.includes("export confirmation") ||
+      q.includes("lock in")
+    ) {
+      const topPicks = VEHICLES.filter((v) => v.status === "Priority").slice(0, 3);
+      const totalLanded = topPicks.reduce((acc, v) => acc + v.landedNzd, 0);
+      const totalMargin = topPicks.reduce((acc, v) => acc + v.targetMarginNzd, 0);
+
+      return {
+        id: `bot-${Date.now()}`,
+        sender: "bot",
+        text: `### 📄 Heiwa Auto Japan Export Written Confirmation / PO\n\nAutoHub DIP can generate an official **Export Written Order Confirmation & Purchase Order (PO)** pre-filled with your selected lots and locked CIF landed calculations at **¥${fx} / NZD**.\n\nClick the button below to review, print, and transmit the official PO reference for Auckland Auto Group:`,
+        timestamp: "Just now",
+        type: "portfolio",
+        portfolioData: {
+          budget: 200000,
+          preferredMake: "Toyota",
+          totalLanded,
+          totalMargin,
+          buffer: Math.max(0, 200000 - totalLanded),
+          allocatedVehicles: topPicks
+        },
+        vehiclesData: topPicks,
+        suggestedPrompts: [
+          "Explain Japanese Auction Sheet Codes",
+          "Direct Ro-Ro Shipping Schedule",
+          "Open Full Landed Calculator"
         ]
       };
     }
@@ -330,14 +430,14 @@ export default function DealerChatAssistant({
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🏆 Best Value vs NZ Market (Strong Margin Potential)\nHere are the **top 3 vehicles** in tomorrow's Tokyo and Nagoya sessions matching Auckland Auto Group's criteria with over **NZ$3,500 gross margin spread**:\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*`,
+        text: `### 🏆 Best Value vs NZ Market (Strong Margin Potential)\nHere are the **top 3 vehicles** in tomorrow's Tokyo and Nagoya sessions matching Auckland Auto Group's criteria with over **NZ$3,500 estimated margin spread**:\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*`,
         timestamp: "Just now",
         type: "vehicles",
         vehiclesData: topVehicles,
         suggestedPrompts: [
           "🧮 Interactive Landed Cost Calculator",
           "📋 Japanese Auction Sheet Codes",
-          "⚡ Market-Based Bid Guide"
+          "⚡ NZ Market Indicator"
         ]
       };
     }
@@ -442,12 +542,12 @@ export default function DealerChatAssistant({
       };
     }
 
-    // Market-Based Bid Guide / Max Bid Strategy
-    if (q.includes("market data") || q.includes("recommended bid") || q.includes("bid guide") || q.includes("max bid") || q.includes("strategy") || q.includes("how much to bid") || q.includes("target")) {
+    // NZ Market Indicator / Reverse Landed Formula
+    if (q.includes("market data") || q.includes("recommended bid") || q.includes("bid guide") || q.includes("max bid") || q.includes("strategy") || q.includes("how much to bid") || q.includes("target") || q.includes("market indicator")) {
       return {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: `### 🎯 AutoHub DIP Market-Based Bid Guide Formula\n\nTo target your required **NZ$3,500 dealer gross margin**, calculate backward from expected retail:\n\n$$\\text{Max Landed} = \\text{Est. Retail} - \\text{Target Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Max Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable spread. Market data indicates bid guide up to ¥1,480,000 to preserve target margin.**\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*`,
+        text: `### 🎯 AutoHub DIP NZ Market Indicator Formula\n\nTo target your indicative **NZ$3,500 estimated dealer margin**, calculate backward from expected NZ classifieds retail:\n\n$$\\text{Target Landed Cost} = \\text{Est. Retail} - \\text{Estimated Margin}$$\n$$\\text{Max FOB NZD} = \\frac{\\text{Target Landed}}{1.15} - (\\text{Freight} + \\text{Compliance} + \\text{Port})$$\n$$\\text{Max Auction JPY} = \\text{Max FOB NZD} \\times ${fx}$$\n\n**Example for 2019 Toyota Aqua (Est. Retail NZ$24,500):**\n- Target Landed Ceiling: **NZ$20,500**\n- Max FOB JPY Ceiling: **¥1,510,000 JPY**\n- Current Auction Guide: **¥1,420,000 JPY**\n- Status: ✅ **Favorable market spread. Market data indicates bid guide up to ¥1,480,000 to preserve estimated margin.**\n\n*Indicative figures based on current NZ market data. Final bid decisions rest with the dealer.*`,
         timestamp: "Just now",
         suggestedPrompts: [
           "Open Landed Cost Calculator",
@@ -699,9 +799,17 @@ export default function DealerChatAssistant({
                 />
               )}
 
-              {/* Interactive Vehicle Preview Cards */}
-              {msg.type === "vehicles" && msg.vehiclesData && msg.vehiclesData.length > 0 && (
+              {/* Interactive Vehicle Preview Cards - Returned in Chat */}
+              {msg.vehiclesData && msg.vehiclesData.length > 0 && (
                 <div className="mt-3 space-y-2.5 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between pb-1">
+                    <span className="text-[10.5px] font-extrabold uppercase tracking-wider text-slate-600">
+                      Matching Vehicle Cards ({msg.vehiclesData.length} Lots)
+                    </span>
+                    <span className="text-[9.5px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                      Data confidence: High
+                    </span>
+                  </div>
                   {msg.vehiclesData.map((v) => (
                     <VehicleChatCard key={v.id} vehicle={v} />
                   ))}
@@ -711,6 +819,17 @@ export default function DealerChatAssistant({
               {/* Japanese Sheet Glossary Widget */}
               {msg.type === "sheet_glossary" && (
                 <SheetGlossaryWidget />
+              )}
+
+              {/* Portfolio Breakdown Widget */}
+              {msg.type === "portfolio" && msg.portfolioData && (
+                <PortfolioBreakdownWidget
+                  data={msg.portfolioData}
+                  onOpenPo={() => {
+                    setPoVehicles(msg.portfolioData?.allocatedVehicles || []);
+                    setIsPoModalOpen(true);
+                  }}
+                />
               )}
 
               {/* Shipping Schedule Widget */}
@@ -824,6 +943,14 @@ export default function DealerChatAssistant({
           <span className="font-semibold text-slate-500">AutoHub DIP Intelligence v2.4</span>
         </div>
       </div>
+
+      {/* Written Confirmation / PO Modal for Chat Assistant */}
+      <WrittenConfirmationPoModal
+        isOpen={isPoModalOpen}
+        onClose={() => setIsPoModalOpen(false)}
+        vehicles={poVehicles.length > 0 ? poVehicles : VEHICLES.slice(0, 4)}
+        syncState={syncState}
+      />
     </aside>
   </>
 );
@@ -930,11 +1057,11 @@ function InteractiveCalcWidget({
           <div>
             <span className="text-[10px] font-bold text-emerald-800 uppercase block">At NZ$25k Retail:</span>
             <span className="font-bold text-emerald-900 text-sm">
-              +NZ${estMargin.toLocaleString()} Margin
+              +NZ${estMargin.toLocaleString()} Estimated Margin
             </span>
           </div>
           <div className="text-right">
-            <span className="text-[10px] font-semibold text-emerald-700 block">Market-Based Bid Guide</span>
+            <span className="text-[10px] font-semibold text-emerald-700 block">NZ Market Indicator</span>
             <span className="font-mono font-bold text-emerald-800">
               NZ${maxRecommendedBid.toLocaleString()}
             </span>
@@ -949,43 +1076,170 @@ function InteractiveCalcWidget({
 }
 
 // -------------------------------------------------------------
+// Sub-component 1B: Curated Portfolio Breakdown Widget inside Chat
+// -------------------------------------------------------------
+function PortfolioBreakdownWidget({
+  data,
+  onOpenPo,
+}: {
+  data: {
+    budget: number;
+    preferredMake: string;
+    totalLanded: number;
+    totalMargin: number;
+    buffer: number;
+    allocatedVehicles: Vehicle[];
+  };
+  onOpenPo: () => void;
+}) {
+  const roi = data.totalLanded > 0 ? Math.round((data.totalMargin / data.totalLanded) * 100) : 0;
+
+  return (
+    <div className="mt-3 p-3.5 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3 shadow-md">
+      {/* Top Allocation Header */}
+      <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-black text-white">
+              {data.preferredMake} Capital Allocation
+            </span>
+            <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+              {data.allocatedVehicles.length} Units Fitted
+            </span>
+          </div>
+          <span className="text-[10.5px] text-slate-400 font-mono">
+            Target Budget: NZ${data.budget.toLocaleString()}
+          </span>
+        </div>
+        <div className="text-right">
+          <span className="text-[10px] uppercase tracking-wider text-slate-400 block font-bold">
+            Projected Margin
+          </span>
+          <span className="text-sm font-black text-emerald-400 font-mono">
+            +NZ${data.totalMargin.toLocaleString()}
+          </span>
+          <span className="text-[9.5px] text-emerald-300 block font-semibold">
+            {roi}% Gross Return
+          </span>
+        </div>
+      </div>
+
+      {/* Allocated Units List */}
+      <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+        {data.allocatedVehicles.map((v) => (
+          <div
+            key={v.id}
+            className="p-2 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-between text-xs hover:border-slate-600 transition-colors"
+          >
+            <div className="flex items-center gap-2 min-w-0">
+              <img
+                src={v.image}
+                alt={v.model}
+                className="w-10 h-8 rounded-lg object-cover border border-slate-700 shrink-0"
+              />
+              <div className="min-w-0">
+                <div className="font-bold text-white truncate text-[11.5px]">
+                  {v.year} {v.make} {v.model}
+                </div>
+                <div className="text-[10px] text-slate-400 font-mono truncate">
+                  Lot #{v.lotNumber} · Gr {v.grade} · {v.km.toLocaleString()} km
+                </div>
+              </div>
+            </div>
+
+            <div className="text-right shrink-0 pl-2 font-mono">
+              <div className="font-bold text-white text-[11px]">
+                NZ${v.landedNzd.toLocaleString()}
+              </div>
+              <div className="text-[10px] font-extrabold text-emerald-400">
+                +NZ${v.targetMarginNzd.toLocaleString()}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Summary Footer */}
+      <div className="pt-2 border-t border-slate-800 grid grid-cols-2 gap-2 text-xs">
+        <div className="p-2 bg-slate-800/60 rounded-lg">
+          <span className="text-[10px] text-slate-400 uppercase font-bold block">
+            Combined Landed Cost
+          </span>
+          <span className="font-mono font-black text-white text-xs">
+            NZ${data.totalLanded.toLocaleString()}
+          </span>
+        </div>
+        <div className="p-2 bg-slate-800/60 rounded-lg">
+          <span className="text-[10px] text-slate-400 uppercase font-bold block">
+            Operating Reserve
+          </span>
+          <span className="font-mono font-black text-amber-400 text-xs">
+            NZ${data.buffer.toLocaleString()}
+          </span>
+        </div>
+      </div>
+
+      {/* PO Action Button */}
+      <button
+        onClick={onOpenPo}
+        className="w-full py-2.5 px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98]"
+      >
+        <FileText size={14} className="text-white" />
+        <span>Generate Written Confirmation / PO for this Package</span>
+      </button>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------
 // Sub-component 2: Vehicle Preview Card inside Chat
 // -------------------------------------------------------------
 function VehicleChatCard({ vehicle }: { vehicle: Vehicle }) {
   return (
-    <div className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 transition-colors flex items-center gap-3">
-      <img
-        src={vehicle.image}
-        alt={vehicle.model}
-        className="w-16 h-14 rounded-lg object-cover border border-slate-200 shrink-0"
-      />
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center justify-between gap-1">
-          <h5 className="font-bold text-slate-900 text-xs truncate">
-            {vehicle.year} {vehicle.make} {vehicle.model}
-          </h5>
-          <span className="px-1.5 py-0.5 rounded text-[9px] font-black bg-[#B30D12]/10 text-[#B30D12] shrink-0">
-            Grade {vehicle.grade}
+    <div className="p-3 bg-white hover:bg-slate-50/90 rounded-xl border border-slate-200/90 shadow-2xs transition-all flex flex-col sm:flex-row sm:items-center gap-3 group">
+      <div className="relative w-full sm:w-24 h-20 rounded-lg overflow-hidden shrink-0 bg-slate-100 border border-slate-200/80">
+        <img
+          src={vehicle.image}
+          alt={vehicle.model}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <span className="absolute top-1 left-1 px-1.5 py-0.2 bg-black/75 backdrop-blur-xs text-white text-[9px] font-black rounded">
+          Gr {vehicle.grade}
+        </span>
+      </div>
+
+      <div className="min-w-0 flex-1 space-y-1">
+        <div className="flex items-start justify-between gap-1">
+          <div>
+            <h5 className="font-extrabold text-slate-900 text-xs truncate leading-snug">
+              {vehicle.year} {vehicle.make} {vehicle.model}
+            </h5>
+            <p className="text-[10.5px] text-slate-500 font-medium truncate">
+              {vehicle.auctionHouse} · Lot #{vehicle.lotNumber} · {vehicle.km.toLocaleString()} km
+            </p>
+          </div>
+          <span className="text-emerald-700 font-black font-mono text-xs shrink-0">
+            +NZ${vehicle.targetMarginNzd.toLocaleString()}
           </span>
         </div>
-        <p className="text-[10px] text-slate-500 truncate">
-          {vehicle.auctionHouse} · Lot #{vehicle.lotNumber} · {vehicle.km.toLocaleString()} km
-        </p>
-        <div className="flex items-center justify-between mt-1 text-[11px]">
-          <span className="font-bold text-slate-900">
-            Landed: NZ${vehicle.landedNzd.toLocaleString()}
+
+        <div className="flex flex-wrap items-center justify-between text-[11px] pt-1 border-t border-slate-100 gap-1">
+          <span className="font-bold text-slate-800">
+            Landed: <strong className="font-mono text-slate-900">NZ${vehicle.landedNzd.toLocaleString()}</strong>
           </span>
-          <span className="text-emerald-700 font-extrabold text-[10px] bg-emerald-100 px-1.5 py-0.2 rounded">
-            +NZ${vehicle.targetMarginNzd.toLocaleString()} Margin
+          <span className="text-[10px] text-slate-400">
+            Est. days to land: 18–22d (indicative)
           </span>
         </div>
       </div>
+
       <Link
         href={`/vehicles/${vehicle.id}`}
-        className="p-2 rounded-lg bg-white border border-slate-200 hover:border-[#B30D12] hover:text-[#B30D12] text-slate-600 transition-colors shrink-0 shadow-2xs"
-        title="View Full Vehicle Intelligence"
+        className="px-3 py-2 rounded-xl bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold transition-all shrink-0 flex items-center justify-center gap-1 shadow-2xs hover:shadow"
+        title="Inspect Landed Cost Breakdown"
       >
-        <ArrowRight size={14} />
+        <span>Inspect</span>
+        <ArrowRight size={12} />
       </Link>
     </div>
   );

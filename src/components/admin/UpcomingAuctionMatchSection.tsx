@@ -29,35 +29,29 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
     setTimeout(() => {
       setAnimatingLot(null);
       notifyDealersFromAdmin(vehicle.id, `${vehicle.year} ${vehicle.model}`, vehicle.matchedDealersCount);
-      onNotifyToast(`${vehicle.matchedDealersCount} dealers notified for ${vehicle.year} ${vehicle.model}`);
+      onNotifyToast(`${vehicle.matchedDealersCount} dealers notified`);
     }, 450);
   };
 
   return (
-    <div className="relative rounded-2xl bg-gradient-to-br from-white via-white to-red-50/20 border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
+    <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
       {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-300" />
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
         <div>
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2 py-0.2 rounded-full border border-emerald-200">
-              Auction Dispatch
-            </span>
-            <span className="text-[11px] text-slate-400 font-medium">Next USS &amp; CAA Auctions</span>
-          </div>
-          <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
-            Upcoming Auction: Dealer Match &amp; Instant Notification
+          <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+            Upcoming auction: dealer match and notify
           </h3>
-          <p className="text-[11px] text-slate-500 font-medium leading-normal">
-            Vehicles rolling onto Japanese auction blocks tomorrow with pre-qualified NZ dealer demand.
+          <p className="text-[11px] text-slate-500 font-medium leading-normal mt-0.5">
+            Pre-qualified NZ dealer demand matched to vehicles appearing in tomorrow&apos;s Japanese auctions.
           </p>
         </div>
 
         <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
-          <span className="inline-flex items-center gap-1 text-[11px] text-slate-700 font-bold bg-white px-2.5 py-1 rounded-lg border border-red-100 shadow-2xs">
-            <Clock size={12} className="text-[#B30D12]" /> Next Auction in 02h 45m
+          <span className="inline-flex items-center gap-1.5 text-xs text-slate-700 font-bold bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+            <Clock size={12} className="text-[#B30D12]" /> Next Auction: Tomorrow 11:20 AM JST
           </span>
         </div>
       </div>

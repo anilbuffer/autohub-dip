@@ -56,8 +56,8 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
   const [expandedModelId, setExpandedModelId] = useState<string | null>('chr');
   const [drawerVehicle, setDrawerVehicle] = useState<any | null>(null);
 
-  // Pagination matching Dealer panel design system
-  const ITEMS_PER_PAGE = 5;
+  // Display full items for executive overview
+  const ITEMS_PER_PAGE = 20;
   const [currentPage, setCurrentPage] = useState(1);
 
   React.useEffect(() => {
@@ -166,46 +166,46 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
       
-      {/* Callout Banner with Red Brand Light Gradient (Compact) */}
-      <div className="p-3.5 sm:p-4 bg-gradient-to-r from-red-50/90 via-rose-50/60 to-orange-50/30 border-b border-red-200/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      {/* Callout Banner Above Table */}
+      <div className="p-4 sm:p-4.5 bg-gradient-to-r from-red-50/80 via-white to-white border-b border-red-200/90 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-start sm:items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#B30D12] to-[#E23B40] text-white flex items-center justify-center shadow-md shadow-red-950/20 shrink-0">
-            <Zap size={18} className="animate-pulse" />
+          <div className="w-9 h-9 rounded-xl bg-red-100 text-[#B30D12] border border-red-200 flex items-center justify-center shrink-0">
+            <Zap size={18} className="text-[#B30D12]" />
           </div>
           <div>
             <div className="flex items-center gap-1.5 mb-0.5">
               <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">
-                Opportunity Alert
+                Sourcing Callout
               </span>
-              <span className="text-[11px] text-slate-500 font-semibold">Immediate Sourcing Opportunity</span>
+              <span className="text-[11px] text-slate-500 font-semibold">Immediate Japanese Auction Opportunity</span>
             </div>
-            <h3 className="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-snug">
+            <h3 className="text-base font-black text-slate-900 tracking-tight leading-snug">
               5 models would sell immediately if listed at auction
             </h3>
-            <p className="text-[11px] text-slate-600 font-medium leading-normal">
-              Over 429 verified dealer purchase orders are waiting without matching stock. High turnover (&lt; 19 days median turn).
+            <p className="text-xs text-slate-600 font-medium leading-normal">
+              High-demand models with severe supply deficit in Japanese stock. Sourcing these models guarantees rapid turnover.
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0 self-start md:self-center">
-          <div className="px-3 py-1.5 rounded-xl bg-white/95 border border-red-200/80 shadow-2xs text-xs">
-            <span className="text-slate-400 font-bold block text-[9px] uppercase tracking-wider">UNCAPTURED DEALER GMV</span>
-            <span className="font-black text-slate-900 text-xs sm:text-sm">
-              NZ$1,720,000 <span className="text-[10px] text-slate-400 font-medium">/ ¥156.9M</span>
+          <div className="px-3.5 py-1.5 rounded-xl bg-white border border-red-200 shadow-2xs text-xs">
+            <span className="text-slate-400 font-bold block text-[9px] uppercase tracking-wider">Unmet Dealer Orders</span>
+            <span className="font-black text-[#B30D12] text-sm">
+              429 Units Waiting
             </span>
           </div>
         </div>
       </div>
 
-      {/* Table Subheader & Filter Tools (Compact) */}
-      <div className="p-3.5 sm:p-4 pb-2.5 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100">
+      {/* Table Subheader & Filter Tools */}
+      <div className="p-4 pb-3 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100">
         <div>
-          <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
-            Supply vs Demand Gap Analysis
+          <h4 className="text-base font-black text-slate-900 tracking-tight">
+            Supply vs demand gap
           </h4>
-          <p className="text-[11px] text-slate-500 font-medium mt-0.5">
-            Real-time supply &amp; margin opportunity matrix identifying where AutoHub is missing auction sales opportunities.
+          <p className="text-xs text-slate-500 font-medium mt-0.5">
+            Identifies where Heiwa is missing auction sales opportunities across active NZ dealer demand.
           </p>
         </div>
 
@@ -253,7 +253,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 onClick={() => handleSort('demandUnits')}
               >
                 <div className="flex items-center gap-1">
-                  <span>Demand</span>
+                  <span>Dealer demand (units wanted)</span>
                   {sortField === 'demandUnits' ? (
                     sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
@@ -267,7 +267,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 onClick={() => handleSort('currentStockUnits')}
               >
                 <div className="flex items-center gap-1">
-                  <span>AutoHub Stock</span>
+                  <span>Current Heiwa stock (units available)</span>
                   {sortField === 'currentStockUnits' ? (
                     sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
@@ -295,7 +295,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 onClick={() => handleSort('avgDaysToSell')}
               >
                 <div className="flex items-center gap-1">
-                  <span>Est. Land Days</span>
+                  <span>Average NZ days to sell</span>
                   {sortField === 'avgDaysToSell' ? (
                     sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
@@ -309,7 +309,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 onClick={() => handleSort('avgDealerMarginNzd')}
               >
                 <div className="flex items-center gap-1">
-                  <span>Margin Potential</span>
+                  <span>Average dealer margin potential</span>
                   {sortField === 'avgDealerMarginNzd' ? (
                     sortDirection === 'desc' ? <ChevronDown size={12} className="text-[#B30D12]" /> : <ChevronUp size={12} className="text-[#B30D12]" />
                   ) : (
@@ -318,7 +318,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 </div>
               </th>
 
-              <th className="py-2.5 px-3.5 text-right">Sourcing Action</th>
+              <th className="py-2.5 px-3.5 text-right">AI Recommendation</th>
             </tr>
           </thead>
 
@@ -334,7 +334,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                     onClick={() => setExpandedModelId(isExpanded ? null : item.id)}
                     className={`hover:bg-slate-50/90 transition-colors cursor-pointer select-none ${
                       item.immediateSeller 
-                        ? 'bg-amber-50/25 border-l-4 border-l-[#B30D12]' 
+                        ? 'bg-amber-50/30 border-l-4 border-l-[#B30D12]' 
                         : ''
                     } ${isExpanded ? 'bg-slate-50/90 font-medium' : ''}`}
                   >
@@ -355,7 +355,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                             </span>
                             {item.immediateSeller && (
                               <span className="px-1.5 py-0.2 rounded font-black text-[8.5px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
-                                Immediate
+                                Sell Immediately
                               </span>
                             )}
                           </div>
@@ -378,12 +378,12 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                       </span>
                     </td>
 
-                    {/* Current AutoHub Stock */}
+                    {/* Current Heiwa Stock */}
                     <td className="py-2.5 px-3 font-bold text-slate-700 text-xs">
-                      {item.currentStockUnits}
-                      <span className="text-[10px] text-slate-400 font-normal ml-0.5">avail</span>
+                      <span className="font-extrabold text-slate-900">{item.currentStockUnits}</span>
+                      <span className="text-[10px] text-slate-400 font-normal ml-0.5">units</span>
                       <span className="text-[9px] text-slate-400 block mt-0.5">
-                        Auckland
+                        Auction Stock
                       </span>
                     </td>
 
@@ -412,18 +412,18 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                       </div>
                     </td>
 
-                    {/* Est. days to land in NZ */}
+                    {/* Average NZ days to sell */}
                     <td className="py-2.5 px-3 font-bold text-slate-800 text-xs">
                       <div className="flex items-center gap-1 text-[11px]">
-                        <Ship size={11} className="text-blue-600" />
-                        <span>18–22d</span>
+                        <Clock size={11} className="text-slate-400" />
+                        <span className="font-black text-slate-900">{item.avgDaysToSell} days</span>
                       </div>
                       <span className="text-[9px] text-slate-400 block mt-0.5">
-                        Japan &rarr; NZ
+                        NZ yard velocity
                       </span>
                     </td>
 
-                    {/* Margin Potential */}
+                    {/* Average dealer margin potential */}
                     <td className="py-2.5 px-3">
                       <span className="font-extrabold text-emerald-800 text-xs">
                         +NZ${item.avgDealerMarginNzd.toLocaleString('en-US')}

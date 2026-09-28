@@ -138,15 +138,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             isMini ? 'justify-center px-2' : 'justify-between px-4 sm:px-5'
           }`}>
             {isMini ? (
-              <button
-                onClick={() => setIsCollapsed(false)}
-                className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#1B2A4A] flex items-center justify-center shadow-md shadow-red-950/50 hover:scale-105 transition-all border border-red-400/30 group relative"
-                title="AutoHub Admin - Click to expand sidebar"
-                aria-label="Expand sidebar"
+              <Link
+                href="/admin"
+                className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#1B2A4A] flex items-center justify-center shadow-md shadow-red-950/50 hover:scale-105 transition-all border border-red-400/30 shrink-0"
+                title="AutoHub Admin"
               >
-                <span className="text-white font-black text-xs tracking-wider group-hover:opacity-0 transition-opacity">AH</span>
-                <PanelLeftOpen size={18} className="text-white absolute opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
+                <span className="text-white font-black text-xs tracking-wider">AH</span>
+              </Link>
             ) : (
               <>
                 <Link href="/admin" className="flex items-center gap-2.5 group min-w-0" title="AutoHub Dealer Intelligence Platform (DIP) Admin">
@@ -162,26 +160,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   </div>
                 </Link>
 
-                <div className="flex items-center gap-1 shrink-0">
-                  {/* Mobile close button */}
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="lg:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-                    aria-label="Close menu"
-                  >
-                    <X size={18} />
-                  </button>
-
-                  {/* Desktop collapse button */}
-                  <button
-                    onClick={() => setIsCollapsed(true)}
-                    className="hidden lg:flex text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-                    title="Collapse to mini sidebar"
-                    aria-label="Collapse to mini sidebar"
-                  >
-                    <PanelLeftClose size={17} />
-                  </button>
-                </div>
+                {/* Mobile close button (visible only in mobile overlay drawer) */}
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="lg:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors shrink-0"
+                  aria-label="Close menu"
+                >
+                  <X size={18} />
+                </button>
               </>
             )}
           </div>

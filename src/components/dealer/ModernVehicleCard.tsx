@@ -27,6 +27,7 @@ interface ModernVehicleCardProps {
   onToggleShortlist: (id: number) => void;
   onAskCopilot: (query: string) => void;
   showDealerBadge?: boolean;
+  detailHref?: string;
 }
 
 export default function ModernVehicleCard({
@@ -35,7 +36,10 @@ export default function ModernVehicleCard({
   onToggleShortlist,
   onAskCopilot,
   showDealerBadge = false,
+  detailHref,
 }: ModernVehicleCardProps) {
+  const targetHref = detailHref || `/vehicles/${vehicle.id}`;
+
   return (
     <div className="group bg-white rounded-2xl border border-slate-200/90 shadow-[0_4px_16px_-3px_rgba(15,23,42,0.08),0_2px_4px_-1px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_35px_-8px_rgba(15,23,42,0.15)] hover:border-slate-300 transition-all duration-200 flex flex-col overflow-hidden">
       {/* 1. Hero Image Container with Corner Badges */}
@@ -99,7 +103,7 @@ export default function ModernVehicleCard({
           <div className="flex items-start justify-between gap-2.5">
             <div className="min-w-0 flex-1">
               <Link
-                href={`/vehicles/${vehicle.id}`}
+                href={targetHref}
                 className="block group/link"
               >
                 <h3 className="text-[17px] font-black text-slate-900 group-hover/link:text-[#B30D12] transition-colors leading-snug truncate">
@@ -221,7 +225,7 @@ export default function ModernVehicleCard({
           </button>
 
           <Link
-            href={`/vehicles/${vehicle.id}`}
+            href={targetHref}
             className="px-3 py-2.5 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-1.5 active:scale-[0.98] group/btn"
           >
             <span className="truncate">View Details</span>

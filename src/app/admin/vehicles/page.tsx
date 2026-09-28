@@ -1361,6 +1361,7 @@ export default function AdminVehicles() {
                       onToggleShortlist={toggleShortlistVehicle}
                       onAskCopilot={triggerAutoHubCopilot}
                       showDealerBadge={true}
+                      detailHref={`/admin/vehicles/${vehicle.id}`}
                     />
                   ))}
                 </div>
@@ -1392,14 +1393,16 @@ export default function AdminVehicles() {
                             {/* Vehicle Column */}
                             <td className="px-4 py-3.5">
                               <div className="flex items-center gap-3">
-                                <img
-                                  src={vehicle.image}
-                                  alt=""
-                                  className="w-14 h-10 object-cover rounded-lg shrink-0 border border-slate-200"
-                                />
+                                <Link href={`/admin/vehicles/${vehicle.id}`} className="shrink-0 block">
+                                  <img
+                                    src={vehicle.image}
+                                    alt=""
+                                    className="w-14 h-10 object-cover rounded-lg border border-slate-200 hover:opacity-90 transition-opacity"
+                                  />
+                                </Link>
                                 <div>
                                   <Link
-                                    href={`/vehicles/${vehicle.id}`}
+                                    href={`/admin/vehicles/${vehicle.id}`}
                                     className="font-bold text-slate-900 hover:text-[#B30D12] transition-colors leading-tight block"
                                   >
                                     {vehicle.year} {vehicle.make} {vehicle.model}
@@ -1477,7 +1480,7 @@ export default function AdminVehicles() {
                             {/* Action */}
                             <td className="px-4 py-3.5 text-right">
                               <Link
-                                href={`/vehicles/${vehicle.id}`}
+                                href={`/admin/vehicles/${vehicle.id}`}
                                 className="px-3 py-1.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-xs font-bold transition-all shadow-2xs inline-flex items-center gap-1"
                               >
                                 <span>Inspect</span>

@@ -16,14 +16,15 @@ import {
   Clock,
   Car,
   Info,
-  ArrowRight
+  ArrowRight,
+  ExternalLink
 } from "lucide-react";
 import { VEHICLES, DEALERS, GLOBAL_SETTINGS } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
 
 export default function AdminVehicleDetail({ params }: { params: { id: string } }) {
   const vehicleId = parseInt(params?.id) || 1;
-  const vehicle = VEHICLES.find(v => v.id === vehicleId) || VEHICLES[0];
+  const vehicle = VEHICLES.find(v => v.id === vehicleId || v.stockid?.toString() === params?.id) || VEHICLES[0];
   const { state: syncState } = useSyncStore();
 
   const [assignedDealer, setAssignedDealer] = useState(vehicle.dealer);
@@ -42,7 +43,7 @@ export default function AdminVehicleDetail({ params }: { params: { id: string } 
     <AdminLayout>
       <div className="space-y-6 pb-12 max-w-7xl mx-auto">
         {/* Back Link Row */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/admin/vehicles"
             className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors bg-white px-3.5 py-2 rounded-xl border border-slate-200/90 shadow-2xs hover:bg-slate-50"
@@ -50,9 +51,20 @@ export default function AdminVehicleDetail({ params }: { params: { id: string } 
             <ArrowLeft size={14} /> Back to Auction Inventory
           </Link>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-400">Broker Sheet:</span>
-            <span className="font-bold text-slate-800 text-xs bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs">
+          <div className="flex items-center gap-2.5">
+            <Link
+              href={`/vehicles/${vehicle.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#B30D12] transition-colors bg-white px-3 py-2 rounded-xl border border-slate-200/90 shadow-2xs hover:bg-slate-50"
+              title="Preview lot from dealer perspective in a new tab"
+            >
+              <ExternalLink size={13} className="text-slate-500" />
+              <span>Preview Dealer View</span>
+            </Link>
+
+            <span className="text-xs font-semibold text-slate-400 hidden sm:inline">Broker Sheet:</span>
+            <span className="font-bold text-slate-800 text-xs bg-white px-3 py-2 rounded-xl border border-slate-200/90 shadow-2xs">
               {vehicle.auctionHouse} • Lot #{vehicle.lotNumber}
             </span>
           </div>

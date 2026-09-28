@@ -1359,6 +1359,7 @@ export default function AdminVehicles() {
                       onAskCopilot={triggerAutoHubCopilot}
                       showDealerBadge={true}
                       detailHref={`/admin/vehicles/${vehicle.id}`}
+                      actionLabel="Audit Lot"
                     />
                   ))}
                 </div>

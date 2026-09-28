@@ -29,6 +29,7 @@ interface ModernVehicleCardProps {
   onAskCopilot: (query: string) => void;
   showDealerBadge?: boolean;
   detailHref?: string;
+  actionLabel?: string;
 }
 
 function formatTransmission(trans?: string) {
@@ -63,8 +64,10 @@ export default function ModernVehicleCard({
   onAskCopilot,
   showDealerBadge = false,
   detailHref,
+  actionLabel,
 }: ModernVehicleCardProps) {
   const targetHref = detailHref || `/vehicles/${vehicle.id}`;
+  const resolvedActionLabel = actionLabel || (detailHref?.includes("/admin") ? "Audit Lot" : "Place Bid");
 
   return (
     <div className="group bg-white rounded-2xl border border-slate-200/90 shadow-[0_4px_16px_-3px_rgba(15,23,42,0.08),0_2px_4px_-1px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_35px_-8px_rgba(15,23,42,0.15)] hover:border-slate-300 transition-all duration-200 flex flex-col overflow-hidden h-full">
@@ -252,7 +255,7 @@ export default function ModernVehicleCard({
             href={targetHref}
             className="w-full py-2.5 px-2 sm:px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-1.5 active:scale-[0.99] group/btn"
           >
-            <span className="font-bold whitespace-nowrap">Place Bid</span>
+            <span className="font-bold whitespace-nowrap">{resolvedActionLabel}</span>
             <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform shrink-0" />
           </Link>
         </div>

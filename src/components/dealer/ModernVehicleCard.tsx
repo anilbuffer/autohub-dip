@@ -10,7 +10,8 @@ import {
   BookmarkCheck,
   Ship,
   ChevronRight,
-  Building2
+  Building2,
+  Eye
 } from "lucide-react";
 import { Vehicle } from "@/lib/data";
 
@@ -97,11 +98,10 @@ export default function ModernVehicleCard({
             e.stopPropagation();
             onToggleShortlist(vehicle.id);
           }}
-          className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 w-8 h-8 rounded-xl flex items-center justify-center transition-all z-10 cursor-pointer shadow-md backdrop-blur-md shrink-0 ${
-            isShortlisted
-              ? "bg-[#B30D12] text-white ring-2 ring-white/50"
-              : "bg-white/90 hover:bg-white text-slate-700 hover:text-[#B30D12]"
-          }`}
+          className={`absolute top-2 sm:top-2.5 right-2 sm:right-2.5 w-8 h-8 rounded-xl flex items-center justify-center transition-all z-10 cursor-pointer shadow-md backdrop-blur-md shrink-0 ${isShortlisted
+            ? "bg-[#B30D12] text-white ring-2 ring-white/50"
+            : "bg-white/90 hover:bg-white text-slate-700 hover:text-[#B30D12]"
+            }`}
           title={isShortlisted ? "Remove from shortlist" : "Add to shortlist"}
         >
           {isShortlisted ? (
@@ -180,15 +180,14 @@ export default function ModernVehicleCard({
                 <Building2 size={12} className="text-[#B30D12] shrink-0" />
                 <span className="truncate text-[11px]">{vehicle.dealer ? `Allocated: ${vehicle.dealer}` : "Unallocated Lot"}</span>
               </div>
-              <span className={`text-[9.5px] sm:text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap ${
-                vehicle.status === "Priority"
-                  ? "bg-red-50 text-[#B30D12] border border-red-200"
-                  : vehicle.status === "Allocated"
-                    ? "bg-blue-50 text-blue-700 border border-blue-200"
-                    : vehicle.status === "Consider"
-                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      : "bg-slate-100 text-slate-700 border border-slate-200"
-              }`}>
+              <span className={`text-[9.5px] sm:text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md shrink-0 whitespace-nowrap ${vehicle.status === "Priority"
+                ? "bg-red-50 text-[#B30D12] border border-red-200"
+                : vehicle.status === "Allocated"
+                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                  : vehicle.status === "Consider"
+                    ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                    : "bg-slate-100 text-slate-700 border border-slate-200"
+                }`}>
                 {vehicle.status || "Available"}
               </span>
             </div>
@@ -218,11 +217,10 @@ export default function ModernVehicleCard({
                 <Sparkles size={11} className="text-emerald-600 shrink-0" />
                 <span>Data confidence: High</span>
               </div>
-              <span className={`text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded border shrink-0 whitespace-nowrap ${
-                vehicle.isPriority
-                  ? "bg-red-50 text-[#B30D12] border-red-200/70"
-                  : "bg-slate-100 text-slate-600 border-slate-200"
-              }`}>
+              <span className={`text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider px-1.5 sm:px-2 py-0.5 rounded border shrink-0 whitespace-nowrap ${vehicle.isPriority
+                ? "bg-red-50 text-[#B30D12] border-red-200/70"
+                : "bg-slate-100 text-slate-600 border-slate-200"
+                }`}>
                 {vehicle.isPriority ? "Best Match" : "Qualifying Lot"}
               </span>
             </div>
@@ -241,24 +239,20 @@ export default function ModernVehicleCard({
 
         {/* 3. Action Buttons Row (Full Width / Block Stack) */}
         <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
-          <button
-            onClick={() =>
-              onAskCopilot(
-                `Analyze landed margin, sheet condition, and indicative market analysis for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`
-              )
-            }
+          <Link
+            href={targetHref}
             className="w-full py-2.5 px-3 bg-red-50 hover:bg-red-100 text-[#B30D12] text-xs font-bold rounded-xl border border-red-200/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
-            title="Query AI Assistant about this lot"
+            title="View Vehicle Details"
           >
-            <Sparkles size={13} className="text-[#B30D12] shrink-0" />
-            <span className="font-bold">Ask Copilot</span>
-          </button>
+            <Eye size={13} className="text-[#B30D12] shrink-0" />
+            <span className="font-bold"> View Details</span>
+          </Link>
 
           <Link
             href={targetHref}
             className="w-full py-2.5 px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-2 active:scale-[0.99] group/btn"
           >
-            <span className="font-bold">View Vehicle Details</span>
+            <span className="font-bold">Place Bid</span>
             <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform shrink-0" />
           </Link>
         </div>

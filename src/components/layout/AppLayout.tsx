@@ -145,23 +145,24 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content Viewport */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header Bar */}
-        <header className="h-[72px] bg-white border-b border-slate-200/90 px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20">
-          <div className="flex items-center gap-3 min-w-0">
+        <header className="h-16 sm:h-[72px] bg-white border-b border-slate-200/90 px-3 sm:px-6 md:px-8 flex items-center justify-between shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20 gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+              className="md:hidden p-1.5 sm:p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 shrink-0"
+              aria-label="Open mobile menu"
             >
               <Menu size={20} />
             </button>
-            <div className="min-w-0">
-              <h1 className="text-xl font-black text-slate-900 tracking-tight">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-sm sm:text-base md:text-xl font-black text-slate-900 tracking-tight truncate">
                 Auckland Auto Group
               </h1>
             </div>
           </div>
 
           {/* Header Right Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Quick Search */}
             <div className="relative hidden md:flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
@@ -184,10 +185,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="relative">
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="relative p-2.5 text-slate-600 hover:text-slate-900 transition-colors border border-slate-200 rounded-xl hover:bg-slate-50 bg-white"
+                className="relative p-1.5 sm:p-2.5 text-slate-600 hover:text-slate-900 transition-colors border border-slate-200 rounded-xl hover:bg-slate-50 bg-white shrink-0"
                 title="Sourcing & Intelligence Alerts"
               >
-                <Bell size={18} />
+                <Bell size={17} />
                 {syncState.dealerNotifications.some(n => !n.isRead) && (
                   <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#B30D12] rounded-full border-2 border-white shadow-xs animate-pulse"></span>
                 )}
@@ -232,9 +233,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {/* Profile Avatar */}
             <Link
               href="/profile"
-              className="flex items-center gap-2.5 pl-2 cursor-pointer group"
+              className="flex items-center gap-2 pl-0.5 sm:pl-2 cursor-pointer group shrink-0"
             >
-              <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
                 AG
               </div>
             </Link>

@@ -1223,12 +1223,12 @@ export default function AdminVehicles() {
               </div>
 
               {/* Bottom Row: Tabs & Sort Dropdown + View Switcher */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-slate-100">
                 {/* Segmented Catalog Tabs */}
-                <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+                <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-full">
                   <button
                     onClick={() => setActiveTab("all")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "all"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeTab === "all"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
@@ -1238,7 +1238,7 @@ export default function AdminVehicles() {
 
                   <button
                     onClick={() => setActiveTab("priority")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "priority"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "priority"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
@@ -1252,7 +1252,7 @@ export default function AdminVehicles() {
 
                   <button
                     onClick={() => setActiveTab("available")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "available"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "available"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
@@ -1266,7 +1266,7 @@ export default function AdminVehicles() {
 
                   <button
                     onClick={() => setActiveTab("shortlisted")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "shortlisted"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "shortlisted"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
@@ -1280,12 +1280,12 @@ export default function AdminVehicles() {
                 </div>
 
                 {/* Sort Selector & View Mode Switcher */}
-                <div className="flex items-center gap-2.5">
-                  <div className="relative">
+                <div className="flex items-center justify-between sm:justify-end gap-2 w-full md:w-auto">
+                  <div className="relative flex-1 sm:flex-initial">
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value as any)}
-                      className="appearance-none pl-3 pr-8 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#B30D12] cursor-pointer"
+                      className="w-full sm:w-auto appearance-none pl-3 pr-8 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#B30D12] cursor-pointer"
                     >
                       <option value="score">Sort: AI Score (Highest)</option>
                       <option value="marginDesc">Sort: Margin Spread (Highest)</option>
@@ -1301,7 +1301,7 @@ export default function AdminVehicles() {
                   </div>
 
                   {/* View Switcher: Default is Grid */}
-                  <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200">
+                  <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 shrink-0">
                     <button
                       onClick={() => setViewMode("grid")}
                       className={`p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${viewMode === "grid"

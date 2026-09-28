@@ -473,13 +473,13 @@ export default function Dashboard() {
         )}
 
         {/* 1. Header Greeting & Quick Actions */}
-        <section className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.03)] p-5 sm:p-6 relative overflow-hidden">
+        <section className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_-2px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.03)] p-4 sm:p-6 relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#E23B40] to-rose-400/20" />
 
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-5">
             <div>
-              <div className="flex flex-wrap items-center gap-2 mb-2.5">
-                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100/90 border border-slate-200/80 text-[11px] font-semibold text-slate-700 shadow-2xs">
+              <div className="flex flex-wrap items-center gap-2 mb-2 sm:mb-2.5">
+                <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-slate-100/90 border border-slate-200/80 text-[10.5px] sm:text-[11px] font-semibold text-slate-700 shadow-2xs">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B30D12] opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B30D12]"></span>
@@ -489,14 +489,14 @@ export default function Dashboard() {
 
                 <button
                   onClick={() => setShowPreferencesPrompt(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 hover:bg-red-100 text-[11px] font-semibold text-red-700 hover:text-red-900 transition-colors cursor-pointer border border-red-200/80 shadow-2xs group"
+                  className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-red-50 hover:bg-red-100 text-[10.5px] sm:text-[11px] font-semibold text-red-700 hover:text-red-900 transition-colors cursor-pointer border border-red-200/80 shadow-2xs group"
                 >
                   <SlidersHorizontal size={11} className="text-[#B30D12] transition-transform group-hover:rotate-45" />
                   <span>Update Criteria</span>
                 </button>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight leading-tight">
                 Japanese Auction Sourcing Overview
               </h1>
 
@@ -504,99 +504,86 @@ export default function Dashboard() {
                 <span className="font-bold text-slate-800">{VEHICLES.length} qualifying auction lots</span> synced from USS, TAA &amp; CAA lanes, with{" "}
                 <span className="font-bold text-[#B30D12]">{priorityVehicles.length} high-margin priority lots</span> matched to your weekly buying profile.
               </p>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80">
+              
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2.5">
+                <span className="inline-flex items-center gap-1 text-[10.5px] sm:text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80 shrink-0">
                   <Sparkles size={11} className="text-emerald-600" /> Data confidence: High
                 </span>
-                <span className="text-[11px] text-slate-400 font-medium">
+                <span className="text-[10.5px] sm:text-[11px] text-slate-400 font-medium">
                   Verified Japanese Heiwa CSV auction feeds
                 </span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-center flex-wrap">
-              {/* <button
-                onClick={() => {
-                  const list = syncState.shortlistedVehicleIds.length > 0
-                    ? enrichedVehicles.filter(v => syncState.shortlistedVehicleIds.includes(v.id))
-                    : priorityVehicles.slice(0, 4);
-                  setPoVehicles(list);
-                  setIsPoModalOpen(true);
-                }}
-                className="px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-2xs flex items-center gap-1.5 active:scale-[0.99] cursor-pointer"
-                title="Generate Official Written Confirmation / PO for Heiwa Japan"
-              >
-                <FileText size={14} className="text-amber-400" />
-                <span>Written PO Form</span>
-              </button> */}
-
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-2.5 w-full lg:w-auto shrink-0 pt-2 lg:pt-0 border-t border-slate-100 lg:border-t-0">
               <button
                 onClick={() => triggerAutoHubCopilot("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}
-                className="px-4 py-2.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-[0_2px_8px_-1px_rgba(179,13,18,0.35)] hover:shadow-[0_4px_14px_-2px_rgba(179,13,18,0.45)] flex items-center gap-2 active:scale-[0.99] cursor-pointer"
+                className="px-3 sm:px-4 py-2.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-xl text-xs sm:text-sm font-bold transition-all shadow-[0_2px_8px_-1px_rgba(179,13,18,0.35)] hover:shadow-[0_4px_14px_-2px_rgba(179,13,18,0.45)] flex items-center justify-center gap-1.5 sm:gap-2 active:scale-[0.99] cursor-pointer"
               >
-                <Sparkles size={14} className="text-white" />
-                <span>Ask AI Copilot</span>
+                <Sparkles size={14} className="text-white shrink-0" />
+                <span className="whitespace-nowrap">Ask AI Copilot</span>
               </button>
 
               <Link
                 href="/vehicles"
-                className="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-2xs flex items-center gap-1.5 group"
+                className="px-3 sm:px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200/90 hover:border-slate-300 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 group"
               >
-                <span>Full Catalog</span>
-                <ArrowRight size={13} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+                <span className="whitespace-nowrap">Full Catalog</span>
+                <ArrowRight size={13} className="text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0" />
               </Link>
             </div>
           </div>
         </section>
 
         {/* 2. Top 4 High-Impact KPI Cards (Compact & Distinct) */}
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <section className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           {/* Card 1: Best Matches For You */}
           <div
             onClick={() => setActiveTab("bestMatches")}
-            className={`p-4 rounded-xl border transition-all cursor-pointer ${activeTab === "bestMatches" || (activeTab as any) === "priority"
-              ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
-              : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
-              }`}
+            className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+              activeTab === "bestMatches" || (activeTab as any) === "priority"
+                ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
+                : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
+            }`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+            <div className="flex items-start justify-between gap-1.5">
+              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
                 Best Matches For You
               </span>
-              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#B30D12] flex items-center justify-center font-bold">
-                <Flame size={18} />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-red-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0">
+                <Flame size={15} />
               </div>
             </div>
             <div className="mt-2">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900 tracking-tight">
+              <div className="flex flex-wrap items-baseline gap-1.5">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {priorityVehicles.length}
                 </span>
-                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80">
-                  Data confidence: High
+                <span className="text-[9px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80 whitespace-nowrap">
+                  High Confidence
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-0.5 font-medium truncate">
+              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
                 Target buy box &amp; high market spread
               </p>
             </div>
           </div>
 
           {/* Card 2: Projected Margin */}
-          <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+          <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+            <div className="flex items-start justify-between gap-1.5">
+              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
                 Avg. Estimated Margin
               </span>
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-                <TrendingUp size={18} />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
+                <TrendingUp size={15} />
               </div>
             </div>
             <div className="mt-2">
-              <div className="text-2xl font-black text-emerald-700 font-mono tracking-tight">
+              <div className="text-xl sm:text-2xl font-black text-emerald-700 font-mono tracking-tight leading-none truncate">
                 +NZ${avgPriorityMargin.toLocaleString("en-US")}
               </div>
-              <p className="text-[11px] text-slate-500 mt-0.5 font-medium truncate">
+              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
                 Average dealer margin spread
               </p>
             </div>
@@ -605,29 +592,30 @@ export default function Dashboard() {
           {/* Card 3: Live Pipeline Lots */}
           <div
             onClick={() => setActiveTab("all")}
-            className={`p-4 rounded-xl border transition-all cursor-pointer ${activeTab === "all"
-              ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
-              : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
-              }`}
+            className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+              activeTab === "all"
+                ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
+                : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
+            }`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
+            <div className="flex items-start justify-between gap-1.5">
+              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
                 Live Japanese Lots
               </span>
-              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
-                <Car size={18} />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold shrink-0">
+                <Car size={15} />
               </div>
             </div>
             <div className="mt-2">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900 tracking-tight">
+              <div className="flex flex-wrap items-baseline gap-1.5">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {VEHICLES.length}
                 </span>
-                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                <span className="text-[9px] sm:text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 whitespace-nowrap">
                   18–22d Ro-Ro
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-0.5 font-medium truncate">
+              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
                 Est. days to land in NZ (indicative)
               </p>
             </div>
@@ -636,29 +624,30 @@ export default function Dashboard() {
           {/* Card 4: Shortlisted Lots */}
           <div
             onClick={() => setActiveTab("shortlisted")}
-            className={`p-4 rounded-xl border transition-all cursor-pointer ${activeTab === "shortlisted"
-              ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
-              : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
-              }`}
+            className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+              activeTab === "shortlisted"
+                ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
+                : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
+            }`}
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="flex items-start justify-between gap-1.5">
+              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
                 Shortlisted by Yard
               </span>
-              <div className="w-10 h-10 rounded-xl bg-rose-50 text-[#B30D12] flex items-center justify-center font-bold">
-                <ShieldCheck size={18} />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-rose-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0">
+                <ShieldCheck size={15} />
               </div>
             </div>
             <div className="mt-2">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-slate-900 tracking-tight">
+              <div className="flex flex-wrap items-baseline gap-1.5">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {syncState.shortlistedVehicleIds.length}
                 </span>
-                <span className="text-[10px] font-bold text-red-700 bg-red-50 px-1.5 py-0.5 rounded">
+                <span className="text-[9px] sm:text-[10px] font-bold text-red-700 bg-red-50 px-1.5 py-0.5 rounded whitespace-nowrap">
                   Active
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-0.5 font-medium truncate">
+              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
                 Saved for auction team
               </p>
             </div>
@@ -1323,37 +1312,37 @@ export default function Dashboard() {
               </div>
 
               {/* Bottom Row: Tabs & Sort Dropdown */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                {/* Segmented Catalog Tabs: Best matches for you & Other qualifying vehicles */}
-                <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+                {/* Segmented Catalog Tabs */}
+                <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-full">
                   {/* Filter 1: Best matches for you */}
                   <button
                     onClick={() => setActiveTab("bestMatches")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "bestMatches" || (activeTab as any) === "priority"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "bestMatches" || (activeTab as any) === "priority"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
                   >
                     <Flame size={12} className={(activeTab === "bestMatches" || (activeTab as any) === "priority") ? "text-white" : "text-slate-400"} />
-                    <span>Best matches for you ({priorityVehicles.length})</span>
+                    <span><span className="hidden sm:inline">Best matches for you</span><span className="sm:hidden">Best Matches</span> ({priorityVehicles.length})</span>
                   </button>
 
                   {/* Filter 2: Other qualifying vehicles */}
                   <button
                     onClick={() => setActiveTab("otherQualifying")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "otherQualifying"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "otherQualifying"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
                   >
                     <Car size={12} className={activeTab === "otherQualifying" ? "text-white" : "text-slate-400"} />
-                    <span>Other qualifying vehicles ({otherQualifyingVehicles.length})</span>
+                    <span><span className="hidden sm:inline">Other qualifying vehicles</span><span className="sm:hidden">Other Qualifying</span> ({otherQualifyingVehicles.length})</span>
                   </button>
 
                   {/* Filter 3: All Lots */}
                   <button
                     onClick={() => setActiveTab("all")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${activeTab === "all"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeTab === "all"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
@@ -1364,7 +1353,7 @@ export default function Dashboard() {
                   {/* Filter 4: Saved */}
                   <button
                     onClick={() => setActiveTab("shortlisted")}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "shortlisted"
+                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "shortlisted"
                       ? "bg-[#B30D12] text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
                       }`}
@@ -1375,12 +1364,12 @@ export default function Dashboard() {
                 </div>
 
                 {/* Sort Selector & View Mode Switcher */}
-                <div className="flex items-center gap-2.5">
-                  <div className="relative">
+                <div className="flex items-center justify-between sm:justify-end gap-2 w-full md:w-auto">
+                  <div className="relative flex-1 sm:flex-initial">
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value as any)}
-                      className="appearance-none pl-3 pr-8 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#B30D12] cursor-pointer"
+                      className="w-full sm:w-auto appearance-none pl-3 pr-8 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 outline-none focus:border-[#B30D12] cursor-pointer"
                     >
                       <option value="score">Sort: AI Score (Highest)</option>
                       <option value="marginDesc">Sort: Margin Spread (Highest)</option>
@@ -1393,7 +1382,7 @@ export default function Dashboard() {
                   </div>
 
                   {/* View Switcher */}
-                  <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200">
+                  <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 shrink-0">
                     <button
                       onClick={() => setViewMode("grid")}
                       className={`p-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${viewMode === "grid"

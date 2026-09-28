@@ -1267,37 +1267,43 @@ export default function VehiclesPage() {
                             <span>{vehicle.color}</span>
                           </div>
 
-                          {/* Financial Mini Stack */}
-                          <div className="grid grid-cols-2 gap-2 mt-4 p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs">
-                            <div>
-                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Landed Cost</span>
-                              <span className="font-black text-slate-900 text-sm mt-0.5 block font-mono">
+                          {/* Financial Stack (Full Width / Block Rows) */}
+                          <div className="mt-4 p-2.5 sm:p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs space-y-1.5">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                Landed Cost
+                              </span>
+                              <span className="font-black text-slate-900 font-mono text-[13px] sm:text-[13.5px]">
                                 NZ${vehicle.dynamicLanded.toLocaleString('en-US')}
                               </span>
                             </div>
-                            <div>
-                              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Est. Retail</span>
-                              <span className="font-bold text-slate-900 text-sm mt-0.5 block font-mono">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200/70">
+                              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                Est. Retail
+                              </span>
+                              <span className="font-bold text-slate-700 font-mono text-[13px] sm:text-[13.5px]">
                                 NZ${(vehicle.estRetailNzd).toLocaleString('en-US')}
                               </span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Card Bottom CTA */}
-                        <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2">
-                          <div className="min-w-0">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block whitespace-nowrap">Est. Margin Spread</span>
-                            <span className="text-base font-black text-emerald-700 block font-mono whitespace-nowrap">
+                        {/* Card Bottom CTA (Full Width Block Stack) */}
+                        <div className="pt-3 mt-3 border-t border-slate-100 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10.5px] font-bold text-slate-500 uppercase tracking-wider block">
+                              Est. Margin Spread
+                            </span>
+                            <span className="text-base font-black text-emerald-700 font-mono">
                               +NZ${vehicle.dynamicMargin.toLocaleString('en-US')}
                             </span>
                           </div>
 
                           <Link
                             href={`/vehicles/${vehicle.id}`}
-                            className="px-3.5 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 shrink-0 whitespace-nowrap"
+                            className="w-full py-2.5 px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5"
                           >
-                            <span>Calculate</span>
+                            <span>Calculate Landed Cost</span>
                             <ArrowRight size={13} />
                           </Link>
                         </div>

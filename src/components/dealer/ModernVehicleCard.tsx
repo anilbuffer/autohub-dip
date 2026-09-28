@@ -123,50 +123,51 @@ export default function ModernVehicleCard({
       </div>
 
       {/* 2. Main Card Body with Clear Typographic Hierarchy */}
-      <div className="p-3.5 sm:p-4.5 flex-1 flex flex-col justify-between gap-3">
-        <div className="space-y-2.5 sm:space-y-3">
-          {/* Row 1: Vehicle Title (Left) + Projected Margin (Right) */}
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0 flex-1">
+      <div className="p-3.5 sm:p-4.5 flex-1 flex flex-col justify-between gap-3.5">
+        <div className="space-y-3">
+          {/* Row 1: Vehicle Title + Projected Margin */}
+          <div className="space-y-1">
+            <div className="flex items-start justify-between gap-2">
               <Link
                 href={targetHref}
-                className="block group/link"
+                className="block group/link min-w-0 flex-1"
                 title={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
               >
-                <h3 className="text-[15px] sm:text-[16.5px] font-black text-slate-900 group-hover/link:text-[#B30D12] transition-colors leading-snug line-clamp-1">
+                <h3 className="text-[15.5px] sm:text-[17px] font-black text-slate-900 group-hover/link:text-[#B30D12] transition-colors leading-snug">
                   {vehicle.year} {vehicle.make} {vehicle.model}
                 </h3>
               </Link>
-              <p className="text-[11px] sm:text-[11.5px] font-semibold text-slate-500 mt-0.5 truncate">
-                {vehicle.badge ? `${vehicle.badge} • ` : ""}{vehicle.engine}
-              </p>
+
+              <div className="text-right shrink-0 pl-1.5">
+                <div className="text-[16px] sm:text-[17.5px] font-black text-emerald-700 font-mono tracking-tight leading-tight whitespace-nowrap">
+                  +NZ${vehicle.dynamicMargin.toLocaleString("en-US")}
+                </div>
+                <span className="text-[9px] sm:text-[9.5px] font-extrabold uppercase tracking-wider text-emerald-700/85 block mt-0.5 whitespace-nowrap">
+                  Est. Margin
+                </span>
+              </div>
             </div>
 
-            <div className="text-right shrink-0 pl-1.5">
-              <div className="text-[15.5px] sm:text-[17px] font-black text-emerald-700 font-mono tracking-tight leading-tight whitespace-nowrap">
-                +NZ${vehicle.dynamicMargin.toLocaleString("en-US")}
-              </div>
-              <span className="text-[9px] sm:text-[9.5px] font-extrabold uppercase tracking-wider text-emerald-700/85 block mt-0.5 whitespace-nowrap">
-                Est. Margin
-              </span>
-            </div>
+            <p className="text-[11.5px] font-semibold text-slate-500 truncate">
+              {vehicle.badge ? `${vehicle.badge} • ` : ""}{vehicle.engine}
+            </p>
           </div>
 
-          {/* Row 2: Secondary Financial Reference Strip (Clean 2-Column Grid) */}
-          <div className="grid grid-cols-2 gap-2 p-2 sm:p-2.5 bg-slate-50/90 rounded-xl border border-slate-200/70 text-xs">
-            <div className="min-w-0">
-              <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider block whitespace-nowrap">
+          {/* Row 2: Secondary Financial Reference Strip (Full Width / Block Stack) */}
+          <div className="p-2.5 sm:p-3 bg-slate-50/90 rounded-xl border border-slate-200/80 text-xs space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                 Landed Cost
               </span>
-              <span className="font-bold text-slate-900 font-mono text-[12px] sm:text-[13px] block truncate mt-0.5">
+              <span className="font-black text-slate-900 font-mono text-[13px] sm:text-[13.5px]">
                 NZ${vehicle.dynamicLanded.toLocaleString("en-US")}
               </span>
             </div>
-            <div className="min-w-0 pl-2 sm:pl-2.5 border-l border-slate-200/80">
-              <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider block whitespace-nowrap">
+            <div className="flex items-center justify-between pt-1.5 border-t border-slate-200/70">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                 NZ Retail
               </span>
-              <span className="font-bold text-slate-700 font-mono text-[12px] sm:text-[13px] block truncate mt-0.5">
+              <span className="font-bold text-slate-700 font-mono text-[13px] sm:text-[13.5px]">
                 NZ${vehicle.estRetailNzd.toLocaleString("en-US")}
               </span>
             </div>
@@ -238,27 +239,27 @@ export default function ModernVehicleCard({
           </div>
         </div>
 
-        {/* 3. Action Buttons Row (High Prominence, No Clipping) */}
-        <div className="pt-2.5 border-t border-slate-100 grid grid-cols-2 gap-2">
+        {/* 3. Action Buttons Row (Full Width / Block Stack) */}
+        <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
           <button
             onClick={() =>
               onAskCopilot(
                 `Analyze landed margin, sheet condition, and indicative market analysis for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`
               )
             }
-            className="px-2 sm:px-2.5 py-2.5 bg-red-50 hover:bg-red-100 text-[#B30D12] text-[11px] sm:text-xs font-bold rounded-xl border border-red-200/90 transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.98] min-w-0"
+            className="w-full py-2.5 px-3 bg-red-50 hover:bg-red-100 text-[#B30D12] text-xs font-bold rounded-xl border border-red-200/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
             title="Query AI Assistant about this lot"
           >
-            <Sparkles size={12} className="text-[#B30D12] shrink-0" />
-            <span className="whitespace-nowrap font-bold">Ask Copilot</span>
+            <Sparkles size={13} className="text-[#B30D12] shrink-0" />
+            <span className="font-bold">Ask Copilot</span>
           </button>
 
           <Link
             href={targetHref}
-            className="px-2 sm:px-3 py-2.5 bg-[#B30D12] hover:bg-[#940B0F] text-white text-[11px] sm:text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-1 sm:gap-1.5 active:scale-[0.98] group/btn min-w-0"
+            className="w-full py-2.5 px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-2 active:scale-[0.99] group/btn"
           >
-            <span className="whitespace-nowrap font-bold">View Details</span>
-            <ArrowRight size={12} className="group-hover/btn:translate-x-0.5 transition-transform shrink-0" />
+            <span className="font-bold">View Vehicle Details</span>
+            <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform shrink-0" />
           </Link>
         </div>
       </div>

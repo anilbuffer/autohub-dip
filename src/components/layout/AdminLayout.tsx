@@ -174,16 +174,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content Viewport */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header Bar */}
-        <header className="h-[72px] bg-white border-b border-slate-200/90 px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20">
-          <div className="flex items-center gap-3 min-w-0">
+        <header className="h-16 sm:h-[72px] bg-white border-b border-slate-200/90 px-3 sm:px-6 md:px-8 flex items-center justify-between shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20 gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100"
+              className="md:hidden p-1.5 sm:p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 shrink-0"
             >
               <Menu size={20} />
             </button>
-            <div className="min-w-0">
-              <div className="text-[11px] text-slate-500 font-medium flex items-center gap-1.5">
+            <div className="min-w-0 flex-1">
+              <div className="text-[10px] sm:text-[11px] text-slate-500 font-medium flex items-center gap-1 truncate">
                 <span className="font-semibold text-slate-700">Admin</span>
                 {getBreadcrumbs().map((b, idx) => (
                   <React.Fragment key={idx}>
@@ -194,15 +194,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   </React.Fragment>
                 ))}
               </div>
-              <h1 className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mt-0.5">
+              <h1 className="text-sm sm:text-base md:text-xl font-black text-slate-900 tracking-tight flex items-center gap-2 mt-0.5 truncate">
                 {pathname === '/admin' ? 'Demand Intelligence' : getBreadcrumbs()[getBreadcrumbs().length - 1].label}
-
               </h1>
             </div>
           </div>
 
           {/* Header Right Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Quick Search */}
             <div className="relative hidden md:flex items-center">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />

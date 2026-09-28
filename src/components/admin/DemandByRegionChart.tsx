@@ -66,23 +66,21 @@ export default function DemandByRegionChart({
               onMouseEnter={() => setHoveredRegion(item.region)}
               onMouseLeave={() => setHoveredRegion(null)}
               onClick={() => onSelectRegion && onSelectRegion(isSelected ? 'All' : item.region)}
-              className={`p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
-                isSelected
+              className={`p-3 rounded-xl border transition-all duration-200 cursor-pointer ${isSelected
                   ? 'bg-sky-50/60 border-sky-400 shadow-sm ring-1 ring-sky-400/40'
                   : isHovered
                     ? 'bg-slate-50/80 border-sky-200 shadow-2xs -translate-y-0.5'
                     : 'bg-white border-slate-100 hover:border-slate-200'
-              }`}
+                }`}
             >
               {/* Row Header Info */}
               <div className="flex items-center justify-between text-xs mb-2">
                 <div className="flex items-center gap-2 min-w-0">
                   {/* Rank badge */}
-                  <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[10px] shrink-0 ${
-                    idx === 0 
-                      ? 'bg-sky-600 text-white shadow-2xs' 
+                  <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[10px] shrink-0 ${idx === 0
+                      ? 'bg-sky-600 text-white shadow-2xs'
                       : 'bg-slate-100 text-slate-600 border border-slate-200/60'
-                  }`}>
+                    }`}>
                     {idx + 1}
                   </span>
 
@@ -133,7 +131,7 @@ export default function DemandByRegionChart({
 
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                     {/* Hybrid SUV */}
-                    <div className="p-2 rounded-lg bg-slate-50/90 text-center border border-slate-100">
+                    <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
                       <span className="text-[9px] text-slate-400 block font-bold">HYBRID SUV</span>
                       <strong className="text-slate-900 text-xs">{item.segments.hybrid}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
@@ -142,7 +140,7 @@ export default function DemandByRegionChart({
                     </div>
 
                     {/* Mid / AWD SUV */}
-                    <div className="p-2 rounded-lg bg-slate-50/90 text-center border border-slate-100">
+                    <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
                       <span className="text-[9px] text-slate-400 block font-bold">MID / AWD SUV</span>
                       <strong className="text-slate-900 text-xs">{item.segments.suv}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
@@ -151,7 +149,7 @@ export default function DemandByRegionChart({
                     </div>
 
                     {/* Compact Hatch */}
-                    <div className="p-2 rounded-lg bg-slate-50/90 text-center border border-slate-100">
+                    <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
                       <span className="text-[9px] text-slate-400 block font-bold">COMPACT HATCH</span>
                       <strong className="text-slate-900 text-xs">{item.segments.compact}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
@@ -160,7 +158,7 @@ export default function DemandByRegionChart({
                     </div>
 
                     {/* Sedan / Wagon */}
-                    <div className="p-2 rounded-lg bg-slate-50/90 text-center border border-slate-100">
+                    <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
                       <span className="text-[9px] text-slate-400 block font-bold">SEDAN / WAGON</span>
                       <strong className="text-slate-900 text-xs">{item.segments.sedan}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">

@@ -55,7 +55,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
       </div>
 
       {/* Grid of Vehicles (Equal size & Perfectly Aligned) */}
-      <div className="pt-3.5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+      <div className="pt-3.5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 items-stretch">
         {UPCOMING_AUCTION_MATCHES.map((vehicle) => {
           const isNotified = syncState.notifiedAuctionLotIds.includes(vehicle.id);
           const isAnimating = animatingLot === vehicle.id;

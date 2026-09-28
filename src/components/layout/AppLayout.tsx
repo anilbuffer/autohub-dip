@@ -235,7 +235,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               className="flex items-center gap-2.5 pl-2 cursor-pointer group"
             >
               <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shadow-sm border border-slate-200">
-                AAG
+                AG
               </div>
             </Link>
           </div>

@@ -183,289 +183,299 @@ export default function DemandTrendLineChart() {
         </div>
       </div>
 
-      {/* SVG Chart Canvas (Symmetric & Compact Proportions) */}
-      <div className="relative pt-1">
-        <div className="w-full overflow-x-auto">
-          <div className="min-w-[580px] max-h-[210px] flex items-center justify-center">
-            <svg
-              viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-              className="w-full h-auto max-h-[200px] overflow-visible select-none"
-            >
-              {/* Gradients definition for smooth area fills */}
-              <defs>
-                {TREND_TOP_5.map((model) => (
-                  <linearGradient
-                    key={`grad-${model.id}`}
-                    id={`area-grad-${model.id}`}
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor={model.color} stopOpacity="0.22" />
-                    <stop offset="85%" stopColor={model.color} stopOpacity="0.02" />
-                    <stop offset="100%" stopColor={model.color} stopOpacity="0" />
-                  </linearGradient>
-                ))}
-              </defs>
+      {/* Main Responsive Layout: Chart on Left, Demand Breakdown on Right for Large Screens */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch pt-2">
 
-              {/* Horizontal Grid lines & Y Axis labels */}
-              {[50, 100, 150, 200].map((tickVal) => {
-                const yPos = getY(tickVal);
-                return (
-                  <g key={tickVal}>
-                    <line
-                      x1={paddingLeft}
-                      y1={yPos}
-                      x2={chartWidth - paddingRight}
-                      y2={yPos}
-                      stroke="#E2E8F0"
-                      strokeWidth="1"
-                      strokeDasharray="4 4"
-                      strokeOpacity="0.75"
-                    />
-                    <text
-                      x={paddingLeft - 8}
-                      y={yPos + 3.5}
-                      textAnchor="end"
-                      className="text-[10px] font-bold fill-slate-400"
+        {/* Left Side: SVG Line Chart Canvas (7 cols on lg, 8 cols on xl) */}
+        <div className="lg:col-span-7 xl:col-span-8 flex flex-col justify-between min-w-0">
+          <div className="w-full overflow-x-auto">
+            <div className="min-w-[500px]">
+              <svg
+                viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+                className="w-full h-auto max-h-[300px] overflow-visible select-none"
+              >
+                {/* Gradients definition for smooth area fills */}
+                <defs>
+                  {TREND_TOP_5.map((model) => (
+                    <linearGradient
+                      key={`grad-${model.id}`}
+                      id={`area-grad-${model.id}`}
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
                     >
-                      {tickVal}
-                    </text>
-                  </g>
-                );
-              })}
+                      <stop offset="0%" stopColor={model.color} stopOpacity="0.22" />
+                      <stop offset="85%" stopColor={model.color} stopOpacity="0.02" />
+                      <stop offset="100%" stopColor={model.color} stopOpacity="0" />
+                    </linearGradient>
+                  ))}
+                </defs>
 
-              {/* X Axis Week Labels */}
-              {WEEKS_LABELS.map((week, idx) => {
-                const xPos = getX(idx);
-                const isSelected = hoveredWeekIdx === idx;
-                return (
-                  <g key={week}>
-                    {/* Active week pill marker */}
-                    {isSelected && (
-                      <rect
-                        x={xPos - 15}
-                        y={chartHeight - 21}
-                        width="30"
-                        height="16"
-                        rx="5"
-                        fill="#0F172A"
-                        className="transition-all"
+                {/* Horizontal Grid lines & Y Axis labels */}
+                {[50, 100, 150, 200].map((tickVal) => {
+                  const yPos = getY(tickVal);
+                  return (
+                    <g key={tickVal}>
+                      <line
+                        x1={paddingLeft}
+                        y1={yPos}
+                        x2={chartWidth - paddingRight}
+                        y2={yPos}
+                        stroke="#E2E8F0"
+                        strokeWidth="1"
+                        strokeDasharray="4 4"
+                        strokeOpacity="0.75"
                       />
-                    )}
-                    <text
-                      x={xPos}
-                      y={chartHeight - 9}
-                      textAnchor="middle"
-                      className={`text-[10px] transition-all cursor-pointer ${isSelected
-                        ? 'fill-white font-black'
-                        : 'fill-slate-400 hover:fill-slate-900 font-bold'
-                        }`}
-                      onClick={() => setHoveredWeekIdx(idx)}
-                    >
-                      {week}
-                    </text>
+                      <text
+                        x={paddingLeft - 8}
+                        y={yPos + 3.5}
+                        textAnchor="end"
+                        className="text-[10px] font-bold fill-slate-400"
+                      >
+                        {tickVal}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* X Axis Week Labels */}
+                {WEEKS_LABELS.map((week, idx) => {
+                  const xPos = getX(idx);
+                  const isSelected = hoveredWeekIdx === idx;
+                  return (
+                    <g key={week}>
+                      {/* Active week pill marker */}
+                      {isSelected && (
+                        <rect
+                          x={xPos - 15}
+                          y={chartHeight - 21}
+                          width="30"
+                          height="16"
+                          rx="5"
+                          fill="#0F172A"
+                          className="transition-all"
+                        />
+                      )}
+                      <text
+                        x={xPos}
+                        y={chartHeight - 9}
+                        textAnchor="middle"
+                        className={`text-[10px] transition-all cursor-pointer ${isSelected
+                          ? 'fill-white font-black'
+                          : 'fill-slate-400 hover:fill-slate-900 font-bold'
+                          }`}
+                        onClick={() => setHoveredWeekIdx(idx)}
+                      >
+                        {week}
+                      </text>
+                    </g>
+                  );
+                })}
+
+                {/* Vertical Guide Line on Hover */}
+                {hoveredWeekIdx !== null && (
+                  <g>
+                    <line
+                      x1={getX(hoveredWeekIdx)}
+                      y1={paddingTop - 6}
+                      x2={getX(hoveredWeekIdx)}
+                      y2={chartHeight - paddingBottom}
+                      stroke="#94A3B8"
+                      strokeWidth="1.5"
+                      strokeDasharray="3 3"
+                      className="transition-all duration-150"
+                    />
                   </g>
-                );
-              })}
+                )}
 
-              {/* Vertical Guide Line on Hover */}
-              {hoveredWeekIdx !== null && (
-                <g>
-                  <line
-                    x1={getX(hoveredWeekIdx)}
-                    y1={paddingTop - 6}
-                    x2={getX(hoveredWeekIdx)}
-                    y2={chartHeight - paddingBottom}
-                    stroke="#94A3B8"
-                    strokeWidth="1.5"
-                    strokeDasharray="3 3"
-                    className="transition-all duration-150"
-                  />
-                </g>
-              )}
+                {/* Area Fills under active lines */}
+                {TREND_TOP_5.map((model) => {
+                  const isFocused = activeModelId === model.id;
+                  // If single model is selected, or if none selected show top model area fill
+                  const showArea = isFocused || (activeModelId === null && model.id === 'aqua');
+                  if (!showArea) return null;
 
-              {/* Area Fills under active lines */}
-              {TREND_TOP_5.map((model) => {
-                const isFocused = activeModelId === model.id;
-                // If single model is selected, or if none selected show top model area fill
-                const showArea = isFocused || (activeModelId === null && model.id === 'aqua');
-                if (!showArea) return null;
+                  const areaPath = getSmoothAreaPath(model.values);
+                  return (
+                    <path
+                      key={`area-${model.id}`}
+                      d={areaPath}
+                      fill={`url(#area-grad-${model.id})`}
+                      className="transition-opacity duration-300 pointer-events-none"
+                    />
+                  );
+                })}
 
-                const areaPath = getSmoothAreaPath(model.values);
-                return (
-                  <path
-                    key={`area-${model.id}`}
-                    d={areaPath}
-                    fill={`url(#area-grad-${model.id})`}
-                    className="transition-opacity duration-300 pointer-events-none"
-                  />
-                );
-              })}
+                {/* Smooth Spline Lines for each model */}
+                {TREND_TOP_5.map((model) => {
+                  const isHighlighted = activeModelId === model.id;
+                  const isFaded = activeModelId && !isHighlighted;
+                  const pathData = getSmoothLinePath(model.values);
 
-              {/* Smooth Spline Lines for each model */}
-              {TREND_TOP_5.map((model) => {
-                const isHighlighted = activeModelId === model.id;
-                const isFaded = activeModelId && !isHighlighted;
-                const pathData = getSmoothLinePath(model.values);
+                  return (
+                    <g
+                      key={model.id}
+                      className="transition-opacity duration-200"
+                      opacity={isFaded ? 0.2 : 1}
+                    >
+                      {/* Background glow stroke for active model */}
+                      {isHighlighted && (
+                        <path
+                          d={pathData}
+                          fill="none"
+                          stroke={model.color}
+                          strokeWidth="7"
+                          strokeOpacity="0.25"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      )}
 
-                return (
-                  <g
-                    key={model.id}
-                    className="transition-opacity duration-200"
-                    opacity={isFaded ? 0.2 : 1}
-                  >
-                    {/* Background glow stroke for active model */}
-                    {isHighlighted && (
+                      {/* Main Spline Path */}
                       <path
                         d={pathData}
                         fill="none"
                         stroke={model.color}
-                        strokeWidth="7"
-                        strokeOpacity="0.25"
+                        strokeWidth={isHighlighted ? 3.5 : 2.5}
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-200"
                       />
-                    )}
 
-                    {/* Main Spline Path */}
-                    <path
-                      d={pathData}
-                      fill="none"
-                      stroke={model.color}
-                      strokeWidth={isHighlighted ? 3.5 : 2.5}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transition-all duration-200"
-                    />
+                      {/* Data dots on the spline */}
+                      {model.values.map((val, idx) => {
+                        const cx = getX(idx);
+                        const cy = getY(val);
+                        const isHoveredCol = hoveredWeekIdx === idx;
 
-                    {/* Data dots on the spline */}
-                    {model.values.map((val, idx) => {
-                      const cx = getX(idx);
-                      const cy = getY(val);
-                      const isHoveredCol = hoveredWeekIdx === idx;
-
-                      return (
-                        <g key={idx}>
-                          {isHoveredCol && (
+                        return (
+                          <g key={idx}>
+                            {isHoveredCol && (
+                              <circle
+                                cx={cx}
+                                cy={cy}
+                                r="7"
+                                fill={model.color}
+                                fillOpacity="0.2"
+                                className="animate-pulse"
+                              />
+                            )}
                             <circle
                               cx={cx}
                               cy={cy}
-                              r="7"
-                              fill={model.color}
-                              fillOpacity="0.2"
-                              className="animate-pulse"
+                              r={isHoveredCol ? 4.5 : 2.5}
+                              fill={isHoveredCol ? '#ffffff' : model.color}
+                              stroke={model.color}
+                              strokeWidth={isHoveredCol ? 2.5 : 1.5}
+                              className="transition-all duration-150"
                             />
-                          )}
-                          <circle
-                            cx={cx}
-                            cy={cy}
-                            r={isHoveredCol ? 4.5 : 2.5}
-                            fill={isHoveredCol ? '#ffffff' : model.color}
-                            stroke={model.color}
-                            strokeWidth={isHoveredCol ? 2.5 : 1.5}
-                            className="transition-all duration-150"
-                          />
-                        </g>
-                      );
-                    })}
-                  </g>
-                );
-              })}
+                          </g>
+                        );
+                      })}
+                    </g>
+                  );
+                })}
 
-              {/* Interactive columns for hover detection */}
-              {WEEKS_LABELS.map((_, idx) => {
-                const colWidth = innerWidth / (WEEKS_LABELS.length - 1);
-                const colX = getX(idx) - colWidth / 2;
+                {/* Interactive columns for hover detection */}
+                {WEEKS_LABELS.map((_, idx) => {
+                  const colWidth = innerWidth / (WEEKS_LABELS.length - 1);
+                  const colX = getX(idx) - colWidth / 2;
 
-                return (
-                  <rect
-                    key={idx}
-                    x={Math.max(0, colX)}
-                    y={paddingTop - 6}
-                    width={colWidth}
-                    height={innerHeight + 16}
-                    fill="transparent"
-                    className="cursor-pointer"
-                    onMouseEnter={() => setHoveredWeekIdx(idx)}
-                    onClick={() => setHoveredWeekIdx(idx)}
-                  />
-                );
-              })}
-            </svg>
+                  return (
+                    <rect
+                      key={idx}
+                      x={Math.max(0, colX)}
+                      y={paddingTop - 6}
+                      width={colWidth}
+                      height={innerHeight + 16}
+                      fill="transparent"
+                      className="cursor-pointer"
+                      onMouseEnter={() => setHoveredWeekIdx(idx)}
+                      onClick={() => setHoveredWeekIdx(idx)}
+                    />
+                  );
+                })}
+              </svg>
+            </div>
+          </div>
+
+          {/* Subtle guide footnote */}
+          <div className="flex items-center justify-between text-[10.5px] text-slate-400 font-medium px-1 pt-1.5 border-t border-slate-100/60 mt-1">
+            <span>Click or hover points to inspect weekly breakdown</span>
+            <span className="font-mono">12-week telemetry (W1–W12)</span>
           </div>
         </div>
 
-        {/* 5 Interactive Model Telemetry Cards */}
-        <div className="mt-3 pt-2.5 border-t border-slate-100">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-              <Calendar size={12} className="text-slate-400" />
-              <span>{WEEKS_LABELS[hoveredWeekIdx]} Demand Breakdown:</span>
-            </span>
-            <span className="text-xs font-bold text-slate-700">
-              Week Total: <strong className="text-slate-900 font-black text-sm">{totalAtHoveredWeek} units</strong>
-            </span>
-          </div>
+        {/* Right Side: [ Demand Breakdown: ] Cards (5 cols on lg, 4 cols on xl) */}
+        <div className="lg:col-span-5 xl:col-span-4 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-slate-100 pt-3.5 lg:pt-0 lg:pl-5 min-w-0">
+          <div>
+            <div className="flex items-center justify-between mb-2.5">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+                <Calendar size={12} className="text-slate-400" />
+                <span>{WEEKS_LABELS[hoveredWeekIdx]} Demand Breakdown:</span>
+              </span>
+              <span className="text-xs font-bold text-slate-700">
+                Total: <strong className="text-slate-900 font-black text-sm">{totalAtHoveredWeek} units</strong>
+              </span>
+            </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-            {sortedAtHoveredWeek.map((model) => {
-              const currentVal = model.values[hoveredWeekIdx];
-              const isSelected = activeModelId === model.id;
-              const meta = modelsWithStats.find(m => m.id === model.id);
+            {/* List of 5 models: stacked vertically on lg, grid on mobile/tablet */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
+              {sortedAtHoveredWeek.map((model) => {
+                const currentVal = model.values[hoveredWeekIdx];
+                const isSelected = activeModelId === model.id;
+                const meta = modelsWithStats.find(m => m.id === model.id);
+                const sharePct = Math.round((currentVal / totalAtHoveredWeek) * 100);
 
-              return (
-                <div
-                  key={model.id}
-                  onClick={() => setActiveModelId(isSelected ? null : model.id)}
-                  className={`p-3 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col justify-between ${isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md -translate-y-0.5'
-                    : 'bg-slate-50 border-slate-200/90 hover:border-slate-300 hover:shadow-2xs'
-                    }`}
-                >
-                  <div className="flex items-center justify-between gap-1 mb-1.5">
-                    <div className="flex items-center gap-1.5 min-w-0">
+                return (
+                  <div
+                    key={model.id}
+                    onClick={() => setActiveModelId(isSelected ? null : model.id)}
+                    className={`px-3 py-2 rounded-xl border transition-all duration-150 cursor-pointer flex items-center justify-between gap-2 ${isSelected
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-sm ring-1 ring-slate-900'
+                      : 'bg-slate-50/80 hover:bg-white border-slate-200/80 hover:border-slate-300 hover:shadow-2xs'
+                      }`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
                       <span
                         className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs"
                         style={{ backgroundColor: model.color }}
                       />
-                      <span className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-slate-900'
-                        }`}>
-                        {model.name.replace('Toyota ', '').replace('Honda ', '').replace('Mazda ', '')}
-                      </span>
+                      <div className="truncate">
+                        <span className={`text-xs font-black truncate block leading-snug ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                          {model.name}
+                        </span>
+                        <span className={`text-[10px] font-medium block leading-none mt-0.5 ${isSelected ? 'text-slate-400' : 'text-slate-400'}`}>
+                          {sharePct}% of week volume
+                        </span>
+                      </div>
                     </div>
 
-                    <span className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded ${isSelected
-                      ? 'bg-white/20 text-white'
-                      : 'bg-emerald-50 text-emerald-800 border border-emerald-200/80'
-                      }`}>
-                      +{meta?.pctChange}%
-                    </span>
-                  </div>
+                    <div className="flex items-center gap-2.5 shrink-0">
+                      <div className="text-right">
+                        <span className={`text-sm font-black font-mono leading-none block ${isSelected ? 'text-white' : 'text-slate-900'}`}>
+                          {currentVal}
+                        </span>
+                        <span className={`text-[9px] leading-none mt-0.5 block ${isSelected ? 'text-slate-400' : 'text-slate-400'}`}>
+                          units
+                        </span>
+                      </div>
 
-                  <div className="flex items-baseline justify-between mt-1">
-                    <div>
-                      <span className={`text-lg font-black tracking-tight leading-none ${isSelected ? 'text-white' : 'text-slate-900'
+                      <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded ${isSelected
+                        ? 'bg-white/20 text-white'
+                        : 'bg-emerald-50 text-emerald-800 border border-emerald-200/80'
                         }`}>
-                        {currentVal}
-                      </span>
-                      <span className={`text-[10px] font-medium ml-1 ${isSelected ? 'text-slate-300' : 'text-slate-400'
-                        }`}>
-                        units
+                        +{meta?.pctChange}%
                       </span>
                     </div>
-
-                    <span className={`text-[9.5px] font-medium ${isSelected ? 'text-slate-400' : 'text-slate-400'
-                      }`}>
-                      {WEEKS_LABELS[hoveredWeekIdx]}
-                    </span>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   );

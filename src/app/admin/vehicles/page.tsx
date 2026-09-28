@@ -528,74 +528,66 @@ export default function AdminVehicles() {
           </div>
         </div>
 
-        {/* 2. Top 3 Compact KPIs */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+        {/* 2. Top 3 Compact KPIs (Full Width / Block on Mobile & Small Tablet) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 w-full">
+          <div className="bg-white p-4 sm:p-4.5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between gap-3.5 w-full">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Qualified Auction Lots
               </span>
-              <div className="w-8 h-8 rounded-xl bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold">
-                <Car size={16} />
-              </div>
-            </div>
-            <div className="mt-2.5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {VEHICLES.length}
                 </span>
-                <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200/60 shadow-2xs">
+                <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200/60 shadow-2xs whitespace-nowrap">
                   4 Live Feeds
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-1 font-medium">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 USS Tokyo, USS Yokohama, CAA &amp; TAA lanes
               </p>
             </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <Car size={20} />
+            </div>
           </div>
 
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-white p-4 sm:p-4.5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between gap-3.5 w-full">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Priority Dealer Allocations
               </span>
-              <div className="w-8 h-8 rounded-xl bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold">
-                <Flame size={16} />
-              </div>
-            </div>
-            <div className="mt-2.5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {priorityCount < 10 ? `0${priorityCount}` : priorityCount}
                 </span>
-                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60 shadow-2xs">
+                <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60 shadow-2xs whitespace-nowrap">
                   Score 90+
                 </span>
               </div>
-              <p className="text-[11px] text-slate-500 mt-1 font-medium">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 High-probability margin spread matches
               </p>
             </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-[#B30D12] border border-red-100 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <Flame size={20} />
+            </div>
           </div>
 
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+          <div className="bg-white p-4 sm:p-4.5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between gap-3.5 w-full">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Avg. Target Margin
               </span>
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-bold">
-                <TrendingUp size={16} />
+              <div className="text-2xl sm:text-3xl font-black text-emerald-700 tracking-tight font-mono leading-none">
+                NZ${avgMargin.toLocaleString("en-US")}
               </div>
-            </div>
-            <div className="mt-2.5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl sm:text-3xl font-black text-emerald-700 tracking-tight font-mono">
-                  NZ${avgMargin.toLocaleString("en-US")}
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-500 mt-1 font-medium">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 Top tier projected dealer gross profit
               </p>
+            </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <TrendingUp size={20} />
             </div>
           </div>
         </div>

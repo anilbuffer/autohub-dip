@@ -245,7 +245,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Main Content Viewport */}
         <div className="flex-1 flex min-h-0 overflow-hidden relative">
           {/* Scrollable Page Canvas - High contrast background */}
-          <main className="flex-1 overflow-y-auto bg-[#EEF2F6] p-4 sm:p-7 lg:p-9 min-w-0">
+          <main className="flex-1 overflow-y-auto overflow-x-hidden bg-[#EEF2F6] p-4 sm:p-7 lg:p-9 min-w-0">
             <div className="max-w-full mx-auto">
               {children}
             </div>

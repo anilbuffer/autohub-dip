@@ -535,121 +535,113 @@ export default function Dashboard() {
           </div>
         </section>
 
-        {/* 2. Top 4 High-Impact KPI Cards (Compact & Distinct) */}
-        <section className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        {/* 2. Top 4 High-Impact KPI Cards (Full Width / Block on Mobile & Small Tablet) */}
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full">
           {/* Card 1: Best Matches For You */}
           <div
             onClick={() => setActiveTab("bestMatches")}
-            className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${
               activeTab === "bestMatches" || (activeTab as any) === "priority"
                 ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
                 : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
             }`}
           >
-            <div className="flex items-start justify-between gap-1.5">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Best Matches For You
               </span>
-              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-red-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0">
-                <Flame size={15} />
-              </div>
-            </div>
-            <div className="mt-2">
-              <div className="flex flex-wrap items-baseline gap-1.5">
+              <div className="flex flex-wrap items-baseline gap-2">
                 <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {priorityVehicles.length}
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80 whitespace-nowrap">
+                <span className="text-[9.5px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80 whitespace-nowrap">
                   High Confidence
                 </span>
               </div>
-              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 Target buy box &amp; high market spread
               </p>
+            </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-red-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <Flame size={20} />
             </div>
           </div>
 
           {/* Card 2: Projected Margin */}
-          <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
-            <div className="flex items-start justify-between gap-1.5">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
+          <div className="p-4 sm:p-4.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all flex items-center justify-between gap-3.5 w-full">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Avg. Estimated Margin
               </span>
-              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0">
-                <TrendingUp size={15} />
-              </div>
-            </div>
-            <div className="mt-2">
-              <div className="text-xl sm:text-2xl font-black text-emerald-700 font-mono tracking-tight leading-none truncate">
+              <div className="text-2xl sm:text-3xl font-black text-emerald-700 font-mono tracking-tight leading-none">
                 +NZ${avgPriorityMargin.toLocaleString("en-US")}
               </div>
-              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 Average dealer margin spread
               </p>
+            </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <TrendingUp size={20} />
             </div>
           </div>
 
           {/* Card 3: Live Pipeline Lots */}
           <div
             onClick={() => setActiveTab("all")}
-            className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${
               activeTab === "all"
                 ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
                 : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
             }`}
           >
-            <div className="flex items-start justify-between gap-1.5">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Live Japanese Lots
               </span>
-              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold shrink-0">
-                <Car size={15} />
-              </div>
-            </div>
-            <div className="mt-2">
-              <div className="flex flex-wrap items-baseline gap-1.5">
+              <div className="flex flex-wrap items-baseline gap-2">
                 <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {VEHICLES.length}
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200 whitespace-nowrap">
+                <span className="text-[9.5px] sm:text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 whitespace-nowrap">
                   18–22d Ro-Ro
                 </span>
               </div>
-              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 Est. days to land in NZ (indicative)
               </p>
+            </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <Car size={20} />
             </div>
           </div>
 
           {/* Card 4: Shortlisted Lots */}
           <div
             onClick={() => setActiveTab("shortlisted")}
-            className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${
               activeTab === "shortlisted"
                 ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
                 : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
             }`}
           >
-            <div className="flex items-start justify-between gap-1.5">
-              <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider leading-tight">
+            <div className="min-w-0 flex-1 space-y-1">
+              <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Shortlisted by Yard
               </span>
-              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-rose-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0">
-                <ShieldCheck size={15} />
-              </div>
-            </div>
-            <div className="mt-2">
-              <div className="flex flex-wrap items-baseline gap-1.5">
+              <div className="flex flex-wrap items-baseline gap-2">
                 <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
                   {syncState.shortlistedVehicleIds.length}
                 </span>
-                <span className="text-[9px] sm:text-[10px] font-bold text-red-700 bg-red-50 px-1.5 py-0.5 rounded whitespace-nowrap">
+                <span className="text-[9.5px] sm:text-[10px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-md whitespace-nowrap">
                   Active
                 </span>
               </div>
-              <p className="text-[10.5px] sm:text-[11px] text-slate-500 mt-1 font-medium leading-snug line-clamp-2">
+              <p className="text-xs text-slate-500 font-medium leading-snug">
                 Saved for auction team
               </p>
+            </div>
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-rose-50 text-[#B30D12] flex items-center justify-center font-bold shrink-0 shadow-2xs">
+              <ShieldCheck size={20} />
             </div>
           </div>
         </section>

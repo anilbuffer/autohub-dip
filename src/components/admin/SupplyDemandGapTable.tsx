@@ -353,14 +353,14 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                             </span>
                             {item.immediateSeller && (
                               <span className="px-1.5 py-0.2 rounded font-black text-[8.5px] uppercase tracking-wider bg-red-100 text-[#B30D12] border border-red-200">
-                                Sell Immediately
+                                SELL
                               </span>
                             )}
                           </div>
-                          <div className="text-[10px] text-slate-500 font-medium truncate">
+                          <div className="text-[12px] text-slate-500 font-medium truncate">
                             {item.badge}
                           </div>
-                          <span className="text-[9px] text-slate-400 font-medium">
+                          <span className="text-[10x] text-slate-400 font-medium">
                             {item.segment}
                           </span>
                         </div>
@@ -370,8 +370,8 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                     {/* Dealer Demand */}
                     <td className="py-2.5 px-3 font-extrabold text-slate-900 text-xs">
                       {item.demandUnits}
-                      <span className="text-[10px] text-slate-400 font-normal ml-0.5">units</span>
-                      <span className="text-[9px] text-emerald-800 font-bold block mt-0.5">
+                      <span className="text-[12px] text-slate-400 font-normal ml-0.5">units</span>
+                      <span className="text-[10px] text-emerald-800 font-bold block mt-0.5">
                         {item.unmetGap > 0 ? `${item.demandUnits - item.currentStockUnits} unfulfilled` : 'Covered'}
                       </span>
                     </td>
@@ -379,8 +379,8 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                     {/* Current Heiwa Stock */}
                     <td className="py-2.5 px-3 font-bold text-slate-700 text-xs">
                       <span className="font-extrabold text-slate-900">{item.currentStockUnits}</span>
-                      <span className="text-[10px] text-slate-400 font-normal ml-0.5">units</span>
-                      <span className="text-[9px] text-slate-400 block mt-0.5">
+                      <span className="text-[12px] text-slate-400 font-normal ml-0.5">units</span>
+                      <span className="text-[10px] text-slate-400 block mt-0.5">
                         Auction Stock
                       </span>
                     </td>
@@ -392,7 +392,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                           <span className="font-bold text-slate-800">
                             {item.coveragePct}%
                           </span>
-                          <span className={`px-1 py-0.2 rounded text-[9px] font-bold border ${coverage.textColor}`}>
+                          <span className={`px-1 py-0.2 rounded text-[10px] font-bold border ${coverage.textColor}`}>
                             {coverage.label}
                           </span>
                         </div>
@@ -403,7 +403,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                           />
                         </div>
                         {item.unmetGap > 0 && (
-                          <span className="text-[9px] text-rose-600 font-bold block">
+                          <span className="text-[10px] text-rose-600 font-bold block">
                             Deficit: -{item.unmetGap} units
                           </span>
                         )}
@@ -416,7 +416,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                         <Clock size={11} className="text-slate-400" />
                         <span className="font-black text-slate-900">{item.avgDaysToSell} days</span>
                       </div>
-                      <span className="text-[9px] text-slate-400 block mt-0.5">
+                      <span className="text-[10px] text-slate-400 block mt-0.5">
                         NZ yard velocity
                       </span>
                     </td>
@@ -426,7 +426,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                       <span className="font-extrabold text-emerald-800 text-xs">
                         +NZ${item.avgDealerMarginNzd.toLocaleString('en-US')}
                       </span>
-                      <span className="block text-[9px] text-slate-400 font-medium">
+                      <span className="block text-[10px] text-slate-400 font-medium">
                         ¥{item.avgDealerMarginJpy.toLocaleString('en-US')} JPY
                       </span>
                     </td>
@@ -462,7 +462,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                                 e.stopPropagation();
                                 setDrawerVehicle(matchingAuctionVehicle);
                               }}
-                              className="px-3 py-1 rounded-lg text-[11px] font-bold bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                              className="px-3 py-1 rounded-lg text-[12px] font-bold bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                             >
                               <Users size={12} />
                               <span>View Matched Dealers &amp; Notify</span>
@@ -472,11 +472,11 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
                             {/* Card 1: Demand Signals */}
                             <div className="p-2.5 rounded-lg bg-white border border-slate-200/60 shadow-2xs space-y-1.5">
-                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
+                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[12px]">
                                 <Radio size={12} className="text-[#B30D12]" />
                                 <span>Ingested Demand Signals</span>
                               </div>
-                              <div className="space-y-0.5 text-slate-600 text-[10px]">
+                              <div className="space-y-0.5 text-slate-600 text-[12px]">
                                 <div className="flex justify-between">
                                   <span>Wish Lists:</span>
                                   <strong className="text-slate-900">{Math.round(item.demandUnits * 0.25)} orders</strong>
@@ -494,11 +494,11 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
                             {/* Card 2: 30-Day Forecast & Deficit */}
                             <div className="p-2.5 rounded-lg bg-white border border-slate-200/60 shadow-2xs space-y-1.5">
-                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
+                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[12px]">
                                 <Sparkles size={12} className="text-amber-600" />
                                 <span>30d Forecast &amp; Deficit</span>
                               </div>
-                              <div className="space-y-0.5 text-slate-600 text-[10px]">
+                              <div className="space-y-0.5 text-slate-600 text-[12px]">
                                 <div className="flex justify-between">
                                   <span>Forecast:</span>
                                   <strong className="text-slate-900">{Math.round(item.demandUnits * 1.18)} units (+18%)</strong>
@@ -516,11 +516,11 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
                             {/* Card 3: Supply Chain Matching */}
                             <div className="p-2.5 rounded-lg bg-white border border-slate-200/60 shadow-2xs space-y-1.5">
-                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
+                              <div className="flex items-center gap-1 text-slate-900 font-bold text-[12px]">
                                 <Ship size={12} className="text-blue-600" />
                                 <span>Multi-Tier Supply</span>
                               </div>
-                              <div className="space-y-0.5 text-slate-600 text-[10px]">
+                              <div className="space-y-0.5 text-slate-600 text-[12px]">
                                 <div className="flex justify-between">
                                   <span>Yard Stock:</span>
                                   <strong className="text-slate-900">{item.currentStockUnits} units</strong>

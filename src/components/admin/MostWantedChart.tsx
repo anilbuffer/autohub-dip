@@ -134,7 +134,7 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 text-[#B30D12] text-[10.5px] font-black uppercase tracking-wider border border-red-200/60">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 text-[#B30D12] text-[12px] font-black uppercase tracking-wider border border-red-200/60">
               <Flame size={12} className="text-[#B30D12]" />
               Demand Leaderboard
             </span>
@@ -395,7 +395,7 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                           units
                         </span>
                       </div>
-                      <div className="text-[10.5px] text-slate-500 font-semibold mt-1">
+                      <div className="text-[12px] text-slate-500 font-semibold mt-1">
                         <strong className="text-slate-800">{model.dealersCount}</strong> dealers
                       </div>
                     </div>
@@ -403,7 +403,7 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
 
                   {/* 2. Visual Progress Bar */}
                   <div className="mt-3.5 space-y-1">
-                    <div className="flex items-center justify-between text-[10.5px] font-semibold text-slate-500">
+                    <div className="flex items-center justify-between text-[12px] font-semibold text-slate-500">
                       <span>Demand Intensity</span>
                       <span className="font-extrabold text-slate-700">{widthPct}% index</span>
                     </div>
@@ -436,11 +436,11 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                   {/* Match Stock Action Link */}
                   <Link
                     href={`/admin/vehicles?search=${encodeURIComponent(model.name)}`}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-extrabold text-[#B30D12] bg-red-50 hover:bg-[#B30D12] hover:text-white border border-red-200/70 transition-all cursor-pointer group/btn"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[14px] font-bold text-[#B30D12] bg-red-50 hover:bg-[#B30D12] hover:text-white border border-red-200/70 transition-all cursor-pointer group/btn"
                     title={`View stock and auction inventory for ${model.fullName}`}
                   >
                     <span>Match Stock</span>
-                    <ArrowUpRight size={12} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                    <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   </Link>
                 </div>
               </div>
@@ -471,7 +471,7 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
               >
                 {/* Left: Rank, Image, Model Info */}
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[11px] shrink-0 ${idx === 0
+                  <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[12px] shrink-0 ${idx === 0
                     ? 'bg-gradient-to-br from-[#B30D12] to-[#800A0D] text-white shadow-2xs'
                     : idx === 1
                       ? 'bg-slate-700 text-white'
@@ -495,14 +495,14 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                       <span className="font-extrabold text-slate-900 text-xs sm:text-sm truncate">
                         {model.fullName}
                       </span>
-                      <span className="px-1.5 py-0.2 rounded text-[9px] font-bold bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
+                      <span className="px-1.5 py-0.2 rounded text-[12px] font-bold bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
                         {model.fuel}
                       </span>
-                      <span className="text-[10px] text-slate-400 font-medium hidden md:inline">
+                      <span className="text-[12px] text-slate-400 font-medium hidden md:inline">
                         {model.segment}
                       </span>
                     </div>
-                    <div className="text-[10px] text-slate-500 font-medium truncate mt-0.5">
+                    <div className="text-[12px] text-slate-500 font-medium truncate mt-0.5">
                       {meta.badge}
                     </div>
                   </div>
@@ -511,17 +511,17 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                 {/* Right: Metrics & Progress Bar */}
                 <div className="flex items-center gap-4 sm:gap-6 shrink-0">
                   <div className="hidden md:block text-right">
-                    <span className="text-[10px] text-slate-400 font-medium block">Dealers</span>
+                    <span className="text-[12px] text-slate-400 font-medium block">Dealers</span>
                     <span className="font-black text-slate-800 text-xs">{model.dealersCount}</span>
                   </div>
 
                   <div className="hidden lg:block text-right">
-                    <span className="text-[10px] text-slate-400 font-medium block">Avg Turn</span>
+                    <span className="text-[12px] text-slate-400 font-medium block">Avg Turn</span>
                     <span className="font-bold text-slate-700 text-xs">{model.turnDays} days</span>
                   </div>
 
                   <div className="hidden sm:block text-right">
-                    <span className="text-[10px] text-slate-400 font-medium block">Est Margin</span>
+                    <span className="text-[12px] text-slate-400 font-medium block">Est Margin</span>
                     <span className="font-bold text-emerald-700 text-xs">+NZ${model.avgMarginNzd.toLocaleString()}</span>
                   </div>
 
@@ -529,7 +529,7 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                   <div className="w-24 sm:w-36 text-right">
                     <div className="flex items-baseline justify-end gap-1 mb-1">
                       <span className="font-black text-slate-900 text-xs sm:text-sm">{model.demandCount}</span>
-                      <span className="text-[10px] text-slate-500 font-medium">units</span>
+                      <span className="text-[12px] text-slate-500 font-medium">units</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden p-0.5">
                       <div

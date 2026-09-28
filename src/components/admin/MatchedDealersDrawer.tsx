@@ -20,7 +20,7 @@ export default function MatchedDealersDrawer({
 }: MatchedDealersDrawerProps) {
   const [notifiedDealers, setNotifiedDealers] = useState<number[]>([]);
   const [isNotifyingAll, setIsNotifyingAll] = useState(false);
-  
+
   const { notifyDealersFromAdmin } = useSyncStore();
 
   if (!isOpen || !vehicle) return null;
@@ -46,14 +46,14 @@ export default function MatchedDealersDrawer({
   return (
     <div className="fixed inset-0 z-50 overflow-hidden animate-in fade-in duration-200">
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-slate-950/60 backdrop-blur-xs transition-opacity"
         onClick={onClose}
       />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
         <div className="w-screen max-w-lg bg-white shadow-2xl flex flex-col border-l border-slate-200">
-          
+
           {/* Header (Light Red Brand Gradient, Compact) */}
           <div className="relative p-4 sm:p-5 bg-gradient-to-r from-red-50/90 via-rose-50/60 to-white text-slate-900 flex items-start justify-between gap-4 border-b border-red-200/80">
             {/* Top Brand Crimson Accent Line */}
@@ -98,7 +98,7 @@ export default function MatchedDealersDrawer({
                   NZ${vehicle.fobPriceNzd.toLocaleString('en-US')} FOB
                 </span>
               </div>
-              <div className="flex items-center justify-between text-slate-500 mt-0.5 text-[11px]">
+              <div className="flex items-center justify-between text-slate-500 mt-0.5 text-[14px]">
                 <span>Auction: {vehicle.auctionDate}</span>
                 <span>¥{vehicle.fobPriceJpy.toLocaleString('en-US')} JPY</span>
               </div>
@@ -154,13 +154,13 @@ export default function MatchedDealersDrawer({
 
                   {/* Criteria Matched */}
                   <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs">
-                    <span className="text-slate-400 font-bold block text-[10px] uppercase tracking-wider mb-0.5">
+                    <span className="text-slate-400 font-bold block text-[12px] uppercase tracking-wider mb-0.5">
                       Wish List Criteria:
                     </span>
                     <p className="text-slate-700 font-medium">
                       "{dealer.wishlistCriteria}"
                     </p>
-                    <div className="mt-1.5 flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-200/60">
+                    <div className="mt-1.5 flex items-center justify-between text-[14px] text-slate-500 pt-1 border-t border-slate-200/60">
                       <span>Max Landed Budget: <strong>NZ${dealer.targetBudgetNzd.toLocaleString('en-US')}</strong></span>
                       <span className="text-emerald-600 font-bold">Within Budget Ceiling</span>
                     </div>
@@ -171,11 +171,10 @@ export default function MatchedDealersDrawer({
                     <button
                       onClick={() => handleNotifySingle(dealer)}
                       disabled={isNotified}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
-                        isNotified
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
-                          : 'bg-white hover:bg-gradient-to-r hover:from-[#B30D12] hover:to-[#940B0F] hover:text-white text-slate-700 border border-red-200/80 shadow-2xs'
-                      }`}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${isNotified
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 cursor-default'
+                        : 'bg-white hover:bg-gradient-to-r hover:from-[#B30D12] hover:to-[#940B0F] hover:text-white text-slate-700 border border-red-200/80 shadow-2xs'
+                        }`}
                     >
                       {isNotified ? (
                         <>

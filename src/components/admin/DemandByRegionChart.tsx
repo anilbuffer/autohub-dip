@@ -31,12 +31,12 @@ export default function DemandByRegionChart({
               <Compass size={12} className="text-sky-600" />
               Geographic Concentration
             </span>
-            <span className="text-[11px] text-slate-400 font-medium">Telemetry across NZ</span>
+            <span className="text-[12px] text-slate-400 font-medium">Telemetry across NZ</span>
           </div>
           <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
             Demand by region
           </h3>
-          <p className="text-[11px] text-slate-500 font-medium leading-normal mt-0.5">
+          <p className="text-[12px] text-slate-500 font-medium leading-normal mt-0.5">
             Dealer buying interest across 5 key NZ territories. Click any region to filter dashboard insights.
           </p>
         </div>
@@ -67,10 +67,10 @@ export default function DemandByRegionChart({
               onMouseLeave={() => setHoveredRegion(null)}
               onClick={() => onSelectRegion && onSelectRegion(isSelected ? 'All' : item.region)}
               className={`p-3 rounded-xl border transition-all duration-200 cursor-pointer ${isSelected
-                  ? 'bg-sky-50/60 border-sky-400 shadow-sm ring-1 ring-sky-400/40'
-                  : isHovered
-                    ? 'bg-slate-50/80 border-sky-200 shadow-2xs -translate-y-0.5'
-                    : 'bg-white border-slate-100 hover:border-slate-200'
+                ? 'bg-sky-50/60 border-sky-400 shadow-sm ring-1 ring-sky-400/40'
+                : isHovered
+                  ? 'bg-slate-50/80 border-sky-200 shadow-2xs -translate-y-0.5'
+                  : 'bg-white border-slate-100 hover:border-slate-200'
                 }`}
             >
               {/* Row Header Info */}
@@ -78,8 +78,8 @@ export default function DemandByRegionChart({
                 <div className="flex items-center gap-2 min-w-0">
                   {/* Rank badge */}
                   <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[10px] shrink-0 ${idx === 0
-                      ? 'bg-sky-600 text-white shadow-2xs'
-                      : 'bg-slate-100 text-slate-600 border border-slate-200/60'
+                    ? 'bg-sky-600 text-white shadow-2xs'
+                    : 'bg-slate-100 text-slate-600 border border-slate-200/60'
                     }`}>
                     {idx + 1}
                   </span>
@@ -88,17 +88,17 @@ export default function DemandByRegionChart({
                     {item.region}
                   </span>
 
-                  <span className="text-[10.5px] text-slate-400 font-medium hidden sm:inline">
+                  <span className="text-[12px] text-slate-400 font-medium hidden sm:inline">
                     ({item.activeDealers} dealers)
                   </span>
 
                   {/* Clean light blue top segment pill (replacing old purple badge) */}
-                  <span className="text-[10px] text-sky-800 font-bold bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200/80 shrink-0">
+                  <span className="text-[12px] text-sky-800 font-bold bg-sky-50 px-2 py-0.5 rounded-md border border-sky-200/80 shrink-0">
                     {item.topSegment}
                   </span>
 
                   {isSelected && (
-                    <span className="px-1.5 py-0.2 rounded text-[9.5px] font-black bg-sky-600 text-white shrink-0 flex items-center gap-0.5">
+                    <span className="px-1.5 py-0.2 rounded text-[12px] font-black bg-sky-600 text-white shrink-0 flex items-center gap-0.5">
                       <Check size={9} /> Filter Active
                     </span>
                   )}
@@ -106,7 +106,7 @@ export default function DemandByRegionChart({
 
                 <div className="text-right shrink-0">
                   <span className="font-black text-slate-900 text-xs sm:text-sm">{item.units}</span>
-                  <span className="text-slate-500 text-[10px] font-medium ml-1">units ({item.pct}%)</span>
+                  <span className="text-slate-500 text-[12px] font-medium ml-1">units ({item.pct}%)</span>
                 </div>
               </div>
 
@@ -121,7 +121,7 @@ export default function DemandByRegionChart({
               {/* Segment Breakdown on Hover or Selection */}
               {(isHovered || isSelected) && (
                 <div className="mt-2.5 pt-2.5 border-t border-slate-200/80 animate-in fade-in duration-150">
-                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                  <div className="text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                     <span>Segment Preference Distribution:</span>
                     <span className="text-sky-700 font-bold flex items-center gap-1">
                       <Sparkles size={10} className="text-sky-600" />
@@ -132,8 +132,8 @@ export default function DemandByRegionChart({
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                     {/* Hybrid SUV */}
                     <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
-                      <span className="text-[9px] text-slate-400 block font-bold">HYBRID SUV</span>
-                      <strong className="text-slate-900 text-xs">{item.segments.hybrid}%</strong>
+                      <span className="text-[12px] text-slate-400 block font-bold">HYBRID SUV</span>
+                      <strong className="text-slate-900 text-base">{item.segments.hybrid}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
                         <div className="bg-emerald-500 h-full rounded-full" style={{ width: `${item.segments.hybrid}%` }} />
                       </div>
@@ -141,8 +141,8 @@ export default function DemandByRegionChart({
 
                     {/* Mid / AWD SUV */}
                     <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
-                      <span className="text-[9px] text-slate-400 block font-bold">MID / AWD SUV</span>
-                      <strong className="text-slate-900 text-xs">{item.segments.suv}%</strong>
+                      <span className="text-[12px] text-slate-400 block font-bold">MID / AWD SUV</span>
+                      <strong className="text-slate-900 text-base">{item.segments.suv}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
                         <div className="bg-sky-500 h-full rounded-full" style={{ width: `${item.segments.suv}%` }} />
                       </div>
@@ -150,8 +150,8 @@ export default function DemandByRegionChart({
 
                     {/* Compact Hatch */}
                     <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
-                      <span className="text-[9px] text-slate-400 block font-bold">COMPACT HATCH</span>
-                      <strong className="text-slate-900 text-xs">{item.segments.compact}%</strong>
+                      <span className="text-[12px] text-slate-400 block font-bold">COMPACT HATCH</span>
+                      <strong className="text-slate-900 text-base">{item.segments.compact}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
                         <div className="bg-blue-600 h-full rounded-full" style={{ width: `${item.segments.compact}%` }} />
                       </div>
@@ -159,8 +159,8 @@ export default function DemandByRegionChart({
 
                     {/* Sedan / Wagon */}
                     <div className="p-2 rounded-lg bg-white text-center border border-slate-100">
-                      <span className="text-[9px] text-slate-400 block font-bold">SEDAN / WAGON</span>
-                      <strong className="text-slate-900 text-xs">{item.segments.sedan}%</strong>
+                      <span className="text-[12px] text-slate-400 block font-bold">SEDAN / WAGON</span>
+                      <strong className="text-slate-900 text-base">{item.segments.sedan}%</strong>
                       <div className="w-full bg-slate-200 rounded-full h-1 mt-1 overflow-hidden">
                         <div className="bg-slate-500 h-full rounded-full" style={{ width: `${item.segments.sedan}%` }} />
                       </div>
@@ -174,7 +174,7 @@ export default function DemandByRegionChart({
       </div>
 
       {/* Footer Info Strip */}
-      <div className="mt-3.5 pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between text-[10.5px] text-slate-400 font-medium">
+      <div className="mt-3.5 pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between text-[12px] text-slate-400 font-medium">
         <span>Auckland commands 46% of all verified dealer demand</span>
         <span className="text-sky-700 font-semibold">Tip: Click any region row to filter whole dashboard</span>
       </div>

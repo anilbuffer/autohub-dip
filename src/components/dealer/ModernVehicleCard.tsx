@@ -237,22 +237,22 @@ export default function ModernVehicleCard({
           </div>
         </div>
 
-        {/* 3. Action Buttons Row (Full Width / Block Stack) */}
-        <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
+        {/* 3. Action Buttons Row (Side by Side in One Row) */}
+        <div className="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
           <Link
             href={targetHref}
-            className="w-full py-2.5 px-3 bg-red-50 hover:bg-red-100 text-[#B30D12] text-xs font-bold rounded-xl border border-red-200/90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
+            className="w-full py-2.5 px-2 sm:px-3 bg-red-50 hover:bg-red-100 text-[#B30D12] text-xs font-bold rounded-xl border border-red-200/90 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs active:scale-[0.99]"
             title="View Vehicle Details"
           >
             <Eye size={13} className="text-[#B30D12] shrink-0" />
-            <span className="font-bold"> View Details</span>
+            <span className="font-bold whitespace-nowrap">View Details</span>
           </Link>
 
           <Link
             href={targetHref}
-            className="w-full py-2.5 px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-2 active:scale-[0.99] group/btn"
+            className="w-full py-2.5 px-2 sm:px-3 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-1.5 active:scale-[0.99] group/btn"
           >
-            <span className="font-bold">Place Bid</span>
+            <span className="font-bold whitespace-nowrap">Place Bid</span>
             <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform shrink-0" />
           </Link>
         </div>

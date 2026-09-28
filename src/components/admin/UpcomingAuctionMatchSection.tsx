@@ -37,7 +37,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
       {/* Top Subtle Red Brand Accent Line */}
       <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
-      
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
         <div>
@@ -68,13 +68,13 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
               className="group rounded-xl border border-slate-200/80 bg-white hover:border-red-200 hover:shadow-sm transition-all flex flex-col overflow-hidden"
             >
               {/* Image & Badges */}
-              <div className="relative h-36 w-full bg-slate-100 overflow-hidden">
-                <img 
-                  src={vehicle.image} 
+              <div className="relative h-40 w-full bg-slate-100 overflow-hidden">
+                <img
+                  src={vehicle.image}
                   alt={vehicle.model}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                
+
                 {/* Auction House & Lot Tag */}
                 <div className="absolute top-2 left-2 flex items-center gap-1">
                   <span className="px-2 py-0.5 rounded-md text-[9px] font-black uppercase tracking-wider bg-slate-900/85 text-white backdrop-blur-xs border border-white/20">
@@ -131,7 +131,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
 
                 {/* Matched Dealers Clickable Area */}
                 <div className="mt-2.5 pt-2 border-t border-slate-100">
-                  <div 
+                  <div
                     onClick={() => handleOpenDrawer(vehicle)}
                     className="flex items-center justify-between p-1.5 rounded-lg bg-red-50/50 hover:bg-red-50 border border-red-100 cursor-pointer transition-colors group/match"
                     title="Click to view detailed list of matched dealers"
@@ -155,11 +155,10 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
                     <button
                       onClick={(e) => handleNotifyMatched(vehicle, e)}
                       disabled={isNotified || isAnimating}
-                      className={`w-full py-1.5 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                        isNotified
-                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                          : 'bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs active:scale-98'
-                      }`}
+                      className={`w-full py-1.5 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${isNotified
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                        : 'bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs active:scale-98'
+                        }`}
                     >
                       {isNotified ? (
                         <>

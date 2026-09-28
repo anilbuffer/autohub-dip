@@ -1163,7 +1163,13 @@ export default function VehiclesPage() {
             ) : viewMode === "grid" ? (
               /* THE EXACT EXISTING 3-COLUMN CARD GRID */
               <div className="space-y-6">
-                <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${isSidebarCollapsed ? "xl:grid-cols-4 lg:grid-cols-3" : "xl:grid-cols-3"}`}>
+                <div
+                  className={`grid grid-cols-1 gap-5 sm:gap-6 ${
+                    isSidebarCollapsed
+                      ? "sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                      : "sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+                  }`}
+                >
                   {paginatedVehicles.map((vehicle) => (
                     <div
                       key={vehicle.id}
@@ -1279,17 +1285,17 @@ export default function VehiclesPage() {
                         </div>
 
                         {/* Card Bottom CTA */}
-                        <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
-                          <div>
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Est. Margin Spread</span>
-                            <span className="text-base font-black text-emerald-700 block font-mono">
+                        <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <div className="min-w-0">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block whitespace-nowrap">Est. Margin Spread</span>
+                            <span className="text-base font-black text-emerald-700 block font-mono whitespace-nowrap">
                               +NZ${vehicle.dynamicMargin.toLocaleString('en-US')}
                             </span>
                           </div>
 
                           <Link
                             href={`/vehicles/${vehicle.id}`}
-                            className="px-4 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5"
+                            className="px-3.5 py-2 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center gap-1.5 shrink-0 whitespace-nowrap"
                           >
                             <span>Calculate</span>
                             <ArrowRight size={13} />

@@ -104,7 +104,7 @@ export default function ProfilePage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+                <h1 className="text-3xl font-black text-slate-900 tracking-tight">
                   {dealer.name}
                 </h1>
                 <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
@@ -173,8 +173,8 @@ export default function ProfilePage() {
                       key={model}
                       onClick={() => toggleModel(model)}
                       className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${isSelected
-                          ? 'bg-[#B30D12] text-white border-[#B30D12] shadow-xs'
-                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                        ? 'bg-[#B30D12] text-white border-[#B30D12] shadow-xs'
+                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                         }`}
                     >
                       {model} {isSelected && '✓'}
@@ -199,8 +199,8 @@ export default function ProfilePage() {
                       key={make}
                       onClick={() => toggleMake(make)}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${isSelected
-                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-xs'
-                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                        ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-xs'
+                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                         }`}
                     >
                       {make} {isSelected && '✓'}
@@ -225,8 +225,8 @@ export default function ProfilePage() {
                       key={fuel}
                       onClick={() => toggleFuel(fuel)}
                       className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${isSelected
-                          ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
-                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                        ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
+                        : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                         }`}
                     >
                       {fuel} {isSelected && '✓'}

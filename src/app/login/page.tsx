@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { 
-  Lock, 
-  Mail, 
-  ArrowRight, 
-  Building2, 
-  Shield, 
-  CheckCircle2, 
-  Sparkles, 
+import {
+  Lock,
+  Mail,
+  ArrowRight,
+  Building2,
+  Shield,
+  CheckCircle2,
+  Sparkles,
   TrendingUp,
   Clock,
   Car
@@ -52,14 +52,14 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-[#080E1A] flex font-sans antialiased text-slate-800">
-      
+
       {/* Left Column: Cinematic Brand Showcase (Hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#0B1322] overflow-hidden flex-col justify-between p-12 text-white border-r border-[#1B2A4A]/50">
         {/* Background Image with Dark Navy Vignette */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center opacity-35 mix-blend-luminosity scale-105"
-          style={{ 
-            backgroundImage: `url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1600&q=80')` 
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1600&q=80')`
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#080E1A] via-[#0B1322]/85 to-[#080E1A]/50" />
@@ -127,7 +127,7 @@ export default function LoginPage() {
       {/* Right Column: Sleek Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-[#F6F8FB]">
         <div className="max-w-md w-full space-y-8 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-          
+
           <div>
             <div className="flex items-center gap-2 lg:hidden mb-4">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-[#1B2A4A] flex items-center justify-center text-white font-black text-xs">
@@ -135,7 +135,7 @@ export default function LoginPage() {
               </div>
               <span className="font-black text-slate-900 tracking-wider">AUTOHUB DIP</span>
             </div>
-            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Sign In to AutoHub DIP</h2>
+            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Sign In to AutoHub DIP</h2>
             <p className="text-xs text-slate-500 font-medium mt-1">
               Select a demo portal below or enter your authorized dealer credentials.
             </p>
@@ -196,8 +196,8 @@ export default function LoginPage() {
               <label className="text-xs font-bold text-slate-700 block mb-1">Commercial Email</label>
               <div className="relative">
                 <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -214,8 +214,8 @@ export default function LoginPage() {
               </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

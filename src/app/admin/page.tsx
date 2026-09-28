@@ -2,15 +2,15 @@
 
 import React, { useState } from "react";
 import AdminLayout from "@/components/layout/AdminLayout";
-import { 
-  Users, 
-  Heart, 
-  Search, 
-  AlertTriangle, 
-  TrendingUp, 
-  Info, 
-  Sparkles, 
-  CheckCircle2, 
+import {
+  Users,
+  Heart,
+  Search,
+  AlertTriangle,
+  TrendingUp,
+  Info,
+  Sparkles,
+  CheckCircle2,
   X,
   Clock,
   ArrowUpRight
@@ -83,7 +83,7 @@ export default function DemandIntelligencePage() {
   return (
     <AdminLayout>
       <div className="space-y-6 pb-12 max-w-7xl mx-auto">
-        
+
         {/* Floating Action Toast Notification */}
         {toastMessage && (
           <div className="fixed bottom-6 right-6 z-50 animate-in fade-in slide-in-from-bottom-4 duration-200">
@@ -92,7 +92,7 @@ export default function DemandIntelligencePage() {
                 <CheckCircle2 size={13} />
               </div>
               <span>{toastMessage}</span>
-              <button 
+              <button
                 onClick={() => setToastMessage(null)}
                 className="text-slate-400 hover:text-white ml-2 p-0.5 cursor-pointer"
               >
@@ -169,31 +169,28 @@ export default function DemandIntelligencePage() {
               <div className="flex items-center gap-0.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
                 <button
                   onClick={() => setTimeRange('7d')}
-                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                    timeRange === '7d' 
-                      ? 'bg-white text-slate-900 shadow-2xs font-extrabold' 
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${timeRange === '7d'
+                    ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
+                    : 'text-slate-600 hover:text-slate-900'
+                    }`}
                 >
                   last 7 days
                 </button>
                 <button
                   onClick={() => setTimeRange('30d')}
-                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                    timeRange === '30d' 
-                      ? 'bg-white text-slate-900 shadow-2xs font-extrabold' 
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${timeRange === '30d'
+                    ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
+                    : 'text-slate-600 hover:text-slate-900'
+                    }`}
                 >
                   30 days
                 </button>
                 <button
                   onClick={() => setTimeRange('90d')}
-                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
-                    timeRange === '90d' 
-                      ? 'bg-white text-slate-900 shadow-2xs font-extrabold' 
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${timeRange === '90d'
+                    ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
+                    : 'text-slate-600 hover:text-slate-900'
+                    }`}
                 >
                   90 days
                 </button>
@@ -242,15 +239,15 @@ export default function DemandIntelligencePage() {
         {/* 2. KPI CARDS (4 IN A ROW)                                                */}
         {/* ========================================================================= */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          
+
           {/* Card 1: Active Dealers */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Active dealers
               </span>
-              <div className="w-8 h-8 rounded-lg bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
-                <Users size={15} />
+              <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
+                <Users size={16} />
               </div>
             </div>
             <div className="mt-3">
@@ -271,11 +268,11 @@ export default function DemandIntelligencePage() {
           {/* Card 2: Active Wish Lists */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Active wish lists
               </span>
-              <div className="w-8 h-8 rounded-lg bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
-                <Heart size={15} />
+              <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
+                <Heart size={18} />
               </div>
             </div>
             <div className="mt-3">
@@ -284,7 +281,7 @@ export default function DemandIntelligencePage() {
                   {kpiData.activeWishLists}
                 </span>
                 <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 flex items-center gap-0.5">
-                  <TrendingUp size={11} /> {kpiData.wishListsTrend}
+                  <TrendingUp size={12} /> {kpiData.wishListsTrend}
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 font-medium">
@@ -296,11 +293,11 @@ export default function DemandIntelligencePage() {
           {/* Card 3: Dealer Searches This Month */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Dealer searches this month
               </span>
-              <div className="w-8 h-8 rounded-lg bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
-                <Search size={15} />
+              <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
+                <Search size={18} />
               </div>
             </div>
             <div className="mt-3">
@@ -309,7 +306,7 @@ export default function DemandIntelligencePage() {
                   {kpiData.searches.toLocaleString('en-US')}
                 </span>
                 <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 flex items-center gap-0.5">
-                  <TrendingUp size={11} /> {kpiData.searchesTrend}
+                  <TrendingUp size={12} /> {kpiData.searchesTrend}
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 font-medium">
@@ -321,11 +318,11 @@ export default function DemandIntelligencePage() {
           {/* Card 4: Unmet Demand */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-red-200 transition-all flex flex-col justify-between">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-[#B30D12] uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Unmet demand
               </span>
-              <div className="w-8 h-8 rounded-lg bg-red-50 text-[#B30D12] border border-red-200 flex items-center justify-center font-bold">
-                <AlertTriangle size={15} />
+              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#B30D12] border border-red-200 flex items-center justify-center font-bold">
+                <AlertTriangle size={18} />
               </div>
             </div>
             <div className="mt-3">
@@ -335,7 +332,7 @@ export default function DemandIntelligencePage() {
                   <span className="text-xs font-bold text-slate-600 ml-1">vehicles</span>
                 </span>
                 <span className="text-xs font-bold text-[#B30D12] bg-red-50 px-2 py-0.5 rounded-md border border-red-200 flex items-center gap-0.5">
-                  <TrendingUp size={11} /> {kpiData.unmetTrend}
+                  <TrendingUp size={12} /> {kpiData.unmetTrend}
                 </span>
               </div>
               <p className="text-xs text-slate-600 mt-1 font-medium">
@@ -379,7 +376,7 @@ export default function DemandIntelligencePage() {
         {/* ========================================================================= */}
         {/* 9. DEMAND BY REGION (BAR CHART)                                          */}
         {/* ========================================================================= */}
-        <DemandByRegionChart 
+        <DemandByRegionChart
           selectedRegion={selectedRegion}
           onSelectRegion={setSelectedRegion}
         />

@@ -1,16 +1,16 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  CheckCircle2, 
-  Send, 
-  Ship, 
-  Warehouse, 
-  Sparkles, 
-  MapPin, 
-  Clock, 
-  DollarSign, 
-  Building2, 
+import {
+  CheckCircle2,
+  Send,
+  Ship,
+  Warehouse,
+  Sparkles,
+  MapPin,
+  Clock,
+  DollarSign,
+  Building2,
   SlidersHorizontal,
   ChevronRight,
   Anchor,
@@ -19,11 +19,11 @@ import {
   Zap,
   Info
 } from 'lucide-react';
-import { 
-  IN_TRANSIT_RORO_SHIPMENTS, 
-  MULTI_TIER_SUPPLY_MATCHES, 
-  MultiTierSupplyMatch, 
-  InTransitRoRoShipment 
+import {
+  IN_TRANSIT_RORO_SHIPMENTS,
+  MULTI_TIER_SUPPLY_MATCHES,
+  MultiTierSupplyMatch,
+  InTransitRoRoShipment
 } from '@/lib/demandIntelligenceData';
 import { useSyncStore } from '@/lib/syncStore';
 
@@ -65,7 +65,7 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      
+
       {/* 1. Header & Three-Tier Supply Pipeline Status Bar (Light Red Brand Gradient, Compact) */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-50/70 via-rose-50/40 to-white border border-red-200/80 shadow-[0_2px_10px_-2px_rgba(179,13,18,0.05),0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-4.5">
         {/* Top Brand Crimson Accent Line */}
@@ -97,19 +97,18 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
 
         {/* 3-Tier Supply Pipeline Summary Cards (Compact) */}
         <div className="pt-3.5 grid grid-cols-1 md:grid-cols-3 gap-3">
-          
+
           {/* Tier 1: Local Yard Stock */}
-          <div 
+          <div
             onClick={() => setSelectedTier(selectedTier === 'Yard Stock' ? 'All' : 'Yard Stock')}
-            className={`p-3 rounded-xl border transition-all cursor-pointer ${
-              selectedTier === 'Yard Stock'
+            className={`p-3 rounded-xl border transition-all cursor-pointer ${selectedTier === 'Yard Stock'
                 ? 'bg-blue-50/70 border-blue-500 shadow-2xs ring-1 ring-blue-500/20'
                 : 'bg-white/80 border-red-100/80 hover:bg-white hover:border-red-200 shadow-2xs'
-            }`}
+              }`}
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5">
-                <div className="w-6 h-6 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
                   <Warehouse size={13} />
                 </div>
                 <div>
@@ -131,17 +130,16 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
           </div>
 
           {/* Tier 2: In-Transit Ro-Ro Ships */}
-          <div 
+          <div
             onClick={() => setSelectedTier(selectedTier === 'In-Transit Ro-Ro' ? 'All' : 'In-Transit Ro-Ro')}
-            className={`p-3 rounded-xl border transition-all cursor-pointer ${
-              selectedTier === 'In-Transit Ro-Ro'
+            className={`p-3 rounded-xl border transition-all cursor-pointer ${selectedTier === 'In-Transit Ro-Ro'
                 ? 'bg-amber-50/70 border-amber-500 shadow-2xs ring-1 ring-amber-500/20'
                 : 'bg-white/80 border-red-100/80 hover:bg-white hover:border-red-200 shadow-2xs'
-            }`}
+              }`}
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5">
-                <div className="w-6 h-6 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
                   <Ship size={13} />
                 </div>
                 <div>
@@ -163,17 +161,16 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
           </div>
 
           {/* Tier 3: Japanese Auction Pipeline */}
-          <div 
+          <div
             onClick={() => setSelectedTier(selectedTier === 'Upcoming Auction' ? 'All' : 'Upcoming Auction')}
-            className={`p-3 rounded-xl border transition-all cursor-pointer ${
-              selectedTier === 'Upcoming Auction'
+            className={`p-3 rounded-xl border transition-all cursor-pointer ${selectedTier === 'Upcoming Auction'
                 ? 'bg-red-50/70 border-[#B30D12] shadow-2xs ring-1 ring-[#B30D12]/20'
                 : 'bg-white/80 border-red-100/80 hover:bg-white hover:border-red-200 shadow-2xs'
-            }`}
+              }`}
           >
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-1.5">
-                <div className="w-6 h-6 rounded-lg bg-red-100 text-[#B30D12] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-red-100 text-[#B30D12] flex items-center justify-center font-bold">
                   <Compass size={13} />
                 </div>
                 <div>
@@ -214,7 +211,7 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-2.5">
             {IN_TRANSIT_RORO_SHIPMENTS.map((vessel) => (
-              <div 
+              <div
                 key={vessel.id}
                 className="p-3 rounded-xl bg-white border border-red-100 shadow-2xs text-xs hover:border-red-300 transition-colors"
               >
@@ -263,7 +260,7 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
 
       {/* 3. Multi-Tier Supply Matching Table & Cards */}
       <div className="bg-white rounded-3xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-5 sm:p-6">
-        
+
         {/* Filter bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-slate-100">
           <div>
@@ -282,11 +279,10 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
                 <button
                   key={tier}
                   onClick={() => setSelectedTier(tier)}
-                  className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                    selectedTier === tier
+                  className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${selectedTier === tier
                       ? 'bg-white text-slate-900 shadow-2xs font-black'
                       : 'text-slate-500 hover:text-slate-800'
-                  }`}
+                    }`}
                 >
                   {tier}
                 </button>
@@ -310,19 +306,18 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
                 {/* Left Side: Vehicle Image & Supply Asset Details */}
                 <div className="flex items-start sm:items-center gap-3 min-w-0">
                   <div className="w-16 h-14 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
-                    <img 
-                      src={match.image} 
-                      alt={match.supplyAssetTitle} 
-                      className="w-full h-full object-cover" 
+                    <img
+                      src={match.image}
+                      alt={match.supplyAssetTitle}
+                      className="w-full h-full object-cover"
                     />
                     <div className="absolute top-1 left-1">
-                      <span className={`px-1 py-0.2 rounded text-[8.5px] font-black uppercase tracking-wider text-white shadow-xs ${
-                        match.supplyTier === 'Yard Stock' 
-                          ? 'bg-blue-600' 
-                          : match.supplyTier === 'In-Transit Ro-Ro' 
-                          ? 'bg-amber-600' 
-                          : 'bg-[#B30D12]'
-                      }`}>
+                      <span className={`px-1 py-0.2 rounded text-[8.5px] font-black uppercase tracking-wider text-white shadow-xs ${match.supplyTier === 'Yard Stock'
+                          ? 'bg-blue-600'
+                          : match.supplyTier === 'In-Transit Ro-Ro'
+                            ? 'bg-amber-600'
+                            : 'bg-[#B30D12]'
+                        }`}>
                         {match.supplyTier === 'Yard Stock' ? 'Yard' : match.supplyTier === 'In-Transit Ro-Ro' ? 'Ro-Ro' : 'Auction'}
                       </span>
                     </div>
@@ -381,17 +376,16 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
 
                 {/* Actions Button Strip */}
                 <div className="flex items-center gap-1.5 shrink-0 self-end lg:self-center">
-                  
+
                   {/* If In-Transit Ro-Ro, allow Pre-Allocating */}
                   {match.supplyTier === 'In-Transit Ro-Ro' && (
                     <button
                       onClick={() => handlePreAllocate(match)}
                       disabled={isAllocated || isAllocating}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-                        isAllocated
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${isAllocated
                           ? 'bg-amber-100 text-amber-800 border border-amber-300 pointer-events-none'
                           : 'bg-amber-500 hover:bg-amber-600 text-white shadow-2xs'
-                      }`}
+                        }`}
                     >
                       <Ship size={12} />
                       <span>{isAllocated ? 'Pre-Allocated' : isAllocating ? 'Allocating...' : 'Pre-Allocate'}</span>
@@ -402,11 +396,10 @@ export default function SupplyMatchingEngine({ onNotifyToast }: SupplyMatchingEn
                   <button
                     onClick={() => handleNotify(match)}
                     disabled={isNotified}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs ${
-                      isNotified
+                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs ${isNotified
                         ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 pointer-events-none'
                         : 'bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white active:scale-98'
-                    }`}
+                      }`}
                   >
                     {isNotified ? (
                       <>

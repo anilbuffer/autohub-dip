@@ -1,28 +1,28 @@
 "use client";
 
 import React, { useState } from 'react';
-import { 
-  TrendingUp, 
-  Calendar, 
-  AlertTriangle, 
-  DollarSign, 
-  Sparkles, 
-  Clock, 
-  Building2, 
-  ArrowUpRight, 
-  Ship, 
-  ChevronRight, 
-  CheckCircle2, 
-  Layers, 
+import {
+  TrendingUp,
+  Calendar,
+  AlertTriangle,
+  DollarSign,
+  Sparkles,
+  Clock,
+  Building2,
+  ArrowUpRight,
+  Ship,
+  ChevronRight,
+  CheckCircle2,
+  Layers,
   BarChart3,
   SlidersHorizontal,
   Compass
 } from 'lucide-react';
-import { 
-  DEMAND_FORECAST_ITEMS, 
-  UNMET_DEMAND_METRICS, 
-  UNMET_DEALER_REQUESTS, 
-  DemandForecastItem 
+import {
+  DEMAND_FORECAST_ITEMS,
+  UNMET_DEMAND_METRICS,
+  UNMET_DEALER_REQUESTS,
+  DemandForecastItem
 } from '@/lib/demandIntelligenceData';
 
 interface DemandForecastSectionProps {
@@ -44,11 +44,11 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
     }
 
     const currentDemand = Math.round(item.currentMonthlyDemand * multiplier);
-    const forecastVal = selectedHorizon === '30d' 
+    const forecastVal = selectedHorizon === '30d'
       ? Math.round(item.forecast30d * multiplier)
       : selectedHorizon === '60d'
-      ? Math.round(item.forecast60d * multiplier)
-      : Math.round(item.forecast90d * multiplier);
+        ? Math.round(item.forecast60d * multiplier)
+        : Math.round(item.forecast90d * multiplier);
 
     const unmetVal = Math.max(0, forecastVal - item.projectedSupplyUnits);
 
@@ -65,10 +65,10 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
 
   return (
     <div className="space-y-4 sm:space-y-5">
-      
+
       {/* 1. Demand Forecast & Unmet Demand Executive KPI Strip (Compact & Light Red Gradient) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5">
-        
+
         {/* KPI 1: Total Unmet Demand Gap */}
         <div className="bg-gradient-to-br from-white via-red-50/50 to-rose-50/70 p-3.5 rounded-xl border border-red-200 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between">
@@ -104,7 +104,7 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
           </div>
           <div className="mt-2">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
+              <span className="text-3xl font-black text-slate-900 tracking-tight">
                 NZ${(UNMET_DEMAND_METRICS.lostGmvNzd / 1000000).toFixed(2)}M
               </span>
               <span className="text-[10px] font-bold text-slate-400">/ ¥156.9M</span>
@@ -127,7 +127,7 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
           </div>
           <div className="mt-2">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
+              <span className="text-3xl font-black text-slate-900 tracking-tight">
                 {UNMET_DEMAND_METRICS.criticalDeficitModelsCount} Models
               </span>
               <span className="text-[9px] font-black text-red-700 bg-red-100 px-1 py-0.2 rounded border border-red-200">
@@ -152,7 +152,7 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
           </div>
           <div className="mt-2">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
+              <span className="text-3xl font-black text-slate-900 tracking-tight">
                 18–22 Days
               </span>
               <span className="text-[9px] font-bold text-blue-800 bg-blue-50 px-1 py-0.2 rounded border border-blue-200">
@@ -187,30 +187,27 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
 
           {/* Horizon & Scenario Toggles */}
           <div className="flex flex-wrap items-center gap-2">
-            
+
             {/* Horizon Selector */}
             <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-red-200/80 text-[11px] font-bold shadow-2xs">
               <button
                 onClick={() => setSelectedHorizon('30d')}
-                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
-                  selectedHorizon === '30d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
-                }`}
+                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${selectedHorizon === '30d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 30d
               </button>
               <button
                 onClick={() => setSelectedHorizon('60d')}
-                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
-                  selectedHorizon === '60d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
-                }`}
+                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${selectedHorizon === '60d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 60d
               </button>
               <button
                 onClick={() => setSelectedHorizon('90d')}
-                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${
-                  selectedHorizon === '90d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
-                }`}
+                className={`px-2.5 py-0.5 rounded-md transition-all cursor-pointer ${selectedHorizon === '90d' ? 'bg-red-50 text-[#B30D12] font-black' : 'text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 90d
               </button>
@@ -235,21 +232,19 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('forecast_table')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'forecast_table'
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${activeTab === 'forecast_table'
                   ? 'bg-slate-900 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                }`}
             >
               Model Forecast &amp; Sourcing Quota
             </button>
             <button
               onClick={() => setActiveTab('unmet_queue')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                activeTab === 'unmet_queue'
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === 'unmet_queue'
                   ? 'bg-[#B30D12] text-white shadow-sm'
                   : 'bg-red-50 text-[#B30D12] hover:bg-red-100 border border-red-200'
-              }`}
+                }`}
             >
               <span>Unmet Dealer Request Queue</span>
               <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[10px] font-black">
@@ -423,13 +418,12 @@ export default function DemandForecastSection({ onOpenSourcingTarget }: DemandFo
                       </td>
 
                       <td className="py-3 px-4 text-right">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
-                          req.status === 'Partially Matched'
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${req.status === 'Partially Matched'
                             ? 'bg-blue-50 text-blue-700 border border-blue-200'
                             : req.status === 'Auction Proxy Set'
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                            : 'bg-red-50 text-[#B30D12] border border-red-200'
-                        }`}>
+                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                              : 'bg-red-50 text-[#B30D12] border border-red-200'
+                          }`}>
                           {req.status}
                         </span>
                       </td>

@@ -487,13 +487,6 @@ export default function Dashboard() {
                   Auckland Auto Group
                 </span>
 
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-[11px] text-amber-700 font-medium shadow-2xs">
-                  <span>Live FX:</span>
-                  <strong className="font-mono text-amber-900 font-bold">
-                    1 NZD = {syncState.fxRateJpyNzd} JPY
-                  </strong>
-                </span>
-
                 <button
                   onClick={() => setShowPreferencesPrompt(true)}
                   className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 hover:bg-red-100 text-[11px] font-semibold text-red-700 hover:text-red-900 transition-colors cursor-pointer border border-red-200/80 shadow-2xs group"
@@ -567,16 +560,16 @@ export default function Dashboard() {
               }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Best Matches For You
               </span>
-              <div className="w-6 h-6 rounded-lg bg-red-50 text-[#B30D12] flex items-center justify-center font-bold">
-                <Flame size={13} />
+              <div className="w-10 h-10 rounded-xl bg-red-50 text-[#B30D12] flex items-center justify-center font-bold">
+                <Flame size={18} />
               </div>
             </div>
             <div className="mt-2">
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-slate-900 tracking-tight">
+                <span className="text-3xl font-black text-slate-900 tracking-tight">
                   {priorityVehicles.length}
                 </span>
                 <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/80">
@@ -592,11 +585,11 @@ export default function Dashboard() {
           {/* Card 2: Projected Margin */}
           <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-xs transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Avg. Estimated Margin
               </span>
-              <div className="w-6 h-6 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-                <TrendingUp size={13} />
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
+                <TrendingUp size={18} />
               </div>
             </div>
             <div className="mt-2">
@@ -618,16 +611,16 @@ export default function Dashboard() {
               }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
                 Live Japanese Lots
               </span>
-              <div className="w-6 h-6 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
-                <Car size={13} />
+              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
+                <Car size={18} />
               </div>
             </div>
             <div className="mt-2">
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-slate-900 tracking-tight">
+                <span className="text-3xl font-black text-slate-900 tracking-tight">
                   {VEHICLES.length}
                 </span>
                 <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
@@ -652,13 +645,13 @@ export default function Dashboard() {
               <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                 Shortlisted by Yard
               </span>
-              <div className="w-6 h-6 rounded-lg bg-rose-50 text-[#B30D12] flex items-center justify-center font-bold">
-                <ShieldCheck size={13} />
+              <div className="w-10 h-10 rounded-xl bg-rose-50 text-[#B30D12] flex items-center justify-center font-bold">
+                <ShieldCheck size={18} />
               </div>
             </div>
             <div className="mt-2">
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-slate-900 tracking-tight">
+                <span className="text-3xl font-black text-slate-900 tracking-tight">
                   {syncState.shortlistedVehicleIds.length}
                 </span>
                 <span className="text-[10px] font-bold text-red-700 bg-red-50 px-1.5 py-0.5 rounded">

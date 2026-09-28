@@ -74,7 +74,7 @@ export default function AdminDealerProfile({ params }: { params: { id: string } 
               </div>
               <div>
                 <div className="flex items-center gap-2.5">
-                  <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+                  <h1 className="text-3xl font-black text-slate-900 tracking-tight">
                     {dealer.name}
                   </h1>
                   <span className="text-xs font-bold text-[#1B2A4A] bg-[#1B2A4A]/10 px-2.5 py-0.5 rounded-full border border-[#1B2A4A]/20 shadow-2xs">

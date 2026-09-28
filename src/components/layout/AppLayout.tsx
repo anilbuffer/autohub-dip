@@ -85,19 +85,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </button>
           </div>
 
-          {/* Live JPY/NZD Rate Chip */}
-          <div className="px-3.5 py-2 mx-3 mt-3 flex items-center justify-between bg-[#0D1627] rounded-xl border border-[#1E2E4E]/80 shadow-2xs text-[11px]">
-            <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-              <TrendingUp size={12} className="text-emerald-400 shrink-0" />
-              <span className="text-slate-400">¥ / NZ$:</span>
-              <span className="font-mono font-bold text-white text-xs">{syncState.fxRateJpyNzd}</span>
-            </div>
-            <span className="text-[9.5px] text-emerald-400 font-bold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/60 flex items-center gap-1">
-              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-              Live
-            </span>
-          </div>
-
           {/* Navigation Links */}
           <nav className="mt-4 px-3 space-y-3">
             <div className="px-3 pb-1.5 text-[10px] font-bold text-slate-400/80 uppercase tracking-wider">
@@ -112,7 +99,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${isActive
-                    ? 'bg-gradient-to-r from-[#B30D12]/20 via-[#B30D12]/10 to-transparent text-white border-l-2 border-[#B30D12] font-medium shadow-2xs'
+                    ? 'bg-gradient-to-r from-[#B30D12]/80 via-[#B30D12]/80 to-[#B30D12]/80 text-white border-l-2 border-[#B30D12] font-medium shadow-2xs'
                     : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
                     }`}
                 >

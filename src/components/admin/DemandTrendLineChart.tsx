@@ -42,8 +42,6 @@ export default function DemandTrendLineChart() {
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
-      {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
@@ -64,16 +62,15 @@ export default function DemandTrendLineChart() {
               <button
                 key={model.id}
                 onClick={() => setActiveModelId(activeModelId === model.id ? null : model.id)}
-                className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all border cursor-pointer ${
-                  activeModelId === model.id
+                className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-bold transition-all border cursor-pointer ${activeModelId === model.id
                     ? 'bg-[#B30D12] text-white border-[#B30D12] shadow-2xs'
                     : isFaded
-                    ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-50'
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
-                }`}
+                      ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-50'
+                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                  }`}
               >
-                <span 
-                  className="w-2 h-2 rounded-full shrink-0" 
+                <span
+                  className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: model.color }}
                 />
                 <span className="text-[10px]">{model.name}</span>
@@ -87,8 +84,8 @@ export default function DemandTrendLineChart() {
       <div className="relative pt-3">
         <div className="w-full overflow-x-auto">
           <div className="min-w-[620px]">
-            <svg 
-              viewBox={`0 0 ${chartWidth} ${chartHeight}`} 
+            <svg
+              viewBox={`0 0 ${chartWidth} ${chartHeight}`}
               className="w-full h-auto overflow-visible select-none"
             >
               {/* Horizontal Grid lines & Y Axis labels */}
@@ -127,9 +124,8 @@ export default function DemandTrendLineChart() {
                       x={xPos}
                       y={chartHeight - 10}
                       textAnchor="middle"
-                      className={`text-[11px] font-bold transition-colors ${
-                        isHovered ? 'fill-slate-900 font-black' : 'fill-slate-400'
-                      }`}
+                      className={`text-[11px] font-bold transition-colors ${isHovered ? 'fill-slate-900 font-black' : 'fill-slate-400'
+                        }`}
                     >
                       {week}
                     </text>

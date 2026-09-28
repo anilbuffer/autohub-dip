@@ -6,9 +6,10 @@ import { Users, TrendingUp, Sparkles, Filter } from 'lucide-react';
 
 interface MostWantedChartProps {
   segmentFilter?: string;
+  activeDealersCount?: number;
 }
 
-export default function MostWantedChart({ segmentFilter = 'All' }: MostWantedChartProps) {
+export default function MostWantedChart({ segmentFilter = 'All', activeDealersCount = 142 }: MostWantedChartProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const filteredModels = TOP_WANTED_MODELS.filter(item => {
@@ -21,8 +22,6 @@ export default function MostWantedChart({ segmentFilter = 'All' }: MostWantedCha
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
-      {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
@@ -38,7 +37,7 @@ export default function MostWantedChart({ segmentFilter = 'All' }: MostWantedCha
         <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
           <div className="flex items-center gap-1.5 text-xs text-slate-700 font-bold bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
             <Users size={13} className="text-[#B30D12]" />
-            <span>142 Active Dealers</span>
+            <span>{activeDealersCount} Active Dealers</span>
           </div>
         </div>
       </div>
@@ -54,24 +53,22 @@ export default function MostWantedChart({ segmentFilter = 'All' }: MostWantedCha
               key={model.id}
               onMouseEnter={() => setHoveredId(model.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className={`p-2 rounded-xl transition-all cursor-pointer border ${
-                isHovered
+              className={`p-2 rounded-xl transition-all cursor-pointer border ${isHovered
                   ? 'bg-red-50/40 border-red-200 shadow-2xs'
                   : 'bg-white/80 border-slate-100 hover:border-slate-200'
-              }`}
+                }`}
             >
               <div className="flex items-center justify-between text-xs mb-1">
                 <div className="flex items-center gap-2 min-w-0">
                   {/* Rank Badge */}
-                  <span className={`w-4.5 h-4.5 rounded-md flex items-center justify-center font-black text-[10px] shrink-0 ${
-                    idx === 0 
-                      ? 'bg-gradient-to-br from-[#B30D12] to-[#940B0F] text-white shadow-2xs' 
-                      : idx === 1 
-                      ? 'bg-slate-200 text-slate-700' 
-                      : idx === 2 
-                      ? 'bg-amber-100 text-amber-800' 
-                      : 'bg-slate-100 text-slate-500'
-                  }`}>
+                  <span className={`w-4.5 h-4.5 rounded-md flex items-center justify-center font-black text-[10px] shrink-0 ${idx === 0
+                      ? 'bg-gradient-to-br from-[#B30D12] to-[#940B0F] text-white shadow-2xs'
+                      : idx === 1
+                        ? 'bg-slate-200 text-slate-700'
+                        : idx === 2
+                          ? 'bg-amber-100 text-amber-800'
+                          : 'bg-slate-100 text-slate-500'
+                    }`}>
                     {idx + 1}
                   </span>
 

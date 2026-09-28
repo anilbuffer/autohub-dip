@@ -13,7 +13,9 @@ import {
   CheckCircle2,
   X,
   Clock,
-  ArrowUpRight
+  ArrowUpRight,
+  Calendar,
+  ChevronDown
 } from "lucide-react";
 
 // Subcomponents
@@ -25,10 +27,17 @@ import RisingCoolingCards from "@/components/admin/RisingCoolingCards";
 import SupplyDemandGapTable from "@/components/admin/SupplyDemandGapTable";
 import UpcomingAuctionMatchSection from "@/components/admin/UpcomingAuctionMatchSection";
 import DemandByRegionChart from "@/components/admin/DemandByRegionChart";
+import CustomDateRangePopover, {
+  formatRangeLabel,
+  getDaysDifference
+} from "@/components/admin/CustomDateRangePopover";
 
 export default function DemandIntelligencePage() {
   // Filters State
-  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('30d');
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | 'custom'>('30d');
+  const [customStartDate, setCustomStartDate] = useState<string>('2026-08-01');
+  const [customEndDate, setCustomEndDate] = useState<string>('2026-09-28');
+  const [isCustomDateOpen, setIsCustomDateOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
   const [selectedSegment, setSelectedSegment] = useState<string>('All');
 
@@ -43,19 +52,56 @@ export default function DemandIntelligencePage() {
     }, 4000);
   };
 
-  // KPI Calculations adjusted slightly by timeRange for interactive demo feel
-  const kpiData = {
-    '7d': {
-      activeDealers: 138,
-      dealersTrend: '+12%',
-      activeWishLists: 295,
-      wishListsTrend: '+16%',
-      searches: 1420,
-      searchesTrend: '+28%',
-      unmetDemand: 980,
-      unmetTrend: '+9%',
-    },
-    '30d': {
+  const customDays = getDaysDifference(customStartDate, customEndDate);
+
+  // KPI Calculations adjusted dynamically by timeRange
+  const kpiData = (() => {
+    if (timeRange === '7d') {
+      return {
+        activeDealers: 138,
+        dealersTrend: '+12%',
+        activeWishLists: 295,
+        wishListsTrend: '+16%',
+        searches: 1420,
+        searchesTrend: '+28%',
+        unmetDemand: 980,
+        unmetTrend: '+9%',
+        periodLabel: 'last 7 days',
+      };
+    }
+    if (timeRange === '90d') {
+      return {
+        activeDealers: 154,
+        dealersTrend: '+22%',
+        activeWishLists: 362,
+        wishListsTrend: '+29%',
+        searches: 14580,
+        searchesTrend: '+42%',
+        unmetDemand: 1340,
+        unmetTrend: '+15%',
+        periodLabel: 'last 90 days',
+      };
+    }
+    if (timeRange === 'custom') {
+      const scaledDealers = Math.min(168, Math.max(120, Math.round(130 + Math.sqrt(customDays) * 3.5)));
+      const scaledWishLists = Math.min(420, Math.max(210, Math.round(240 + Math.sqrt(customDays) * 11)));
+      const scaledSearches = Math.round(customDays * 162);
+      const scaledUnmet = Math.min(1600, Math.max(750, Math.round(850 + Math.sqrt(customDays) * 42)));
+
+      return {
+        activeDealers: scaledDealers,
+        dealersTrend: `+${Math.min(38, Math.max(6, Math.round(customDays * 0.4)))}%`,
+        activeWishLists: scaledWishLists,
+        wishListsTrend: `+${Math.min(40, Math.max(8, Math.round(customDays * 0.45)))}%`,
+        searches: scaledSearches,
+        searchesTrend: `+${Math.min(48, Math.max(10, Math.round(customDays * 0.6)))}%`,
+        unmetDemand: scaledUnmet,
+        unmetTrend: `+${Math.min(25, Math.max(5, Math.round(customDays * 0.25)))}%`,
+        periodLabel: `${formatRangeLabel(customStartDate, customEndDate)} (${customDays}d)`,
+      };
+    }
+    // Default '30d'
+    return {
       activeDealers: 142,
       dealersTrend: '+18%',
       activeWishLists: 318,
@@ -64,25 +110,16 @@ export default function DemandIntelligencePage() {
       searchesTrend: '+31%',
       unmetDemand: 1120,
       unmetTrend: '+12%',
-    },
-    '90d': {
-      activeDealers: 154,
-      dealersTrend: '+22%',
-      activeWishLists: 362,
-      wishListsTrend: '+29%',
-      searches: 14580,
-      searchesTrend: '+42%',
-      unmetDemand: 1340,
-      unmetTrend: '+15%',
-    }
-  }[timeRange];
+      periodLabel: 'last 30 days',
+    };
+  })();
 
   const regionsList = ['All', 'Auckland', 'Waikato', 'Wellington', 'Canterbury', 'Otago'];
   const segmentsList = ['All', 'Hybrid', 'SUV', 'Compact', 'Sedan/Wagon'];
 
   return (
     <AdminLayout>
-      <div className="space-y-6 pb-12 max-w-7xl mx-auto">
+      <div className="space-y-6 pb-12 max-w-full mx-auto">
 
         {/* Floating Action Toast Notification */}
         {toastMessage && (
@@ -105,9 +142,7 @@ export default function DemandIntelligencePage() {
         {/* ========================================================================= */}
         {/* 1. HEADER AND FILTERS                                                    */}
         {/* ========================================================================= */}
-        <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-5 sm:p-6 overflow-hidden">
-          {/* Subtle Top Red Accent Line */}
-          <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
+        <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-5 sm:p-6">
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
@@ -165,10 +200,14 @@ export default function DemandIntelligencePage() {
 
             {/* Filters: Time Range, NZ Region, Vehicle Segment */}
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-              {/* Time Range Filter */}
+              {/* Time Range Filter Pill Group */}
               <div className="flex items-center gap-0.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
                 <button
-                  onClick={() => setTimeRange('7d')}
+                  type="button"
+                  onClick={() => {
+                    setTimeRange('7d');
+                    setIsCustomDateOpen(false);
+                  }}
                   className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${timeRange === '7d'
                     ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
                     : 'text-slate-600 hover:text-slate-900'
@@ -177,7 +216,11 @@ export default function DemandIntelligencePage() {
                   last 7 days
                 </button>
                 <button
-                  onClick={() => setTimeRange('30d')}
+                  type="button"
+                  onClick={() => {
+                    setTimeRange('30d');
+                    setIsCustomDateOpen(false);
+                  }}
                   className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${timeRange === '30d'
                     ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
                     : 'text-slate-600 hover:text-slate-900'
@@ -186,7 +229,11 @@ export default function DemandIntelligencePage() {
                   30 days
                 </button>
                 <button
-                  onClick={() => setTimeRange('90d')}
+                  type="button"
+                  onClick={() => {
+                    setTimeRange('90d');
+                    setIsCustomDateOpen(false);
+                  }}
                   className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${timeRange === '90d'
                     ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
                     : 'text-slate-600 hover:text-slate-900'
@@ -194,6 +241,53 @@ export default function DemandIntelligencePage() {
                 >
                   90 days
                 </button>
+
+                {/* Custom Date Filter Option */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setIsCustomDateOpen((prev) => !prev)}
+                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${timeRange === 'custom'
+                      ? 'bg-white text-slate-900 shadow-2xs font-extrabold ring-1 ring-slate-200/80'
+                      : 'text-slate-600 hover:text-slate-900'
+                      }`}
+                    title="Select custom date range"
+                  >
+                    <Calendar
+                      size={13}
+                      className={timeRange === 'custom' ? 'text-[#B30D12]' : 'text-slate-500'}
+                    />
+                    <span>
+                      {timeRange === 'custom'
+                        ? formatRangeLabel(customStartDate, customEndDate)
+                        : 'Custom date'}
+                    </span>
+                    <ChevronDown
+                      size={11}
+                      className={`transition-transform duration-150 ${isCustomDateOpen ? 'rotate-180 text-slate-700' : 'text-slate-400'
+                        }`}
+                    />
+                  </button>
+
+                  {/* Custom Date Range Popover */}
+                  <CustomDateRangePopover
+                    isOpen={isCustomDateOpen}
+                    onClose={() => setIsCustomDateOpen(false)}
+                    startDate={customStartDate}
+                    endDate={customEndDate}
+                    onApply={(newStart, newEnd) => {
+                      setCustomStartDate(newStart);
+                      setCustomEndDate(newEnd);
+                      setTimeRange('custom');
+                      setIsCustomDateOpen(false);
+                      const days = getDaysDifference(newStart, newEnd);
+                      showToast(
+                        `Date filter set to ${formatRangeLabel(newStart, newEnd)} (${days} ${days === 1 ? 'day' : 'days'
+                        })`
+                      );
+                    }}
+                  />
+                </div>
               </div>
 
               {/* NZ Region Dropdown */}
@@ -221,10 +315,14 @@ export default function DemandIntelligencePage() {
               {/* Reset if filtered */}
               {(selectedRegion !== 'All' || selectedSegment !== 'All' || timeRange !== '30d') && (
                 <button
+                  type="button"
                   onClick={() => {
                     setSelectedRegion('All');
                     setSelectedSegment('All');
                     setTimeRange('30d');
+                    setCustomStartDate('2026-08-01');
+                    setCustomEndDate('2026-09-28');
+                    setIsCustomDateOpen(false);
                   }}
                   className="text-xs font-bold text-[#B30D12] hover:text-[#940B0F] cursor-pointer ml-1 underline"
                 >
@@ -260,7 +358,7 @@ export default function DemandIntelligencePage() {
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 font-medium">
-                vs previous period
+                vs previous {timeRange === 'custom' ? `${customDays}d period` : 'period'}
               </p>
             </div>
           </div>
@@ -285,16 +383,22 @@ export default function DemandIntelligencePage() {
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 font-medium">
-                vs previous period
+                vs previous {timeRange === 'custom' ? `${customDays}d period` : 'period'}
               </p>
             </div>
           </div>
 
-          {/* Card 3: Dealer Searches This Month */}
+          {/* Card 3: Dealer Searches */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all flex flex-col justify-between">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-                Dealer searches this month
+                {timeRange === 'custom'
+                  ? `Dealer searches (${customDays}d)`
+                  : timeRange === '7d'
+                    ? 'Dealer searches (last 7 days)'
+                    : timeRange === '90d'
+                      ? 'Dealer searches (last 90 days)'
+                      : 'Dealer searches this month'}
               </span>
               <div className="w-10 h-10 rounded-xl bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center font-bold">
                 <Search size={18} />
@@ -310,7 +414,7 @@ export default function DemandIntelligencePage() {
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 font-medium">
-                vs previous period
+                vs previous {timeRange === 'custom' ? `${customDays}d period` : 'period'}
               </p>
             </div>
           </div>
@@ -351,7 +455,10 @@ export default function DemandIntelligencePage() {
         {/* ========================================================================= */}
         {/* 4. MOST-WANTED MODELS (HORIZONTAL BAR CHART)                             */}
         {/* ========================================================================= */}
-        <MostWantedChart segmentFilter={selectedSegment} />
+        <MostWantedChart
+          segmentFilter={selectedSegment}
+          activeDealersCount={kpiData.activeDealers}
+        />
 
         {/* ========================================================================= */}
         {/* 5. DEMAND TREND (LINE CHART)                                             */}

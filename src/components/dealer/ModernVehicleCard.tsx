@@ -9,7 +9,8 @@ import {
   Bookmark,
   BookmarkCheck,
   Ship,
-  ChevronRight
+  ChevronRight,
+  Building2
 } from "lucide-react";
 import { Vehicle } from "@/lib/data";
 
@@ -25,6 +26,7 @@ interface ModernVehicleCardProps {
   isShortlisted: boolean;
   onToggleShortlist: (id: number) => void;
   onAskCopilot: (query: string) => void;
+  showDealerBadge?: boolean;
 }
 
 export default function ModernVehicleCard({
@@ -32,6 +34,7 @@ export default function ModernVehicleCard({
   isShortlisted,
   onToggleShortlist,
   onAskCopilot,
+  showDealerBadge = false,
 }: ModernVehicleCardProps) {
   return (
     <div className="group bg-white rounded-2xl border border-slate-200/90 shadow-[0_4px_16px_-3px_rgba(15,23,42,0.08),0_2px_4px_-1px_rgba(15,23,42,0.03)] hover:shadow-[0_20px_35px_-8px_rgba(15,23,42,0.15)] hover:border-slate-300 transition-all duration-200 flex flex-col overflow-hidden">
@@ -138,6 +141,27 @@ export default function ModernVehicleCard({
               </span>
             </div>
           </div>
+
+          {/* Optional Admin Dealership Allocation Badge */}
+          {showDealerBadge && (
+            <div className="flex items-center justify-between px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-200/80 text-xs">
+              <div className="flex items-center gap-1.5 font-bold text-slate-700 truncate">
+                <Building2 size={12} className="text-[#B30D12] shrink-0" />
+                <span className="truncate">{vehicle.dealer ? `Allocated: ${vehicle.dealer}` : "Unallocated Lot"}</span>
+              </div>
+              <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md ${
+                vehicle.status === "Priority"
+                  ? "bg-red-50 text-[#B30D12] border border-red-200"
+                  : vehicle.status === "Allocated"
+                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                  : vehicle.status === "Consider"
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  : "bg-slate-100 text-slate-700 border border-slate-200"
+              }`}>
+                {vehicle.status || "Available"}
+              </span>
+            </div>
+          )}
 
           {/* Row 3: Scannable Specification Pill Tags */}
           <div className="flex flex-wrap items-center gap-1.5 pt-0.5">

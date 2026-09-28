@@ -20,7 +20,7 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
     setTimeout(() => {
       setIsDownloading(false);
       onNotifyToast(
-        lang === 'en' 
+        lang === 'en'
           ? "PDF Executive Brief downloaded for AutoHub Sourcing Board"
           : "AutoHub DIP仕入れ役員会向けPDFブリーフをダウンロードしました"
       );
@@ -74,22 +74,20 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
           <div className="flex items-center p-0.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold">
             <button
               onClick={() => setLang('en')}
-              className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] cursor-pointer ${
-                lang === 'en'
-                  ? 'bg-white text-slate-900 shadow-2xs font-black'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] cursor-pointer ${lang === 'en'
+                ? 'bg-white text-slate-900 shadow-2xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               <Globe2 size={11} />
               <span>EN</span>
             </button>
             <button
               onClick={() => setLang('jp')}
-              className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] cursor-pointer ${
-                lang === 'jp'
-                  ? 'bg-white text-slate-900 shadow-2xs font-black'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 text-[11px] cursor-pointer ${lang === 'jp'
+                ? 'bg-white text-slate-900 shadow-2xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               <span className="font-japanese">日本語</span>
             </button>
@@ -137,33 +135,6 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
         </div>
       </div>
 
-      {/* Recommended Sourcing Targets breakdown pills */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 text-xs">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-            {lang === 'en' ? 'Recommended Action:' : '推奨アクション:'}
-          </span>
-          {brief.targets.map((target, idx) => (
-            <div
-              key={idx}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 shadow-2xs text-[11px]"
-            >
-              <span className="font-bold text-slate-900">{target.model}</span>
-              <span className="px-1.5 py-0.2 rounded font-black text-[10px] bg-red-50 text-[#B30D12] border border-red-200">
-                {target.recommendation}
-              </span>
-              <span className="text-[10px] text-slate-400 hidden md:inline">
-                ({target.house})
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-1 text-slate-400 text-[10px] shrink-0 font-medium">
-          <Clock size={11} className="text-slate-400" />
-          <span>{brief.timestamp}</span>
-        </div>
-      </div>
     </div>
   );
 }

@@ -37,7 +37,7 @@ export interface Vehicle {
   maxBidNzd: number;
   targetMarginNzd: number;
   score: number;
-  status: "Priority" | "Consider" | "Review";
+  status: "Priority" | "Consider" | "Review" | "Allocated" | "Available" | "Reserved";
   fuel: string;
   engine: string;
   transmission: string;

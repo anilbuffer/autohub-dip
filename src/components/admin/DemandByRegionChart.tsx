@@ -9,9 +9,9 @@ interface DemandByRegionChartProps {
   onSelectRegion?: (region: string) => void;
 }
 
-export default function DemandByRegionChart({ 
-  selectedRegion = 'All', 
-  onSelectRegion 
+export default function DemandByRegionChart({
+  selectedRegion = 'All',
+  onSelectRegion
 }: DemandByRegionChartProps) {
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
@@ -19,9 +19,7 @@ export default function DemandByRegionChart({
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
-      {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
-      
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
         <div>
@@ -52,13 +50,12 @@ export default function DemandByRegionChart({
               onMouseEnter={() => setHoveredRegion(item.region)}
               onMouseLeave={() => setHoveredRegion(null)}
               onClick={() => onSelectRegion && onSelectRegion(isSelected ? 'All' : item.region)}
-              className={`p-2 sm:p-2.5 rounded-xl border transition-all cursor-pointer ${
-                isSelected
+              className={`p-2 sm:p-2.5 rounded-xl border transition-all cursor-pointer ${isSelected
                   ? 'bg-red-50/50 border-[#B30D12] shadow-2xs ring-1 ring-[#B30D12]/20'
                   : isHovered
-                  ? 'bg-slate-50 border-slate-300'
-                  : 'bg-white/80 border-slate-100 hover:border-slate-200'
-              }`}
+                    ? 'bg-slate-50 border-slate-300'
+                    : 'bg-white/80 border-slate-100 hover:border-slate-200'
+                }`}
             >
               <div className="flex items-center justify-between text-xs mb-1">
                 <div className="flex items-center gap-2">

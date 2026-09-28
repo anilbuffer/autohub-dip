@@ -2,12 +2,12 @@
 
 import React, { useState, useMemo } from 'react';
 import { TREND_TOP_5, WEEKS_LABELS } from '@/lib/demandIntelligenceData';
-import { 
-  TrendingUp, 
-  Activity, 
-  Sparkles, 
-  Flame, 
-  Zap, 
+import {
+  TrendingUp,
+  Activity,
+  Sparkles,
+  Flame,
+  Zap,
   Info,
   Calendar,
   Layers,
@@ -101,8 +101,6 @@ export default function DemandTrendLineChart() {
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-6 overflow-hidden">
-      {/* Top Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 via-indigo-500 to-[#B30D12]" />
 
       {/* Header Area */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
@@ -127,11 +125,10 @@ export default function DemandTrendLineChart() {
           <button
             type="button"
             onClick={() => setActiveModelId(null)}
-            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer border ${
-              activeModelId === null
+            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer border ${activeModelId === null
                 ? 'bg-slate-900 text-white border-slate-900 shadow-2xs'
                 : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
+              }`}
           >
             All Models
           </button>
@@ -143,13 +140,12 @@ export default function DemandTrendLineChart() {
                 key={model.id}
                 type="button"
                 onClick={() => setActiveModelId(isSelected ? null : model.id)}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
-                  isSelected
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all border cursor-pointer ${isSelected
                     ? 'text-white shadow-2xs'
                     : activeModelId !== null
                       ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-60'
                       : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
-                }`}
+                  }`}
                 style={{
                   backgroundColor: isSelected ? model.color : undefined,
                   borderColor: isSelected ? model.color : undefined,
@@ -160,9 +156,8 @@ export default function DemandTrendLineChart() {
                   style={{ backgroundColor: isSelected ? '#ffffff' : model.color }}
                 />
                 <span>{model.name}</span>
-                <span className={`text-[10px] px-1 py-0.2 rounded font-extrabold ${
-                  isSelected ? 'bg-black/25 text-white' : 'bg-emerald-50 text-emerald-700'
-                }`}>
+                <span className={`text-[10px] px-1 py-0.2 rounded font-extrabold ${isSelected ? 'bg-black/25 text-white' : 'bg-emerald-50 text-emerald-700'
+                  }`}>
                   +{model.pctChange}%
                 </span>
               </button>
@@ -263,11 +258,10 @@ export default function DemandTrendLineChart() {
                       x={xPos}
                       y={chartHeight - 11}
                       textAnchor="middle"
-                      className={`text-[10.5px] transition-all cursor-pointer ${
-                        isSelected 
-                          ? 'fill-white font-black' 
+                      className={`text-[10.5px] transition-all cursor-pointer ${isSelected
+                          ? 'fill-white font-black'
                           : 'fill-slate-400 hover:fill-slate-900 font-bold'
-                      }`}
+                        }`}
                       onClick={() => setHoveredWeekIdx(idx)}
                     >
                       {week}
@@ -317,9 +311,9 @@ export default function DemandTrendLineChart() {
                 const pathData = getSmoothLinePath(model.values);
 
                 return (
-                  <g 
-                    key={model.id} 
-                    className="transition-opacity duration-200" 
+                  <g
+                    key={model.id}
+                    className="transition-opacity duration-200"
                     opacity={isFaded ? 0.2 : 1}
                   >
                     {/* Background glow stroke for active model */}
@@ -425,11 +419,10 @@ export default function DemandTrendLineChart() {
                 <div
                   key={model.id}
                   onClick={() => setActiveModelId(isSelected ? null : model.id)}
-                  className={`p-3 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col justify-between ${
-                    isSelected
+                  className={`p-3 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col justify-between ${isSelected
                       ? 'bg-slate-900 text-white border-slate-900 shadow-md -translate-y-0.5'
                       : 'bg-white border-slate-200/90 hover:border-slate-300 hover:shadow-2xs'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between gap-1 mb-1.5">
                     <div className="flex items-center gap-1.5 min-w-0">
@@ -437,39 +430,34 @@ export default function DemandTrendLineChart() {
                         className="w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs"
                         style={{ backgroundColor: model.color }}
                       />
-                      <span className={`text-xs font-black truncate ${
-                        isSelected ? 'text-white' : 'text-slate-900'
-                      }`}>
+                      <span className={`text-xs font-black truncate ${isSelected ? 'text-white' : 'text-slate-900'
+                        }`}>
                         {model.name.replace('Toyota ', '').replace('Honda ', '').replace('Mazda ', '')}
                       </span>
                     </div>
 
-                    <span className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded ${
-                      isSelected 
-                        ? 'bg-white/20 text-white' 
+                    <span className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded ${isSelected
+                        ? 'bg-white/20 text-white'
                         : 'bg-emerald-50 text-emerald-800 border border-emerald-200/80'
-                    }`}>
+                      }`}>
                       +{meta?.pctChange}%
                     </span>
                   </div>
 
                   <div className="flex items-baseline justify-between mt-1">
                     <div>
-                      <span className={`text-lg font-black tracking-tight leading-none ${
-                        isSelected ? 'text-white' : 'text-slate-900'
-                      }`}>
+                      <span className={`text-lg font-black tracking-tight leading-none ${isSelected ? 'text-white' : 'text-slate-900'
+                        }`}>
                         {currentVal}
                       </span>
-                      <span className={`text-[10px] font-medium ml-1 ${
-                        isSelected ? 'text-slate-300' : 'text-slate-400'
-                      }`}>
+                      <span className={`text-[10px] font-medium ml-1 ${isSelected ? 'text-slate-300' : 'text-slate-400'
+                        }`}>
                         units
                       </span>
                     </div>
 
-                    <span className={`text-[9.5px] font-medium ${
-                      isSelected ? 'text-slate-400' : 'text-slate-400'
-                    }`}>
+                    <span className={`text-[9.5px] font-medium ${isSelected ? 'text-slate-400' : 'text-slate-400'
+                      }`}>
                       {WEEKS_LABELS[hoveredWeekIdx]}
                     </span>
                   </div>

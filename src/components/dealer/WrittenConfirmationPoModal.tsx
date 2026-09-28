@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Vehicle } from "@/lib/data";
 import { SyncState } from "@/lib/syncStore";
+import PoTransmissionSuccessModal from "./PoTransmissionSuccessModal";
 
 interface WrittenConfirmationPoModalProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export default function WrittenConfirmationPoModal({
     vehicles.map((v) => v.id)
   );
   const [isTransmitted, setIsTransmitted] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Sync selectedIds when vehicles prop changes
@@ -86,6 +88,7 @@ export default function WrittenConfirmationPoModal({
 
   const handleTransmit = () => {
     setIsTransmitted(true);
+    setShowSuccessModal(true);
     if (onConfirmed) {
       onConfirmed(poNumber);
     }
@@ -180,16 +183,24 @@ ${selectedVehicles
         <div className="p-6 overflow-y-auto space-y-6 text-slate-800 print:overflow-visible">
           {/* Success Banner if Transmitted */}
           {isTransmitted && (
-            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-3 print:hidden">
-              <CheckCircle2 size={20} className="text-emerald-600 shrink-0 mt-0.5" />
-              <div>
-                <h4 className="text-sm font-bold text-emerald-900">
-                  Written Confirmation Transmitted to Heiwa Auto Japan
-                </h4>
-                <p className="text-xs text-emerald-700 mt-0.5">
-                  Your purchase order reference <strong>{poNumber}</strong> has been logged with the Heiwa Japan Tokyo/Kobe export desk. A bilateral confirmation receipt has been dispatched to Auckland Auto Group.
-                </p>
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start justify-between gap-3 print:hidden">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 size={20} className="text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-bold text-emerald-900">
+                    Written Confirmation Transmitted to Heiwa Auto Japan
+                  </h4>
+                  <p className="text-xs text-emerald-700 mt-0.5">
+                    Your purchase order reference <strong>{poNumber}</strong> has been logged with the Heiwa Japan Tokyo/Kobe export desk. A bilateral confirmation receipt has been dispatched to Auckland Auto Group.
+                  </p>
+                </div>
               </div>
+              <button
+                onClick={() => setShowSuccessModal(true)}
+                className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shrink-0 transition-colors shadow-xs cursor-pointer"
+              >
+                View Heiwa Receipt
+              </button>
             </div>
           )}
 
@@ -471,8 +482,14 @@ ${selectedVehicles
               <span>Print PO Form</span>
             </button>
             <button
-              onClick={handleTransmit}
-              disabled={isTransmitted || selectedVehicles.length === 0}
+              onClick={() => {
+                if (isTransmitted) {
+                  setShowSuccessModal(true);
+                } else {
+                  handleTransmit();
+                }
+              }}
+              disabled={selectedVehicles.length === 0}
               className={`px-5 py-2 rounded-xl text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer ${
                 isTransmitted
                   ? "bg-emerald-600 hover:bg-emerald-700"
@@ -480,10 +497,24 @@ ${selectedVehicles
               }`}
             >
               <CheckCircle2 size={14} />
-              <span>{isTransmitted ? "Confirmation Dispatched" : "Confirm & Transmit PO to Heiwa"}</span>
+              <span>{isTransmitted ? "View Transmission Receipt" : "Confirm & Transmit PO to Heiwa"}</span>
             </button>
           </div>
         </div>
+
+        {/* Heiwa PO Transmission Confirmation Modal */}
+        <PoTransmissionSuccessModal
+          isOpen={showSuccessModal}
+          onClose={() => setShowSuccessModal(false)}
+          poNumber={poNumber}
+          vehicles={selectedVehicles.length > 0 ? selectedVehicles : vehicles}
+          syncState={syncState}
+          onViewPoDocument={() => setShowSuccessModal(false)}
+          onCompleteAndExit={() => {
+            setShowSuccessModal(false);
+            onClose();
+          }}
+        />
       </div>
     </div>
   );

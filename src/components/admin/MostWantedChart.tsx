@@ -3,19 +3,19 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { TOP_WANTED_MODELS, TopModelDemand } from '@/lib/demandIntelligenceData';
-import { 
-  Users, 
-  TrendingUp, 
-  Sparkles, 
-  Filter, 
-  Trophy, 
-  Medal, 
-  Flame, 
-  Zap, 
-  Clock, 
-  LayoutGrid, 
-  List, 
-  ArrowUpRight, 
+import {
+  Users,
+  TrendingUp,
+  Sparkles,
+  Filter,
+  Trophy,
+  Medal,
+  Flame,
+  Zap,
+  Clock,
+  LayoutGrid,
+  List,
+  ArrowUpRight,
   Car,
   Target,
   ArrowUpDown,
@@ -129,8 +129,6 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-6 overflow-hidden">
-      {/* Brand Accent Top Line */}
-      <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#B30D12] via-[#e11d48] to-[#B30D12]" />
 
       {/* Header Area */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
@@ -167,11 +165,10 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
             <button
               type="button"
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                viewMode === 'grid'
-                  ? 'bg-white text-slate-900 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+              className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'grid'
+                ? 'bg-white text-slate-900 shadow-2xs'
+                : 'text-slate-500 hover:text-slate-900'
+                }`}
               title="2-Column Card Grid"
             >
               <LayoutGrid size={15} />
@@ -179,11 +176,10 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
             <button
               type="button"
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                viewMode === 'list'
-                  ? 'bg-white text-slate-900 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+              className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'list'
+                ? 'bg-white text-slate-900 shadow-2xs'
+                : 'text-slate-500 hover:text-slate-900'
+                }`}
               title="Compact Ranked List"
             >
               <List size={15} />
@@ -213,16 +209,14 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                 key={seg}
                 type="button"
                 onClick={() => setLocalSegment(seg)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  isActive
-                    ? 'bg-slate-900 text-white shadow-2xs'
-                    : 'bg-slate-100 hover:bg-slate-200/70 text-slate-600 hover:text-slate-900'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${isActive
+                  ? 'bg-slate-900 text-white shadow-2xs'
+                  : 'bg-slate-100 hover:bg-slate-200/70 text-slate-600 hover:text-slate-900'
+                  }`}
               >
                 <span>{seg}</span>
-                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                  isActive ? 'bg-slate-800 text-slate-200' : 'bg-slate-200/80 text-slate-500'
-                }`}>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-slate-800 text-slate-200' : 'bg-slate-200/80 text-slate-500'
+                  }`}>
                   {count}
                 </span>
               </button>
@@ -239,33 +233,30 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
             <button
               type="button"
               onClick={() => setSortBy('demand')}
-              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                sortBy === 'demand'
-                  ? 'bg-white text-slate-900 shadow-2xs font-black'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${sortBy === 'demand'
+                ? 'bg-white text-slate-900 shadow-2xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               Demand
             </button>
             <button
               type="button"
               onClick={() => setSortBy('turn')}
-              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                sortBy === 'turn'
-                  ? 'bg-white text-slate-900 shadow-2xs font-black'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${sortBy === 'turn'
+                ? 'bg-white text-slate-900 shadow-2xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               Fastest Turn
             </button>
             <button
               type="button"
               onClick={() => setSortBy('margin')}
-              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
-                sortBy === 'margin'
-                  ? 'bg-white text-slate-900 shadow-2xs font-black'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${sortBy === 'margin'
+                ? 'bg-white text-slate-900 shadow-2xs font-black'
+                : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               Top Margin
             </button>
@@ -275,7 +266,7 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
 
       {/* Highlights Strip */}
       {topPerformer && (
-        <div className="my-3 px-3.5 py-2 rounded-xl bg-gradient-to-r from-red-50/60 via-slate-50 to-slate-50/40 border border-red-100/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="my-3 px-3.5 py-2 rounded-xl bg-gradient-to-r from-slate-50/60 via-slate-50 to-slate-50/40 border border-slate-100/80 flex flex-wrap items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2">
             <span className="w-5 h-5 rounded-full bg-[#B30D12] text-white flex items-center justify-center shrink-0">
               <Trophy size={11} className="text-amber-300" />
@@ -316,13 +307,12 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                 key={model.id}
                 onMouseEnter={() => setHoveredId(model.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className={`relative rounded-xl border transition-all duration-200 p-3.5 sm:p-4 flex flex-col justify-between overflow-hidden group ${
-                  isHovered
-                    ? 'bg-white border-slate-300 shadow-md -translate-y-0.5'
-                    : isTop1
-                      ? 'bg-gradient-to-br from-red-50/25 via-white to-white border-red-200/90 shadow-2xs'
-                      : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-[0_1px_2px_rgba(0,0,0,0.02)]'
-                }`}
+                className={`relative rounded-xl border transition-all duration-200 p-3.5 sm:p-4 flex flex-col justify-between overflow-hidden group ${isHovered
+                  ? 'bg-white border-slate-300 shadow-md -translate-y-0.5'
+                  : isTop1
+                    ? 'bg-gradient-to-br from-red-50/25 via-white to-white border-red-200/90 shadow-2xs'
+                    : 'bg-white border-slate-200/90 hover:border-slate-300 shadow-[0_1px_2px_rgba(0,0,0,0.02)]'
+                  }`}
               >
                 {/* Top Corner Rank Glow for Top 3 */}
                 {isTop1 && (
@@ -343,15 +333,14 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                         />
                         {/* Rank Badge inside/over Thumbnail */}
                         <div className="absolute top-1 left-1">
-                          <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[10px] shadow-xs ${
-                            isTop1
-                              ? 'bg-gradient-to-br from-[#B30D12] to-[#800A0D] text-white'
-                              : isTop2
-                                ? 'bg-slate-800 text-white'
-                                : isTop3
-                                  ? 'bg-amber-600 text-white'
-                                  : 'bg-black/70 backdrop-blur-xs text-white'
-                          }`}>
+                          <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[10px] shadow-xs ${isTop1
+                            ? 'bg-gradient-to-br from-[#B30D12] to-[#800A0D] text-white'
+                            : isTop2
+                              ? 'bg-slate-800 text-white'
+                              : isTop3
+                                ? 'bg-amber-600 text-white'
+                                : 'bg-black/70 backdrop-blur-xs text-white'
+                            }`}>
                             {idx + 1}
                           </span>
                         </div>
@@ -375,11 +364,10 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
 
                         {/* Attribute Badges */}
                         <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                          <span className={`px-1.5 py-0.5 rounded text-[9.5px] font-bold border flex items-center gap-1 ${
-                            model.fuel.includes('Hybrid')
-                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                              : 'bg-slate-100 text-slate-700 border-slate-200'
-                          }`}>
+                          <span className={`px-1.5 py-0.5 rounded text-[9.5px] font-bold border flex items-center gap-1 ${model.fuel.includes('Hybrid')
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : 'bg-slate-100 text-slate-700 border-slate-200'
+                            }`}>
                             {model.fuel.includes('Hybrid') && <Zap size={9} className="text-emerald-600 fill-emerald-600" />}
                             {model.fuel}
                           </span>
@@ -476,23 +464,21 @@ export default function MostWantedChart({ segmentFilter = 'All', activeDealersCo
                 key={model.id}
                 onMouseEnter={() => setHoveredId(model.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                className={`p-2.5 sm:p-3 rounded-xl transition-all duration-150 cursor-pointer border flex items-center justify-between gap-3 ${
-                  isHovered
-                    ? 'bg-red-50/40 border-red-200 shadow-2xs'
-                    : 'bg-white border-slate-100 hover:border-slate-200'
-                }`}
+                className={`p-2.5 sm:p-3 rounded-xl transition-all duration-150 cursor-pointer border flex items-center justify-between gap-3 ${isHovered
+                  ? 'bg-red-50/40 border-red-200 shadow-2xs'
+                  : 'bg-white border-slate-100 hover:border-slate-200'
+                  }`}
               >
                 {/* Left: Rank, Image, Model Info */}
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[11px] shrink-0 ${
-                    idx === 0
-                      ? 'bg-gradient-to-br from-[#B30D12] to-[#800A0D] text-white shadow-2xs'
-                      : idx === 1
-                        ? 'bg-slate-700 text-white'
-                        : idx === 2
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-slate-100 text-slate-600'
-                  }`}>
+                  <span className={`w-5 h-5 rounded-md flex items-center justify-center font-black text-[11px] shrink-0 ${idx === 0
+                    ? 'bg-gradient-to-br from-[#B30D12] to-[#800A0D] text-white shadow-2xs'
+                    : idx === 1
+                      ? 'bg-slate-700 text-white'
+                      : idx === 2
+                        ? 'bg-amber-600 text-white'
+                        : 'bg-slate-100 text-slate-600'
+                    }`}>
                     {idx + 1}
                   </span>
 

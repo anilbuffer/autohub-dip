@@ -41,8 +41,6 @@ export default function AiWeeklyBriefCard({ onNotifyToast }: AiWeeklyBriefCardPr
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden transition-all">
-      {/* Top Brand Crimson Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
 
       {/* Top Header Bar */}
       <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 pb-3.5 border-b border-slate-100">

@@ -515,7 +515,7 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center gap-2.5 shrink-0 self-start lg:self-center flex-wrap">
-              <button
+              {/* <button
                 onClick={() => {
                   const list = syncState.shortlistedVehicleIds.length > 0
                     ? enrichedVehicles.filter(v => syncState.shortlistedVehicleIds.includes(v.id))
@@ -528,7 +528,7 @@ export default function Dashboard() {
               >
                 <FileText size={14} className="text-amber-400" />
                 <span>Written PO Form</span>
-              </button>
+              </button> */}
 
               <button
                 onClick={() => triggerAutoHubCopilot("I have $200k, prefer Toyota, 3 years old or newer. What fits?")}

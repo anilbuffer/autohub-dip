@@ -2,17 +2,17 @@
 
 import React, { useState, useMemo } from 'react';
 import { SUPPLY_DEMAND_GAP, SupplyGapItem, UPCOMING_AUCTION_MATCHES } from '@/lib/demandIntelligenceData';
-import { 
-  Zap, 
-  ArrowUpDown, 
-  ChevronUp, 
-  ChevronDown, 
+import {
+  Zap,
+  ArrowUpDown,
+  ChevronUp,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Sparkles, 
-  AlertCircle, 
-  Clock, 
-  DollarSign, 
+  Sparkles,
+  AlertCircle,
+  Clock,
+  DollarSign,
   Search,
   Filter,
   CheckCircle2,
@@ -84,8 +84,8 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
     // Filter by search query
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
-      items = items.filter(item => 
-        item.model.toLowerCase().includes(q) || 
+      items = items.filter(item =>
+        item.model.toLowerCase().includes(q) ||
         item.make.toLowerCase().includes(q) ||
         item.badge.toLowerCase().includes(q)
       );
@@ -165,7 +165,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
-      
+
       {/* Callout Banner Above Table */}
       <div className="p-4 sm:p-4.5 bg-gradient-to-r from-red-50/80 via-white to-white border-b border-red-200/90 flex flex-col md:flex-row md:items-center justify-between gap-3">
         <div className="flex items-start sm:items-center gap-3">
@@ -213,7 +213,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
           {/* Quick Search */}
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3 w-3 text-slate-400" />
-            <input 
+            <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -228,11 +228,10 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
               <button
                 key={tag}
                 onClick={() => setFilterTag(tag)}
-                className={`px-2 py-0.5 rounded-lg transition-all text-[11px] cursor-pointer ${
-                  filterTag === tag
-                    ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
-                    : 'text-slate-500 hover:text-slate-800'
-                }`}
+                className={`px-2 py-0.5 rounded-lg transition-all text-[11px] cursor-pointer ${filterTag === tag
+                  ? 'bg-white text-slate-900 shadow-2xs font-extrabold'
+                  : 'text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 {tag}
               </button>
@@ -247,8 +246,8 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
           <thead>
             <tr className="bg-slate-50/80 border-b border-slate-200/80 text-[10px] font-bold text-slate-500 uppercase tracking-wider select-none">
               <th className="py-2.5 px-3.5">Model</th>
-              
-              <th 
+
+              <th
                 className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('demandUnits')}
               >
@@ -262,7 +261,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 </div>
               </th>
 
-              <th 
+              <th
                 className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('currentStockUnits')}
               >
@@ -276,7 +275,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 </div>
               </th>
 
-              <th 
+              <th
                 className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors min-w-[140px]"
                 onClick={() => handleSort('coveragePct')}
               >
@@ -290,7 +289,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 </div>
               </th>
 
-              <th 
+              <th
                 className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('avgDaysToSell')}
               >
@@ -304,7 +303,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                 </div>
               </th>
 
-              <th 
+              <th
                 className="py-2.5 px-3 cursor-pointer hover:text-slate-900 transition-colors"
                 onClick={() => handleSort('avgDealerMarginNzd')}
               >
@@ -330,20 +329,19 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
               return (
                 <React.Fragment key={item.id}>
-                  <tr 
+                  <tr
                     onClick={() => setExpandedModelId(isExpanded ? null : item.id)}
-                    className={`hover:bg-slate-50/90 transition-colors cursor-pointer select-none ${
-                      item.immediateSeller 
-                        ? 'bg-amber-50/30 border-l-4 border-l-[#B30D12]' 
-                        : ''
-                    } ${isExpanded ? 'bg-slate-50/90 font-medium' : ''}`}
+                    className={`hover:bg-slate-50/90 transition-colors cursor-pointer select-none ${item.immediateSeller
+                      ? 'bg-amber-50/30 border-l-4 border-l-[#B30D12]'
+                      : ''
+                      } ${isExpanded ? 'bg-slate-50/90 font-medium' : ''}`}
                   >
                     {/* Model Column */}
                     <td className="py-2.5 px-3.5">
                       <div className="flex items-center gap-2.5">
                         <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200 relative">
-                          <img 
-                            src={item.image} 
+                          <img
+                            src={item.image}
                             alt={item.model}
                             className="w-full h-full object-cover"
                           />
@@ -399,7 +397,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                           </span>
                         </div>
                         <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
-                          <div 
+                          <div
                             className={`h-full rounded-full transition-all duration-500 ${coverage.barColor}`}
                             style={{ width: `${Math.min(100, item.coveragePct)}%` }}
                           />
@@ -448,8 +446,8 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                   {isExpanded && (
                     <tr className="bg-slate-50/95 border-b border-slate-200">
                       <td colSpan={7} className="p-3 sm:p-3.5">
-                        <div className="rounded-xl bg-gradient-to-br from-white via-red-50/20 to-rose-50/30 border border-red-200/80 p-3 sm:p-3.5 shadow-2xs space-y-3">
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-red-100">
+                        <div className="rounded-xl bg-gradient-to-br from-white via-slate-50/20 to-slate-50/30 border border-slate-200/80 p-3 sm:p-3.5 shadow-2xs space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-slate-100">
                             <div className="flex items-center gap-1.5">
                               <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">
                                 Intelligence
@@ -473,7 +471,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
                             {/* Card 1: Demand Signals */}
-                            <div className="p-2.5 rounded-lg bg-white border border-red-200/60 shadow-2xs space-y-1.5">
+                            <div className="p-2.5 rounded-lg bg-white border border-slate-200/60 shadow-2xs space-y-1.5">
                               <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
                                 <Radio size={12} className="text-[#B30D12]" />
                                 <span>Ingested Demand Signals</span>
@@ -495,7 +493,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                             </div>
 
                             {/* Card 2: 30-Day Forecast & Deficit */}
-                            <div className="p-2.5 rounded-lg bg-white border border-red-200/60 shadow-2xs space-y-1.5">
+                            <div className="p-2.5 rounded-lg bg-white border border-slate-200/60 shadow-2xs space-y-1.5">
                               <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
                                 <Sparkles size={12} className="text-amber-600" />
                                 <span>30d Forecast &amp; Deficit</span>
@@ -517,7 +515,7 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
                             </div>
 
                             {/* Card 3: Supply Chain Matching */}
-                            <div className="p-2.5 rounded-lg bg-white border border-red-200/60 shadow-2xs space-y-1.5">
+                            <div className="p-2.5 rounded-lg bg-white border border-slate-200/60 shadow-2xs space-y-1.5">
                               <div className="flex items-center gap-1 text-slate-900 font-bold text-[11px]">
                                 <Ship size={12} className="text-blue-600" />
                                 <span>Multi-Tier Supply</span>

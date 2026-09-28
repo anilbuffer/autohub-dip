@@ -35,8 +35,6 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
 
   return (
     <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
-      {/* Top Subtle Red Brand Accent Line */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-[#B30D12]" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
@@ -68,7 +66,7 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
               className="group rounded-xl border border-slate-200/80 bg-white hover:border-red-200 hover:shadow-sm transition-all flex flex-col overflow-hidden"
             >
               {/* Image & Badges */}
-              <div className="relative h-40 w-full bg-slate-100 overflow-hidden">
+              <div className="relative h-42 w-full bg-slate-100 overflow-hidden">
                 <img
                   src={vehicle.image}
                   alt={vehicle.model}

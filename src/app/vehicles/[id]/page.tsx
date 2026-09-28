@@ -27,6 +27,7 @@ import { VEHICLES, GLOBAL_SETTINGS } from "@/lib/data";
 import { useSyncStore } from "@/lib/syncStore";
 import { triggerAutoHubCopilot } from "@/components/chat/DealerChatAssistant";
 import WrittenConfirmationPoModal from "@/components/dealer/WrittenConfirmationPoModal";
+import PoTransmissionSuccessModal from "@/components/dealer/PoTransmissionSuccessModal";
 
 export default function VehicleDetail({ params }: { params: { id: string } }) {
   const vehicleId = parseInt(params?.id) || 1;
@@ -40,6 +41,8 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
   const [bidPlaced, setBidPlaced] = useState(false);
   const [activePhoto, setActivePhoto] = useState(vehicle.image);
   const [isPoModalOpen, setIsPoModalOpen] = useState(false);
+  const [transmittedPoNum, setTransmittedPoNum] = useState<string | null>(null);
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
   const [compFilter, setCompFilter] = useState<string>("All");
   const [showTransitTooltip, setShowTransitTooltip] = useState(false);
   const [downloadToast, setDownloadToast] = useState<{
@@ -174,7 +177,7 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
 
   return (
     <AppLayout>
-      <div className="space-y-8 pb-16 max-w-6xl mx-auto">
+      <div className="space-y-8 pb-16 max-w-7xl mx-auto">
 
         {/* Navigation Breadcrumb */}
         <div className="flex items-center justify-between">
@@ -252,13 +255,23 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            <button
-              onClick={() => setIsPoModalOpen(true)}
-              className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
-              title="Generate Written Export Confirmation / PO for Heiwa Auto Japan"
-            >
-              <FileText size={14} className="text-amber-400" /> Written PO Form
-            </button>
+            {transmittedPoNum ? (
+              <button
+                onClick={() => setIsReceiptModalOpen(true)}
+                className="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+                title="View Official Heiwa PO Transmission Receipt"
+              >
+                <CheckCircle2 size={14} className="text-emerald-200" /> Transmitted PO Receipt
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsPoModalOpen(true)}
+                className="px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-[0.98]"
+                title="Generate Written Export Confirmation / PO for Heiwa Auto Japan"
+              >
+                <FileText size={14} className="text-amber-400" /> Written PO Form
+              </button>
+            )}
 
             <button
               onClick={() => triggerAutoHubCopilot(`Analyze landed margin, sheet condition, and indicative market analysis for ${vehicle.year} ${vehicle.make} ${vehicle.model} (Lot #${vehicle.lotNumber})`)}
@@ -280,11 +293,49 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
           </div>
         </div>
 
+        {/* PO Transmitted Persistent Banner */}
+        {transmittedPoNum && (
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-[#0e1e38] text-white border border-emerald-500/30 flex items-center justify-between gap-4 shadow-lg animate-in fade-in slide-in-from-top-2">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+                <CheckCircle2 size={20} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm font-black text-white">Purchase Order Registered with Heiwa Auto Japan</span>
+                  <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                    {transmittedPoNum}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Official written export commitment verified. Direct Ro-Ro voyage allocated from Port of Kobe to Ports of Auckland.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => setIsReceiptModalOpen(true)}
+                className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer flex items-center gap-1.5"
+              >
+                <CheckCircle2 size={13} />
+                <span>View Receipt Modal</span>
+              </button>
+              <button
+                onClick={() => setIsPoModalOpen(true)}
+                className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700 cursor-pointer hidden sm:flex items-center gap-1"
+              >
+                <FileText size={13} className="text-amber-400" />
+                <span>PO Document</span>
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Gallery & Quick Bid Action Top Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Photo Gallery (2 Spans) */}
           <div className="lg:col-span-2 space-y-3">
-            <div className="h-[380px] rounded-2xl overflow-hidden relative shadow-sm border border-slate-200 bg-[#0B1322] group">
+            <div className="h-[520px] rounded-2xl overflow-hidden relative shadow-sm border border-slate-200 bg-[#0B1322] group">
               <img
                 src={activePhoto}
                 alt={vehicle.model}
@@ -412,11 +463,30 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
 
               {/* Generate Written PO Button */}
               <button
-                onClick={() => setIsPoModalOpen(true)}
-                className="w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs cursor-pointer active:scale-[0.98]"
+                onClick={() => {
+                  if (transmittedPoNum) {
+                    setIsReceiptModalOpen(true);
+                  } else {
+                    setIsPoModalOpen(true);
+                  }
+                }}
+                className={`w-full py-2.5 px-3 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs cursor-pointer active:scale-[0.98] ${
+                  transmittedPoNum
+                    ? "bg-emerald-700 hover:bg-emerald-800 text-white"
+                    : "bg-slate-900 hover:bg-slate-800 text-white"
+                }`}
               >
-                <FileText size={14} className="text-amber-400" />
-                <span>Issue Written Confirmation / PO</span>
+                {transmittedPoNum ? (
+                  <>
+                    <CheckCircle2 size={14} className="text-emerald-300" />
+                    <span>Transmitted PO: {transmittedPoNum}</span>
+                  </>
+                ) : (
+                  <>
+                    <FileText size={14} className="text-amber-400" />
+                    <span>Issue Written Confirmation / PO</span>
+                  </>
+                )}
               </button>
 
               {/* Inspection Sheet Download Buttons */}
@@ -981,18 +1051,17 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                 Multi-platform comparable pricing scraped from <strong>Trade Me Motors</strong>, <strong>AutoTrader NZ</strong>, and <strong>Facebook Marketplace</strong>.
               </p>
             </div>
-            
+
             {/* Platform Filter Pills */}
             <div className="flex items-center gap-1.5 overflow-x-auto self-start sm:self-auto">
               {["All", "Trade Me Motors", "Facebook Marketplace", "AutoTrader NZ"].map((plat) => (
                 <button
                   key={plat}
                   onClick={() => setCompFilter(plat)}
-                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                    compFilter === plat
-                      ? "bg-[#0B1322] text-white shadow-2xs"
-                      : "bg-slate-100 hover:bg-slate-200 text-slate-600"
-                  }`}
+                  className={`px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${compFilter === plat
+                    ? "bg-[#0B1322] text-white shadow-2xs"
+                    : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                    }`}
                 >
                   {plat === "All" ? `All Sources (${vehicle.nzComparables.length})` : plat}
                 </button>
@@ -1056,15 +1125,14 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
                       <tr key={idx} className="hover:bg-slate-50/50">
                         <td className="px-5 py-3.5 font-bold text-slate-900">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border ${
-                              isTradeMe
-                                ? "bg-amber-500/10 text-amber-900 border-amber-300"
-                                : isFacebook
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border ${isTradeMe
+                              ? "bg-amber-500/10 text-amber-900 border-amber-300"
+                              : isFacebook
                                 ? "bg-blue-500/10 text-blue-900 border-blue-300"
                                 : isAutoTrader
-                                ? "bg-red-500/10 text-red-900 border-red-300"
-                                : "bg-slate-100 text-slate-800 border-slate-200"
-                            }`}
+                                  ? "bg-red-500/10 text-red-900 border-red-300"
+                                  : "bg-slate-100 text-slate-800 border-slate-200"
+                              }`}
                           >
                             <ExternalLink size={11} className="opacity-70" />
                             {comp.source}
@@ -1100,9 +1168,24 @@ export default function VehicleDetail({ params }: { params: { id: string } }) {
           vehicles={[vehicle]}
           syncState={syncState}
           onConfirmed={(poNum) => {
-            alert(`Purchase Order ${poNum} successfully registered with Heiwa Japan for Lot #${vehicle.lotNumber}!`);
+            setTransmittedPoNum(poNum);
           }}
         />
+
+        {/* Direct PO Transmission Receipt Modal */}
+        {transmittedPoNum && (
+          <PoTransmissionSuccessModal
+            isOpen={isReceiptModalOpen}
+            onClose={() => setIsReceiptModalOpen(false)}
+            poNumber={transmittedPoNum}
+            vehicles={[vehicle]}
+            syncState={syncState}
+            onViewPoDocument={() => {
+              setIsReceiptModalOpen(false);
+              setIsPoModalOpen(true);
+            }}
+          />
+        )}
 
       </div>
     </AppLayout>

@@ -68,11 +68,10 @@ export default function ModernVehicleCard({
             e.stopPropagation();
             onToggleShortlist(vehicle.id);
           }}
-          className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-xl flex items-center justify-center transition-all z-10 cursor-pointer shadow-md backdrop-blur-md ${
-            isShortlisted
+          className={`absolute top-2.5 right-2.5 w-8 h-8 rounded-xl flex items-center justify-center transition-all z-10 cursor-pointer shadow-md backdrop-blur-md ${isShortlisted
               ? "bg-[#B30D12] text-white ring-2 ring-white/50"
               : "bg-white/90 hover:bg-white text-slate-700 hover:text-[#B30D12]"
-          }`}
+            }`}
           title={isShortlisted ? "Remove from shortlist" : "Add to shortlist"}
         >
           {isShortlisted ? (
@@ -149,15 +148,14 @@ export default function ModernVehicleCard({
                 <Building2 size={12} className="text-[#B30D12] shrink-0" />
                 <span className="truncate">{vehicle.dealer ? `Allocated: ${vehicle.dealer}` : "Unallocated Lot"}</span>
               </div>
-              <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md ${
-                vehicle.status === "Priority"
+              <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md ${vehicle.status === "Priority"
                   ? "bg-red-50 text-[#B30D12] border border-red-200"
                   : vehicle.status === "Allocated"
-                  ? "bg-blue-50 text-blue-700 border border-blue-200"
-                  : vehicle.status === "Consider"
-                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                  : "bg-slate-100 text-slate-700 border border-slate-200"
-              }`}>
+                    ? "bg-blue-50 text-blue-700 border border-blue-200"
+                    : vehicle.status === "Consider"
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : "bg-slate-100 text-slate-700 border border-slate-200"
+                }`}>
                 {vehicle.status || "Available"}
               </span>
             </div>
@@ -187,11 +185,10 @@ export default function ModernVehicleCard({
                 <Sparkles size={11} className="text-emerald-600 shrink-0" />
                 <span>Data confidence: High</span>
               </div>
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
-                vehicle.isPriority
+              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${vehicle.isPriority
                   ? "bg-red-50 text-[#B30D12] border-red-200/70"
                   : "bg-slate-100 text-slate-600 border-slate-200"
-              }`}>
+                }`}>
                 {vehicle.isPriority ? "Best Match" : "Qualifying Lot"}
               </span>
             </div>
@@ -227,7 +224,7 @@ export default function ModernVehicleCard({
             href={`/vehicles/${vehicle.id}`}
             className="px-3 py-2.5 bg-[#B30D12] hover:bg-[#940B0F] text-white text-xs font-bold rounded-xl transition-all shadow-xs hover:shadow flex items-center justify-center gap-1.5 active:scale-[0.98] group/btn"
           >
-            <span className="truncate">Calculate Landed</span>
+            <span className="truncate">View Details</span>
             <ArrowRight size={13} className="group-hover/btn:translate-x-0.5 transition-transform shrink-0" />
           </Link>
         </div>

@@ -15,7 +15,9 @@ import {
   Building2,
   LogOut,
   CheckCircle2,
-  Sparkles
+  Sparkles,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 import { GLOBAL_SETTINGS, VEHICLES } from '@/lib/data';
 import RoleSwitcher from './RoleSwitcher';
@@ -24,10 +26,49 @@ import DealerChatAssistant from '@/components/chat/DealerChatAssistant';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  // Desktop sidebar collapse state
+  // Large screens (1024px - 1279px): default collapsed (minside) with toggle buttons for openside
+  // XLLarge screens (>= 1280px): default open with toggle buttons for minside
+  // Mobile / Tablet (< 1024px): sidebar completely offset, toggle opens overlay drawer
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [chatOpen, setChatOpen] = useState(false);
+  const lastBreakpointRef = React.useRef<'mobile' | 'lg' | 'xl' | null>(null);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      let currentBreakpoint: 'mobile' | 'lg' | 'xl' = 'mobile';
+      if (width >= 1280) {
+        currentBreakpoint = 'xl';
+      } else if (width >= 1024) {
+        currentBreakpoint = 'lg';
+      } else {
+        currentBreakpoint = 'mobile';
+      }
+
+      if (currentBreakpoint !== lastBreakpointRef.current) {
+        lastBreakpointRef.current = currentBreakpoint;
+        if (currentBreakpoint === 'lg') {
+          setIsCollapsed(true);
+          setMobileMenuOpen(false);
+        } else if (currentBreakpoint === 'xl') {
+          setIsCollapsed(false);
+          setMobileMenuOpen(false);
+        } else {
+          setMobileMenuOpen(false);
+        }
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMini = isCollapsed && !mobileMenuOpen;
 
   React.useEffect(() => {
     const handleOpen = () => setChatOpen(true);
@@ -52,47 +93,115 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Mobile Menu Backdrop */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar - Sleek Deep Navy */}
       <aside className={`
-        fixed md:static inset-y-0 left-0 z-50 w-[264px] bg-[#0b152e] text-slate-300 flex flex-col justify-between shrink-0 border-r border-[#1B2A4A]/50 transition-transform duration-300 ease-in-out
-        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        fixed lg:static inset-y-0 left-0 z-50 bg-[#0b152e] text-slate-300 flex flex-col justify-between shrink-0 border-r border-[#1B2A4A]/50 transition-all duration-300 ease-in-out
+        ${mobileMenuOpen ? 'translate-x-0 shadow-2xl w-[264px]' : '-translate-x-full lg:translate-x-0'}
+        ${!mobileMenuOpen && (isCollapsed ? 'lg:w-[72px]' : 'lg:w-[264px]')}
       `}>
         <div>
           {/* Brand Logo & Header */}
-          <div className="h-[70px] flex items-center justify-between px-4 sm:px-5 border-b border-[#1B2A4A]/60 bg-[#060E22]">
-            <Link href="/" className="flex items-center gap-2.5 group" title="AutoHub Dealer Intelligence Platform (DIP)">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#1B2A4A] flex items-center justify-center shadow-md shadow-red-950/50 group-hover:scale-105 transition-transform border border-red-400/30 shrink-0">
-                <span className="text-white font-black text-xs tracking-wider">AH</span>
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[14px] font-black text-white tracking-wide leading-none">AUTOHUB</span>
-                  <span className="text-[8.5px] px-1.5 py-0.2 rounded font-extrabold bg-[#B30D12]/25 text-red-300 border border-[#B30D12]/40">DIP</span>
+          <div className={`h-[70px] flex items-center border-b border-[#1B2A4A]/60 bg-[#060E22] transition-all ${
+            isMini ? 'justify-center px-2' : 'justify-between px-4 sm:px-5'
+          }`}>
+            {isMini ? (
+              <button
+                onClick={() => setIsCollapsed(false)}
+                className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#1B2A4A] flex items-center justify-center shadow-md shadow-red-950/50 hover:scale-105 transition-all border border-red-400/30 group relative"
+                title="AutoHub DIP - Click to expand sidebar"
+                aria-label="Expand sidebar"
+              >
+                <span className="text-white font-black text-xs tracking-wider group-hover:opacity-0 transition-opacity">AH</span>
+                <PanelLeftOpen size={18} className="text-white absolute opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            ) : (
+              <>
+                <Link href="/" className="flex items-center gap-2.5 group min-w-0" title="AutoHub Dealer Intelligence Platform (DIP)">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#B30D12] via-[#940B0F] to-[#1B2A4A] flex items-center justify-center shadow-md shadow-red-950/50 group-hover:scale-105 transition-transform border border-red-400/30 shrink-0">
+                    <span className="text-white font-black text-xs tracking-wider">AH</span>
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-[14px] font-black text-white tracking-wide leading-none">AUTOHUB</span>
+                      <span className="text-[8.5px] px-1.5 py-0.2 rounded font-extrabold bg-[#B30D12]/25 text-red-300 border border-[#B30D12]/40">DIP</span>
+                    </div>
+                    <span className="block text-[8.5px] font-semibold text-slate-400 tracking-[0.08em] mt-0.5 truncate">DEALER INTELLIGENCE</span>
+                  </div>
+                </Link>
+
+                <div className="flex items-center gap-1 shrink-0">
+                  {/* Mobile close button */}
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="lg:hidden text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+                    aria-label="Close menu"
+                  >
+                    <X size={18} />
+                  </button>
+
+                  {/* Desktop collapse button */}
+                  <button
+                    onClick={() => setIsCollapsed(true)}
+                    className="hidden lg:flex text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+                    title="Collapse to mini sidebar"
+                    aria-label="Collapse to mini sidebar"
+                  >
+                    <PanelLeftClose size={17} />
+                  </button>
                 </div>
-                <span className="block text-[8.5px] font-semibold text-slate-400 tracking-[0.08em] mt-0.5">DEALER INTELLIGENCE</span>
-              </div>
-            </Link>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="md:hidden text-slate-400 hover:text-white p-1"
-            >
-              <X size={18} />
-            </button>
+              </>
+            )}
           </div>
 
           {/* Navigation Links */}
-          <nav className="mt-4 px-3 space-y-3">
-            <div className="px-3 pb-1.5 text-[10px] font-bold text-slate-400/80 uppercase tracking-wider">
-              Dealer Operations
-            </div>
+          <nav className={`mt-4 space-y-2 transition-all ${isMini ? 'px-2' : 'px-3'}`}>
+            {!isMini && (
+              <div className="px-3 pb-1.5 text-[10px] font-bold text-slate-400/80 uppercase tracking-wider">
+                Dealer Operations
+              </div>
+            )}
+            {isMini && (
+              <div className="w-8 mx-auto border-t border-[#1B2A4A]/60 my-2" />
+            )}
+
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+
+              if (isMini) {
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    title={item.badge ? `${item.label} (${item.badge})` : item.label}
+                    className={`group relative flex items-center justify-center w-11 h-11 mx-auto rounded-xl transition-all duration-150 ${
+                      isActive
+                        ? 'bg-[#B30D12] text-white shadow-md shadow-red-950/40 font-semibold'
+                        : 'text-slate-400 hover:bg-white/[0.06] hover:text-slate-200'
+                    }`}
+                  >
+                    <Icon size={19} className={isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'} />
+                    {item.badge && (
+                      <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#B30D12] ring-2 ring-[#0b152e]"></span>
+                    )}
+                    <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#060E22] text-white text-xs font-semibold rounded-lg shadow-2xl border border-[#1B2A4A] whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity z-50 flex items-center gap-2">
+                      <span>{item.label}</span>
+                      {item.badge && (
+                        <span className="px-1.5 py-0.5 rounded text-[9.5px] font-bold bg-[#B30D12]/30 text-red-300 border border-[#B30D12]/40">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                );
+              }
+
               return (
                 <Link
                   key={item.href}
@@ -119,27 +228,45 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* User / Dealership Footer */}
-        <div className="p-2.5 m-3 bg-[#0D1627] rounded-xl border border-[#1E2E4E]/80 shadow-2xs flex items-center justify-between">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1B2A4A] to-[#0E1A30] text-slate-200 flex items-center justify-center font-bold text-xs shrink-0 border border-[#2B406B]/60 shadow-2xs">
+        {isMini ? (
+          <div className="p-2 m-2 bg-[#0D1627] rounded-xl border border-[#1E2E4E]/80 flex flex-col items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1B2A4A] to-[#0E1A30] text-slate-200 flex items-center justify-center font-bold text-xs shrink-0 border border-[#2B406B]/60 shadow-2xs"
+              title="David Miller - Auckland Auto Group"
+            >
               DM
             </div>
-            <div className="min-w-0">
-              <div className="text-xs font-bold text-white truncate">David Miller</div>
-              <div className="text-[10px] text-slate-400 truncate flex items-center gap-1 mt-0.5">
-                <Building2 size={10} className="shrink-0" />
-                <span className="truncate">Auckland Auto Group</span>
+            <Link
+              href="/login"
+              title="Switch User / Logout"
+              className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <LogOut size={14} />
+            </Link>
+          </div>
+        ) : (
+          <div className="p-2.5 m-3 bg-[#0D1627] rounded-xl border border-[#1E2E4E]/80 shadow-2xs flex items-center justify-between">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#1B2A4A] to-[#0E1A30] text-slate-200 flex items-center justify-center font-bold text-xs shrink-0 border border-[#2B406B]/60 shadow-2xs">
+                DM
+              </div>
+              <div className="min-w-0">
+                <div className="text-xs font-bold text-white truncate">David Miller</div>
+                <div className="text-[10px] text-slate-400 truncate flex items-center gap-1 mt-0.5">
+                  <Building2 size={10} className="shrink-0" />
+                  <span className="truncate">Auckland Auto Group</span>
+                </div>
               </div>
             </div>
+            <Link
+              href="/login"
+              title="Switch User / Logout"
+              className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <LogOut size={13} />
+            </Link>
           </div>
-          <Link
-            href="/login"
-            title="Switch User / Logout"
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <LogOut size={13} />
-          </Link>
-        </div>
+        )}
       </aside>
 
       {/* Main Content Viewport */}
@@ -147,13 +274,26 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Header Bar */}
         <header className="h-16 sm:h-[72px] bg-white border-b border-slate-200/90 px-3 sm:px-6 md:px-8 flex items-center justify-between shrink-0 shadow-[0_1px_3px_rgba(0,0,0,0.02)] z-20 gap-2 sm:gap-4">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            {/* Mobile / Tablet Toggle: Opens full overlay drawer (< lg) */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="md:hidden p-1.5 sm:p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 shrink-0"
+              className="lg:hidden p-1.5 sm:p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 shrink-0 transition-colors"
               aria-label="Open mobile menu"
+              title="Open menu"
             >
               <Menu size={20} />
             </button>
+
+            {/* Desktop Sidebar Toggle: Toggles mini vs open sidebar (>= lg) */}
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hidden lg:flex items-center justify-center p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 border border-slate-200/80 shrink-0 transition-all shadow-2xs hover:border-slate-300"
+              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              title={isCollapsed ? "Expand sidebar (Open)" : "Collapse sidebar (Mini)"}
+            >
+              {isCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+            </button>
+
             <div className="min-w-0 flex-1">
               <h1 className="text-sm sm:text-base md:text-xl font-black text-slate-900 tracking-tight truncate">
                 Auckland Auto Group
@@ -171,7 +311,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search Toyota, Aqua, Hybrid, lot #..."
-                className="pl-12 pr-12 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#B30D12] focus:ring-2 focus:ring-[#B30D12]/20 outline-none transition-all w-[420px] text-sm placeholder:text-slate-400 font-medium"
+                className="pl-12 pr-12 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-[#B30D12] focus:ring-2 focus:ring-[#B30D12]/20 outline-none transition-all w-[200px] lg:w-[280px] xl:w-[420px] text-sm placeholder:text-slate-400 font-medium"
               />
               <span className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-white border border-slate-200 text-slate-400 rounded px-1.5 py-0.5 text-[10px] font-bold shadow-2xs">
                 ⌘K

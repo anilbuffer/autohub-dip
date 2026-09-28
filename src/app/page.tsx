@@ -647,7 +647,7 @@ export default function Dashboard() {
         </section>
 
         {/* 3. Main Two-Column Layout (Inspired by Reference 1 & Reference 2) */}
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 w-full items-stretch lg:items-start min-w-0">
           {/* Mobile Filter Toggle Button */}
           <div className="lg:hidden w-full flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200/90 shadow-2xs">
             <button
@@ -1241,9 +1241,9 @@ export default function Dashboard() {
           </aside>
 
           {/* RIGHT COLUMN: Modern Vehicle Catalog & 3-Column Card Grid (from Reference 2) */}
-          <main className="flex-1 min-w-0 space-y-5">
+          <main className="flex-1 min-w-0 w-full max-w-full space-y-5">
             {/* Catalog Control Header */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.04)] p-4 sm:p-5 space-y-4">
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.04)] p-4 sm:p-5 space-y-4 w-full max-w-full min-w-0 overflow-hidden">
               {/* Top Row: Title, Result Count, and Search Bar */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
@@ -1304,55 +1304,57 @@ export default function Dashboard() {
               </div>
 
               {/* Bottom Row: Tabs & Sort Dropdown */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                {/* Segmented Catalog Tabs */}
-                <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-full">
-                  {/* Filter 1: Best matches for you */}
-                  <button
-                    onClick={() => setActiveTab("bestMatches")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "bestMatches" || (activeTab as any) === "priority"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <Flame size={12} className={(activeTab === "bestMatches" || (activeTab as any) === "priority") ? "text-white" : "text-slate-400"} />
-                    <span><span className="hidden sm:inline">Best matches for you</span><span className="sm:hidden">Best Matches</span> ({priorityVehicles.length})</span>
-                  </button>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-slate-100 w-full max-w-full min-w-0">
+                {/* Segmented Catalog Tabs (Self-contained scrollable container that NEVER expands the card) */}
+                <div className="w-full md:w-auto overflow-x-auto no-scrollbar min-w-0 max-w-full">
+                  <div className="inline-flex items-center gap-1 sm:gap-1.5 bg-slate-100 p-1 rounded-xl w-max">
+                    {/* Filter 1: Best matches for you */}
+                    <button
+                      onClick={() => setActiveTab("bestMatches")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "bestMatches" || (activeTab as any) === "priority"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <Flame size={12} className={(activeTab === "bestMatches" || (activeTab as any) === "priority") ? "text-white" : "text-slate-400"} />
+                      <span><span className="hidden sm:inline">Best matches for you</span><span className="sm:hidden">Best Matches</span> ({priorityVehicles.length})</span>
+                    </button>
 
-                  {/* Filter 2: Other qualifying vehicles */}
-                  <button
-                    onClick={() => setActiveTab("otherQualifying")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "otherQualifying"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <Car size={12} className={activeTab === "otherQualifying" ? "text-white" : "text-slate-400"} />
-                    <span><span className="hidden sm:inline">Other qualifying vehicles</span><span className="sm:hidden">Other Qualifying</span> ({otherQualifyingVehicles.length})</span>
-                  </button>
+                    {/* Filter 2: Other qualifying vehicles */}
+                    <button
+                      onClick={() => setActiveTab("otherQualifying")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "otherQualifying"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <Car size={12} className={activeTab === "otherQualifying" ? "text-white" : "text-slate-400"} />
+                      <span><span className="hidden sm:inline">Other qualifying vehicles</span><span className="sm:hidden">Other Qualifying</span> ({otherQualifyingVehicles.length})</span>
+                    </button>
 
-                  {/* Filter 3: All Lots */}
-                  <button
-                    onClick={() => setActiveTab("all")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeTab === "all"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <span>All Lots ({enrichedVehicles.length})</span>
-                  </button>
+                    {/* Filter 3: All Lots */}
+                    <button
+                      onClick={() => setActiveTab("all")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeTab === "all"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <span>All Lots ({enrichedVehicles.length})</span>
+                    </button>
 
-                  {/* Filter 4: Saved */}
-                  <button
-                    onClick={() => setActiveTab("shortlisted")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "shortlisted"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <ShieldCheck size={12} className={activeTab === "shortlisted" ? "text-white" : "text-slate-400"} />
-                    <span>Saved ({syncState.shortlistedVehicleIds.length})</span>
-                  </button>
+                    {/* Filter 4: Saved */}
+                    <button
+                      onClick={() => setActiveTab("shortlisted")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "shortlisted"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <ShieldCheck size={12} className={activeTab === "shortlisted" ? "text-white" : "text-slate-400"} />
+                      <span>Saved ({syncState.shortlistedVehicleIds.length})</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Sort Selector & View Mode Switcher */}
@@ -1453,12 +1455,12 @@ export default function Dashboard() {
               </div>
             ) : viewMode === "grid" ? (
               /* THE 3-COLUMN CARD GRID (From Reference 2) */
-              <div className="space-y-6">
+              <div className="space-y-6 w-full max-w-full min-w-0">
                 <div
-                  className={`grid grid-cols-1 gap-5 sm:gap-6 ${
+                  className={`grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-5 sm:gap-6 w-full max-w-full min-w-0 ${
                     isSidebarCollapsed
-                      ? "sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                      : "sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+                      ? "sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                      : "sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
                   }`}
                 >
                   {paginatedVehicles.map((vehicle) => (

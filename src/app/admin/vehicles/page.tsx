@@ -593,7 +593,7 @@ export default function AdminVehicles() {
         </div>
 
         {/* 3. Main Two-Column Layout: Sidebar Filter + Right Default Grids Layout */}
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 w-full items-stretch lg:items-start min-w-0">
           {/* Mobile Filter Toggle Button */}
           <div className="lg:hidden w-full flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200/90 shadow-2xs">
             <button
@@ -1163,9 +1163,9 @@ export default function AdminVehicles() {
           {/* ========================================================================= */}
           {/* RIGHT COLUMN: Modern Vehicle Catalog & Default Grids Layout               */}
           {/* ========================================================================= */}
-          <main className="flex-1 min-w-0 space-y-5">
+          <main className="flex-1 min-w-0 w-full max-w-full space-y-5">
             {/* Catalog Control Header */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.04)] p-4 sm:p-5 space-y-4">
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(15,23,42,0.04)] p-4 sm:p-5 space-y-4 w-full max-w-full min-w-0 overflow-hidden">
               {/* Top Row: Title, Result Count, and Search Bar */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
@@ -1215,60 +1215,62 @@ export default function AdminVehicles() {
               </div>
 
               {/* Bottom Row: Tabs & Sort Dropdown + View Switcher */}
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-slate-100 w-full max-w-full min-w-0">
                 {/* Segmented Catalog Tabs */}
-                <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-100 p-1 rounded-xl overflow-x-auto no-scrollbar max-w-full">
-                  <button
-                    onClick={() => setActiveTab("all")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeTab === "all"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <span>All Lots ({enrichedVehicles.length})</span>
-                  </button>
+                <div className="w-full md:w-auto overflow-x-auto no-scrollbar min-w-0 max-w-full">
+                  <div className="inline-flex items-center gap-1 sm:gap-1.5 bg-slate-100 p-1 rounded-xl w-max">
+                    <button
+                      onClick={() => setActiveTab("all")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeTab === "all"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <span>All Lots ({enrichedVehicles.length})</span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab("priority")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "priority"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <Flame
-                      size={12}
-                      className={activeTab === "priority" ? "text-white" : "text-slate-400"}
-                    />
-                    <span>Priority ({priorityCount})</span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab("priority")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "priority"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <Flame
+                        size={12}
+                        className={activeTab === "priority" ? "text-white" : "text-slate-400"}
+                      />
+                      <span>Priority ({priorityCount})</span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab("available")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "available"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <Car
-                      size={12}
-                      className={activeTab === "available" ? "text-white" : "text-slate-400"}
-                    />
-                    <span>Available ({enrichedVehicles.filter((v) => v.status !== "Allocated").length})</span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab("available")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "available"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <Car
+                        size={12}
+                        className={activeTab === "available" ? "text-white" : "text-slate-400"}
+                      />
+                      <span>Available ({enrichedVehicles.filter((v) => v.status !== "Allocated").length})</span>
+                    </button>
 
-                  <button
-                    onClick={() => setActiveTab("shortlisted")}
-                    className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "shortlisted"
-                      ? "bg-[#B30D12] text-white shadow-2xs"
-                      : "text-slate-600 hover:text-slate-900"
-                      }`}
-                  >
-                    <ShieldCheck
-                      size={12}
-                      className={activeTab === "shortlisted" ? "text-white" : "text-slate-400"}
-                    />
-                    <span>Saved ({syncState.shortlistedVehicleIds.length})</span>
-                  </button>
+                    <button
+                      onClick={() => setActiveTab("shortlisted")}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${activeTab === "shortlisted"
+                        ? "bg-[#B30D12] text-white shadow-2xs"
+                        : "text-slate-600 hover:text-slate-900"
+                        }`}
+                    >
+                      <ShieldCheck
+                        size={12}
+                        className={activeTab === "shortlisted" ? "text-white" : "text-slate-400"}
+                      />
+                      <span>Saved ({syncState.shortlistedVehicleIds.length})</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Sort Selector & View Mode Switcher */}

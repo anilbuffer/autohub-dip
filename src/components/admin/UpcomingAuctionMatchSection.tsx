@@ -54,8 +54,8 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
         </div>
       </div>
 
-      {/* Grid of Vehicles (Compact) */}
-      <div className="pt-3.5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+      {/* Grid of Vehicles (Equal size & Perfectly Aligned) */}
+      <div className="pt-3.5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
         {UPCOMING_AUCTION_MATCHES.map((vehicle) => {
           const isNotified = syncState.notifiedAuctionLotIds.includes(vehicle.id);
           const isAnimating = animatingLot === vehicle.id;
@@ -63,13 +63,14 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
           return (
             <div
               key={vehicle.id}
-              className="group rounded-xl border border-slate-200/80 bg-white hover:border-red-200 hover:shadow-sm transition-all flex flex-col overflow-hidden"
+              className="group rounded-2xl border border-slate-200/90 bg-white hover:border-red-200 hover:shadow-md transition-all flex flex-col h-full overflow-hidden"
             >
-              {/* Image & Badges */}
-              <div className="relative h-42 w-full bg-slate-100 overflow-hidden">
+              {/* Image & Badges (Consistent Aspect Ratio & Overflow Hidden) */}
+              <div className="relative w-full aspect-[16/10] bg-slate-100 overflow-hidden shrink-0">
                 <img
                   src={vehicle.image}
                   alt={vehicle.model}
+                  loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
@@ -85,33 +86,37 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
 
                 {/* Grade Badge */}
                 <div className="absolute top-2 right-2">
-                  <span className="px-1.5 py-0.2 rounded-md text-[10px] font-black bg-emerald-500 text-white shadow-2xs">
+                  <span className="px-1.5 py-0.5 rounded-md text-[10px] font-black bg-emerald-500 text-white shadow-2xs">
                     Grade {vehicle.grade}
                   </span>
                 </div>
 
                 {/* Time Left Pill */}
                 <div className="absolute bottom-2 left-2">
-                  <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-black/70 text-red-300 flex items-center gap-1 backdrop-blur-xs">
+                  <span className="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-black/75 text-red-300 flex items-center gap-1 backdrop-blur-xs">
                     <Clock size={9} /> {vehicle.timeLeft}
                   </span>
                 </div>
               </div>
 
-              {/* Body (Compact) */}
-              <div className="p-3 flex-1 flex flex-col justify-between">
+              {/* Body (Aligned Flex Column) */}
+              <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-start justify-between gap-1.5">
-                    <h4 className="font-extrabold text-slate-900 text-xs sm:text-[13px] leading-snug">
+                  {/* Title with Fixed Height for Perfect Alignment */}
+                  <div className="h-10 flex items-start">
+                    <h4
+                      className="font-extrabold text-slate-900 text-xs sm:text-[13px] leading-snug line-clamp-2"
+                      title={`${vehicle.year} ${vehicle.model}`}
+                    >
                       {vehicle.year} {vehicle.model}
                     </h4>
                   </div>
-                  <p className="text-[10px] text-slate-500 font-medium mt-0.5">
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate mt-0.5">
                     {vehicle.badge} &bull; {vehicle.km.toLocaleString('en-US')} km
                   </p>
 
-                  {/* Pricing Dual Currency */}
-                  <div className="mt-2 p-2 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-between">
+                  {/* Pricing Dual Currency Block */}
+                  <div className="mt-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                     <div>
                       <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">FOB PRICE</span>
                       <span className="font-black text-slate-900 text-xs sm:text-[13px]">
@@ -120,57 +125,56 @@ export default function UpcomingAuctionMatchSection({ onNotifyToast }: UpcomingA
                     </div>
                     <div className="text-right">
                       <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block">YEN (JPY)</span>
-                      <span className="font-bold text-slate-700 text-[11px]">
+                      <span className="font-bold text-slate-700 text-[11px] font-mono">
                         ¥{vehicle.fobPriceJpy.toLocaleString('en-US')}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* Matched Dealers Clickable Area */}
-                <div className="mt-2.5 pt-2 border-t border-slate-100">
+                {/* Matched Dealers & Actions Block (Pinned to Bottom) */}
+                <div className="mt-auto pt-3 border-t border-slate-100 flex flex-col gap-2">
+                  {/* Matched Dealers Clickable Area */}
                   <div
                     onClick={() => handleOpenDrawer(vehicle)}
-                    className="flex items-center justify-between p-1.5 rounded-lg bg-red-50/50 hover:bg-red-50 border border-red-100 cursor-pointer transition-colors group/match"
+                    className="flex items-center justify-between p-2 rounded-xl bg-slate-50/50 hover:bg-slate-100 border border-slate-200 cursor-pointer transition-colors group/match h-9"
                     title="Click to view detailed list of matched dealers"
                   >
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 min-w-0">
                       {/* Avatar stack */}
-                      <div className="flex -space-x-1 overflow-hidden">
+                      <div className="flex -space-x-1 overflow-hidden shrink-0">
                         <span className="inline-block h-5 w-5 rounded-full ring-1.5 ring-white bg-[#B30D12] text-white font-bold text-[8px] flex items-center justify-center">AA</span>
                         <span className="inline-block h-5 w-5 rounded-full ring-1.5 ring-white bg-slate-700 text-white font-bold text-[8px] flex items-center justify-center">HM</span>
                         <span className="inline-block h-5 w-5 rounded-full ring-1.5 ring-white bg-blue-600 text-white font-bold text-[8px] flex items-center justify-center">CC</span>
                       </div>
-                      <span className="text-[11px] font-extrabold text-slate-900">
+                      <span className="text-[11px] font-extrabold text-slate-900 truncate">
                         Matched dealers: <strong className="text-[#B30D12]">{vehicle.matchedDealersCount}</strong>
                       </span>
                     </div>
-                    <ChevronRight size={13} className="text-[#B30D12] group-hover/match:translate-x-0.5 transition-transform" />
+                    <ChevronRight size={13} className="text-[#333] group-hover/match:translate-x-0.5 transition-transform shrink-0" />
                   </div>
 
                   {/* Notify Button (AutoHub Brand Red Gradient) */}
-                  <div className="mt-2">
-                    <button
-                      onClick={(e) => handleNotifyMatched(vehicle, e)}
-                      disabled={isNotified || isAnimating}
-                      className={`w-full py-1.5 px-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${isNotified
-                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                        : 'bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs active:scale-98'
-                        }`}
-                    >
-                      {isNotified ? (
-                        <>
-                          <CheckCircle2 size={12} className="text-emerald-600" />
-                          <span>{vehicle.matchedDealersCount} Dealers Notified</span>
-                        </>
-                      ) : (
-                        <>
-                          <Send size={12} className={isAnimating ? 'animate-bounce' : ''} />
-                          <span>Notify matched dealers</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
+                  <button
+                    onClick={(e) => handleNotifyMatched(vehicle, e)}
+                    disabled={isNotified || isAnimating}
+                    className={`w-full h-9 px-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${isNotified
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : 'bg-gradient-to-r from-[#B30D12] to-[#940B0F] hover:from-[#940B0F] hover:to-[#7A080C] text-white shadow-2xs active:scale-[0.98]'
+                      }`}
+                  >
+                    {isNotified ? (
+                      <>
+                        <CheckCircle2 size={13} className="text-emerald-600" />
+                        <span>{vehicle.matchedDealersCount} Dealers Notified</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={13} className={isAnimating ? 'animate-bounce' : ''} />
+                        <span>Notify matched dealers</span>
+                      </>
+                    )}
+                  </button>
                 </div>
 
               </div>

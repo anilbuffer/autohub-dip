@@ -19,13 +19,13 @@ export default function DemandTrendLineChart() {
   const [hoveredWeekIdx, setHoveredWeekIdx] = useState<number>(11); // default to latest W12
   const [activeModelId, setActiveModelId] = useState<string | null>(null);
 
-  // Chart dimensions & scaling (responsive viewBox)
+  // Chart dimensions & scaling (responsive viewBox with symmetric margins)
   const chartWidth = 840;
-  const chartHeight = 280;
-  const paddingLeft = 45;
-  const paddingRight = 30;
-  const paddingTop = 30;
-  const paddingBottom = 40;
+  const chartHeight = 175;
+  const paddingLeft = 40;
+  const paddingRight = 40;
+  const paddingTop = 16;
+  const paddingBottom = 28;
 
   const innerWidth = chartWidth - paddingLeft - paddingRight;
   const innerHeight = chartHeight - paddingTop - paddingBottom;
@@ -100,7 +100,7 @@ export default function DemandTrendLineChart() {
   }, [hoveredWeekIdx]);
 
   return (
-    <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-6 overflow-hidden">
+    <div className="relative rounded-2xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] p-4 sm:p-5 overflow-hidden">
 
       {/* Header Area */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
@@ -126,8 +126,8 @@ export default function DemandTrendLineChart() {
             type="button"
             onClick={() => setActiveModelId(null)}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer border ${activeModelId === null
-                ? 'bg-slate-900 text-white border-slate-900 shadow-2xs'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+              ? 'bg-slate-900 text-white border-slate-900 shadow-2xs'
+              : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
               }`}
           >
             All Models
@@ -141,10 +141,10 @@ export default function DemandTrendLineChart() {
                 type="button"
                 onClick={() => setActiveModelId(isSelected ? null : model.id)}
                 className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all border cursor-pointer ${isSelected
-                    ? 'text-white shadow-2xs'
-                    : activeModelId !== null
-                      ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-60'
-                      : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
+                  ? 'text-white shadow-2xs'
+                  : activeModelId !== null
+                    ? 'bg-slate-50 text-slate-400 border-slate-200 opacity-60'
+                    : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'
                   }`}
                 style={{
                   backgroundColor: isSelected ? model.color : undefined,
@@ -167,7 +167,7 @@ export default function DemandTrendLineChart() {
       </div>
 
       {/* Inflection & Key Insights Ribbon */}
-      <div className="my-3 px-3.5 py-2 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="my-2.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-wrap items-center justify-between gap-2.5 text-xs">
         <div className="flex items-center gap-2">
           <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
             <Sparkles size={11} className="text-blue-600" />
@@ -183,13 +183,13 @@ export default function DemandTrendLineChart() {
         </div>
       </div>
 
-      {/* SVG Chart Canvas */}
-      <div className="relative pt-2">
+      {/* SVG Chart Canvas (Symmetric & Compact Proportions) */}
+      <div className="relative pt-1">
         <div className="w-full overflow-x-auto">
-          <div className="min-w-[680px]">
+          <div className="min-w-[580px] max-h-[210px] flex items-center justify-center">
             <svg
               viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-              className="w-full h-auto overflow-visible select-none"
+              className="w-full h-auto max-h-[200px] overflow-visible select-none"
             >
               {/* Gradients definition for smooth area fills */}
               <defs>
@@ -225,10 +225,10 @@ export default function DemandTrendLineChart() {
                       strokeOpacity="0.75"
                     />
                     <text
-                      x={paddingLeft - 10}
+                      x={paddingLeft - 8}
                       y={yPos + 3.5}
                       textAnchor="end"
-                      className="text-[10.5px] font-bold fill-slate-400"
+                      className="text-[10px] font-bold fill-slate-400"
                     >
                       {tickVal}
                     </text>
@@ -245,22 +245,22 @@ export default function DemandTrendLineChart() {
                     {/* Active week pill marker */}
                     {isSelected && (
                       <rect
-                        x={xPos - 16}
-                        y={chartHeight - 24}
-                        width="32"
-                        height="18"
-                        rx="6"
+                        x={xPos - 15}
+                        y={chartHeight - 21}
+                        width="30"
+                        height="16"
+                        rx="5"
                         fill="#0F172A"
                         className="transition-all"
                       />
                     )}
                     <text
                       x={xPos}
-                      y={chartHeight - 11}
+                      y={chartHeight - 9}
                       textAnchor="middle"
-                      className={`text-[10.5px] transition-all cursor-pointer ${isSelected
-                          ? 'fill-white font-black'
-                          : 'fill-slate-400 hover:fill-slate-900 font-bold'
+                      className={`text-[10px] transition-all cursor-pointer ${isSelected
+                        ? 'fill-white font-black'
+                        : 'fill-slate-400 hover:fill-slate-900 font-bold'
                         }`}
                       onClick={() => setHoveredWeekIdx(idx)}
                     >
@@ -275,7 +275,7 @@ export default function DemandTrendLineChart() {
                 <g>
                   <line
                     x1={getX(hoveredWeekIdx)}
-                    y1={paddingTop - 10}
+                    y1={paddingTop - 6}
                     x2={getX(hoveredWeekIdx)}
                     y2={chartHeight - paddingBottom}
                     stroke="#94A3B8"
@@ -383,9 +383,9 @@ export default function DemandTrendLineChart() {
                   <rect
                     key={idx}
                     x={Math.max(0, colX)}
-                    y={paddingTop - 10}
+                    y={paddingTop - 6}
                     width={colWidth}
-                    height={innerHeight + 20}
+                    height={innerHeight + 16}
                     fill="transparent"
                     className="cursor-pointer"
                     onMouseEnter={() => setHoveredWeekIdx(idx)}
@@ -398,7 +398,7 @@ export default function DemandTrendLineChart() {
         </div>
 
         {/* 5 Interactive Model Telemetry Cards */}
-        <div className="mt-4 pt-3 border-t border-slate-100">
+        <div className="mt-3 pt-2.5 border-t border-slate-100">
           <div className="flex items-center justify-between mb-2">
             <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
               <Calendar size={12} className="text-slate-400" />
@@ -420,8 +420,8 @@ export default function DemandTrendLineChart() {
                   key={model.id}
                   onClick={() => setActiveModelId(isSelected ? null : model.id)}
                   className={`p-3 rounded-xl border transition-all duration-150 cursor-pointer flex flex-col justify-between ${isSelected
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-md -translate-y-0.5'
-                      : 'bg-white border-slate-200/90 hover:border-slate-300 hover:shadow-2xs'
+                    ? 'bg-slate-900 text-white border-slate-900 shadow-md -translate-y-0.5'
+                    : 'bg-slate-50 border-slate-200/90 hover:border-slate-300 hover:shadow-2xs'
                     }`}
                 >
                   <div className="flex items-center justify-between gap-1 mb-1.5">
@@ -437,8 +437,8 @@ export default function DemandTrendLineChart() {
                     </div>
 
                     <span className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded ${isSelected
-                        ? 'bg-white/20 text-white'
-                        : 'bg-emerald-50 text-emerald-800 border border-emerald-200/80'
+                      ? 'bg-white/20 text-white'
+                      : 'bg-emerald-50 text-emerald-800 border border-emerald-200/80'
                       }`}>
                       +{meta?.pctChange}%
                     </span>

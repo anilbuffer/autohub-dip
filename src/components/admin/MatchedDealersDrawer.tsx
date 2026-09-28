@@ -86,7 +86,7 @@ export default function MatchedDealersDrawer({
 
           {/* Vehicle Snapshot Strip (Compact) */}
           <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center gap-3">
-            <div className="w-14 h-12 rounded-lg overflow-hidden bg-slate-200 shrink-0 border border-slate-300 relative">
+            <div className="w-16 aspect-[16/10] rounded-lg overflow-hidden bg-slate-200 shrink-0 border border-slate-300 relative">
               <img src={vehicle.image} alt={vehicle.model} className="w-full h-full object-cover" />
             </div>
             <div className="min-w-0 flex-1 text-xs">

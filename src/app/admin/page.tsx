@@ -199,9 +199,9 @@ export default function DemandIntelligencePage() {
             </div>
 
             {/* Filters: Time Range, NZ Region, Vehicle Segment */}
-            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <div className="w-full md:w-auto flex flex-wrap items-center gap-2.5 shrink-0">
               {/* Time Range Filter Pill Group */}
-              <div className="flex items-center gap-0.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
+              <div className="w-full md:w-auto flex items-center gap-0.5 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs font-bold">
                 <button
                   type="button"
                   onClick={() => {
@@ -294,7 +294,7 @@ export default function DemandIntelligencePage() {
               <select
                 value={selectedRegion}
                 onChange={(e) => setSelectedRegion(e.target.value)}
-                className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:border-[#B30D12] outline-none cursor-pointer shadow-2xs"
+                className="w-full md:w-auto px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:border-[#B30D12] outline-none cursor-pointer shadow-2xs"
               >
                 {regionsList.map(r => (
                   <option key={r} value={r}>NZ region: {r}</option>
@@ -305,7 +305,7 @@ export default function DemandIntelligencePage() {
               <select
                 value={selectedSegment}
                 onChange={(e) => setSelectedSegment(e.target.value)}
-                className="px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:border-[#B30D12] outline-none cursor-pointer shadow-2xs"
+                className="w-full md:w-auto px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 font-bold text-xs focus:border-[#B30D12] outline-none cursor-pointer shadow-2xs"
               >
                 {segmentsList.map(s => (
                   <option key={s} value={s}>Vehicle segment: {s}</option>
@@ -336,7 +336,7 @@ export default function DemandIntelligencePage() {
         {/* ========================================================================= */}
         {/* 2. KPI CARDS (4 IN A ROW)                                                */}
         {/* ========================================================================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
 
           {/* Card 1: Active Dealers */}
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all flex flex-col justify-between">

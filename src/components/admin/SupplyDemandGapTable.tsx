@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import { SUPPLY_DEMAND_GAP, SupplyGapItem, UPCOMING_AUCTION_MATCHES } from '@/lib/demandIntelligenceData';
 import {
-  Zap,
   ArrowUpDown,
   ChevronUp,
   ChevronDown,
@@ -165,39 +164,6 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden">
-
-      {/* Callout Banner Above Table */}
-      <div className="p-4 sm:p-4.5 bg-gradient-to-r from-red-50/80 via-white to-white border-b border-red-200/90 flex flex-col md:flex-row md:items-center justify-between gap-3">
-        <div className="flex items-start sm:items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-red-100 text-[#B30D12] border border-red-200 flex items-center justify-center shrink-0">
-            <Zap size={18} className="text-[#B30D12]" />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">
-                Sourcing Callout
-              </span>
-              <span className="text-[11px] text-slate-500 font-semibold">Immediate Japanese Auction Opportunity</span>
-            </div>
-            <h3 className="text-base font-black text-slate-900 tracking-tight leading-snug">
-              5 models would sell immediately if listed at auction
-            </h3>
-            <p className="text-xs text-slate-600 font-medium leading-normal">
-              High-demand models with severe supply deficit in Japanese stock. Sourcing these models guarantees rapid turnover.
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0 self-start md:self-center">
-          <div className="px-3.5 py-1.5 rounded-xl bg-white border border-red-200 shadow-2xs text-xs">
-            <span className="text-slate-400 font-bold block text-[9px] uppercase tracking-wider">Unmet Dealer Orders</span>
-            <span className="font-black text-[#B30D12] text-sm">
-              429 Units Waiting
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* Table Subheader & Filter Tools */}
       <div className="p-4 pb-3 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100">
         <div>
@@ -444,9 +410,9 @@ export default function SupplyDemandGapTable({ onSelectModel, onNotifyToast }: S
 
                   {/* Expanded Row Detail Drawer */}
                   {isExpanded && (
-                    <tr className="bg-slate-50/95 border-b border-slate-200">
+                    <tr className="bg-slate-50 border-b border-slate-200">
                       <td colSpan={7} className="p-3 sm:p-3.5">
-                        <div className="rounded-xl bg-gradient-to-br from-white via-slate-50/20 to-slate-50/30 border border-slate-200/80 p-3 sm:p-3.5 shadow-2xs space-y-3">
+                        <div className="rounded-xl bg-white border border-slate-200/80 p-3 sm:p-3.5 shadow-2xs space-y-3">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2.5 border-b border-slate-100">
                             <div className="flex items-center gap-1.5">
                               <span className="px-2 py-0.2 rounded font-black text-[9px] uppercase tracking-wider bg-[#B30D12] text-white">

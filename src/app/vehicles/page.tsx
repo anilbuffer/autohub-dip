@@ -1164,11 +1164,10 @@ export default function VehiclesPage() {
               /* THE EXACT EXISTING 3-COLUMN CARD GRID */
               <div className="space-y-6">
                 <div
-                  className={`grid grid-cols-1 gap-5 sm:gap-6 ${
-                    isSidebarCollapsed
-                      ? "sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                      : "sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-                  }`}
+                  className={`grid grid-cols-1 gap-5 sm:gap-6 ${isSidebarCollapsed
+                    ? "sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    : "sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+                    }`}
                 >
                   {paginatedVehicles.map((vehicle) => (
                     <div
@@ -1389,7 +1388,7 @@ export default function VehiclesPage() {
                                 href={`/vehicles/${v.id}`}
                                 className="px-3 py-1.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-xs font-bold inline-flex items-center gap-1"
                               >
-                                <span>Calculate</span>
+                                <span className="inline-block whitespace-nowrap">Calculate</span>
                                 <ArrowRight size={12} />
                               </Link>
                             </div>

@@ -504,7 +504,7 @@ export default function Dashboard() {
                 <span className="font-bold text-slate-800">{VEHICLES.length} qualifying auction lots</span> synced from USS, TAA &amp; CAA lanes, with{" "}
                 <span className="font-bold text-[#B30D12]">{priorityVehicles.length} high-margin priority lots</span> matched to your weekly buying profile.
               </p>
-              
+
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2.5">
                 <span className="inline-flex items-center gap-1 text-[10.5px] sm:text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80 shrink-0">
                   <Sparkles size={11} className="text-emerald-600" /> Data confidence: High
@@ -536,15 +536,14 @@ export default function Dashboard() {
         </section>
 
         {/* 2. Top 4 High-Impact KPI Cards (Full Width / Block on Mobile & Small Tablet) */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full">
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 w-full">
           {/* Card 1: Best Matches For You */}
           <div
             onClick={() => setActiveTab("bestMatches")}
-            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${
-              activeTab === "bestMatches" || (activeTab as any) === "priority"
-                ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
-                : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
-            }`}
+            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${activeTab === "bestMatches" || (activeTab as any) === "priority"
+              ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
+              : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
+              }`}
           >
             <div className="min-w-0 flex-1 space-y-1">
               <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
@@ -588,11 +587,10 @@ export default function Dashboard() {
           {/* Card 3: Live Pipeline Lots */}
           <div
             onClick={() => setActiveTab("all")}
-            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${
-              activeTab === "all"
-                ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
-                : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
-            }`}
+            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${activeTab === "all"
+              ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
+              : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
+              }`}
           >
             <div className="min-w-0 flex-1 space-y-1">
               <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
@@ -618,11 +616,10 @@ export default function Dashboard() {
           {/* Card 4: Shortlisted Lots */}
           <div
             onClick={() => setActiveTab("shortlisted")}
-            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${
-              activeTab === "shortlisted"
-                ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
-                : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
-            }`}
+            className={`p-4 sm:p-4.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 w-full ${activeTab === "shortlisted"
+              ? "bg-white border-[#B30D12] shadow-sm ring-1 ring-[#B30D12]/20"
+              : "bg-white border-slate-200/90 hover:border-slate-300 shadow-2xs hover:shadow-xs"
+              }`}
           >
             <div className="min-w-0 flex-1 space-y-1">
               <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
@@ -1457,11 +1454,10 @@ export default function Dashboard() {
               /* THE 3-COLUMN CARD GRID (From Reference 2) */
               <div className="space-y-6 w-full max-w-full min-w-0">
                 <div
-                  className={`grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-5 sm:gap-6 w-full max-w-full min-w-0 ${
-                    isSidebarCollapsed
-                      ? "sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
-                      : "sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-                  }`}
+                  className={`grid grid-cols-1 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-5 sm:gap-6 w-full max-w-full min-w-0 ${isSidebarCollapsed
+                    ? "sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+                    : "sm:grid-cols-1 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
+                    }`}
                 >
                   {paginatedVehicles.map((vehicle) => (
                     <ModernVehicleCard
@@ -1591,7 +1587,7 @@ export default function Dashboard() {
                               href={`/vehicles/${v.id}`}
                               className="px-3 py-1.5 bg-[#B30D12] hover:bg-[#940B0F] text-white rounded-lg text-xs font-bold inline-flex items-center gap-1"
                             >
-                              Inspect <ArrowRight size={11} />
+                              Place Bid <ArrowRight size={11} />
                             </Link>
                           </td>
                         </tr>

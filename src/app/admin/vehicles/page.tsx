@@ -529,7 +529,7 @@ export default function AdminVehicles() {
         </div>
 
         {/* 2. Top 3 Compact KPIs (Full Width / Block on Mobile & Small Tablet) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 w-full">
           <div className="bg-white p-4 sm:p-4.5 rounded-2xl border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] flex items-center justify-between gap-3.5 w-full">
             <div className="min-w-0 flex-1 space-y-1">
               <span className="text-[10.5px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
@@ -1344,11 +1344,10 @@ export default function AdminVehicles() {
               /* DEFAULT GRIDS LAYOUT (3-Column Modern Cards) */
               <div className="space-y-6">
                 <div
-                  className={`grid grid-cols-1 gap-5 sm:gap-6 ${
-                    isSidebarCollapsed
+                  className={`grid grid-cols-1 gap-5 sm:gap-6 ${isSidebarCollapsed
                       ? "sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
                       : "sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3"
-                  }`}
+                    }`}
                 >
                   {paginatedVehicles.map((vehicle) => (
                     <ModernVehicleCard
